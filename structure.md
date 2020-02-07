@@ -6,11 +6,11 @@
 
 Раздел рассказывает про историю возникновения протокола, описывает основные особенности протокола и чем отличается от других блокчейнов. Базовые принципы работы в разделе не затрагиваются, так как подразумевается, что читатель либо уже знаком с ними, либо может ознакомиться с курсом на Сoursera. Структура раздела:
 
-### [1.1 История создания Waves](./sections/1.%20Waves%20Introduction/1.1%20History%20of%20Waves.md)
+### [1.1 История создания Waves](./sections/1-Waves-Introduction/1-1-history-of-waves.md)
 
-### [1.2 Подходы к разработке протокола Waves](./sections/1.%20Waves%20Introduction/1.2%20Development%20principles.md)
+### [1.2 Подходы к разработке протокола Waves](./sections/1-Waves-Introduction/1-2-development-principles.md)
 
-### [1.3 Отличительные особенности блокчейна Waves](./sections/1.%20Waves%20Introduction/1.3%20Features%20and%20USPs.md)
+### [1.3 Отличительные особенности блокчейна Waves](./sections/1-Waves-Introduction/1-3-features-and-USPs.md)
 
 _
 
@@ -18,11 +18,11 @@ _
 
 Основное внимание в разделе уделено тому как работает Waves на уровне сетевого протокола и взаимодействия нод. В разделе делается упор на то, как сетевой протокол Waves может влиять на опыт разработки dApp на платформе.
 
-### [2.1 Нода Waves и как она работает, ее конфигурация](./sections/2.%20Network%20Features/2.1%20Node%20Configuration.md)
+### [2.1 Нода Waves и как она работает, ее конфигурация](./sections/2-Network-Features/2-1-node-configuration.md)
 
-### [2.2 Процесс майнинга (Waves NG)](./sections/2.%20Network%20Features/2.2%20Mining%20&%20Waves%20NG.md)
+### [2.2 Процесс майнинга (Waves NG)](./sections/2-Network-Features/2-2-mining-and-waves-ng.md)
 
-### [2.3 Обновления протокола и другие голосования](./sections/2.%20Network%20Features/2.3%20Upgrades%20and%20other%20votings.md)
+### [2.3 Обновления протокола и другие голосования](./sections/2-Network-Features/2-3-upgrades-and-other-votings.md)
 
 _
 
@@ -30,7 +30,7 @@ _
 
 В этом разделе рассказывается о том, как создаются аккаунты в Waves в ноде и вне ее. Раздел НЕ покрывает вопросы, связанные с криптографией.
 
-### [3.1 Ключи в блокчейне Waves](./sections/3.%20Accounts/3.1%20Keys.md)
+### [3.1 Ключи в блокчейне Waves](./sections/3-Accounts/3-1-keys.md)
 
 Что такое seed фраза и как она связана с ключом, почему seed фраза именно такой длины, можно ли подобрать ее. Приватный ключ, публичный ключ и адрес, как они связаны. Как аккаунт появляется в блокчейне.
 
