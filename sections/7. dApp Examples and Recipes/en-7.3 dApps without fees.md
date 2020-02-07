@@ -73,7 +73,7 @@ Before you enable sponsorship, you must understand a few important notes.
 
 **Disclaimer: this feature is NOT documented and may stop working in the future.**
 
-The second option is working only ofr `InvokeScript` transactions and is a pretty simple. The advantage over sponsoring tokens is the lack of the need to use your token.
+The second option is working only for `InvokeScript` transactions and is a pretty simple. The advantage over sponsoring tokens is the lack of the need to use your token.
 
 Any user could call dApps' functions with 0 Waves on their account. The transaction will succeed if dApp transfers Waves tokens as a result of invocation. Let's take an example, it’s always easier after all.
 
