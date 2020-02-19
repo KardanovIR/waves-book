@@ -20,6 +20,10 @@
 
 :[4-1](./4-Tokens/4-1-tokens-and-how-to-work.md)
 
+:[4-2](./4-Tokens/4-2-sponsorship.md)
+
+:[5-1](./5-Transactions/5-1-transaction-types.md)
+
 :[5-1](./5-Transactions/5-1-utx.md)
 
 :[6-1](./6-Ride/6-1-introduction.md)
