@@ -24,7 +24,7 @@
 
 :[5-1](./5-Transactions/5-1-transaction-types.md)
 
-:[5-1](./5-Transactions/5-1-utx.md)
+:[5-1](./5-Transactions/5-2-utx.md)
 
 :[6-1](./6-Ride/6-1-introduction.md)
 
