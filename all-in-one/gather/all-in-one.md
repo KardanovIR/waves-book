@@ -22,9 +22,13 @@
 
 :[4-2](./4-Tokens/4-2-sponsorship.md)
 
+:[4-3](./4-Tokens/4-3-smart-assets.md)
+
+:[4-4](./4-Tokens/4-4-assets-trading-dex.md)
+
 :[5-1](./5-Transactions/5-1-transaction-types.md)
 
-:[5-1](./5-Transactions/5-2-utx.md)
+:[5-2](./5-Transactions/5-2-utx.md)
 
 :[6-1](./6-Ride/6-1-introduction.md)
 
