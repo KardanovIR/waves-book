@@ -30,9 +30,7 @@
 
 :[5-2](../../sections/5-Transactions/5-2-transaction-types.md)
 
-:[5-3](../../sections/5-Transactions/5-3-transaction-signatures.md)
-
-:[5-3](../../sections/5-Transactions/5-4-utx.md)
+:[5-3](../../sections/5-Transactions/5-3-utx.md)
 
 :[6-1](../../sections/6-Ride/6-1-introduction.md)
 
