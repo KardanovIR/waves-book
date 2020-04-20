@@ -34,4 +34,10 @@
 
 :[6-1](../../sections/6-Ride/6-1-introduction.md)
 
+:[6-2](../../sections/6-Ride/6-2-runtime-details.md)
+
+:[6-3](../../sections/6-Ride/6-3-main-functions.md)
+
+:[7-1](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
+
 :[7-3](../../sections/7-dApp-Examples-and-Recipes/7-3-dApps-without-fees.md)

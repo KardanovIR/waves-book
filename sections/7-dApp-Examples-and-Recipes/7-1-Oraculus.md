@@ -10,23 +10,36 @@
 
 Идея сделать децентрализованных оракулов лежит на поверхности, но простого решения у этой проблемы нет, поэтому ее часто называют "проблемой оракулов". Давайте рассмотрим, что можно с этим сделать.
 
-Самым простым решением является мультиподпись, когда нескольько разных пользователей должны придти к консенсусу и подписать одни и те же данные. Например, мы хотим получать данные о курсе USD/EUR и у нас есть 3 оракула, которые должны договориться о цене (каким-то образом за пределами блокчейна), подписать транзакцию и отправить ее в сеть на специальный аккаунт, который примет эту транзакцию только при наличии всех 3 подписей. Простейший контракт для такого случая выглядел бы так:
+Самым простым решением является мультиподпись, когда нескольько разных пользователей должны придти к консенсусу и подписать одни и те же данные. Например, мы хотим получать данные о курсе USD/EUR и у нас есть 5 оракулов, которые должны договориться о цене (каким-то образом за пределами блокчейна), подписать транзакцию и отправить ее в сеть на специальный аккаунт, который примет эту транзакцию только при наличии не менее 3 подписей из 5. Простейший контракт для такого случая выглядел бы так:
 
 ```scala
-#define public keys
+{-# STDLIB_VERSION 3 #-}
+{-# CONTENT_TYPE EXPRESSION #-}
+{-# SCRIPT_TYPE ACCOUNT #-}
 
-let oracle1PublicKey = base58'5AzfA9UfpWVYiwFwvdr77k6LWupSTGLb14b24oVdEpMM'
-let oracle2PublicKey = base58'2KwU4vzdgPmKyf7q354H9kSyX9NZjNiq4qbnH2wi2VDF'
-let oracle3PublicKey = base58'GbrUeGaBfmyFJjSQb9Z8uTCej5GzjXfRDVGJGrmgt5cD'
+# array of 5 public keys
+let pks = [base58'', base58'', base58'', base58'', base58'']
 
-#check whoever provided the valid proof
-let oracle1Signed = if(sigVerify(tx.bodyBytes, tx.proofs[0], oracle1PublicKey )) then 1 else 0
-let oracle2Signed = if(sigVerify(tx.bodyBytes, tx.proofs[1], oracle2PublicKey )) then 1 else 0
-let oracle3Signed = if(sigVerify(tx.bodyBytes, tx.proofs[2], oracle3PublicKey )) then 1 else 0
+# inner fold step for each signature
+func signedBy(pk:ByteVector) = {
+   # is signed by the public key or not
+   func f(acc: Boolean, sig: ByteVector)
+      = acc || sigVerify(tx.bodyBytes, sig, pk)
+   FOLD<5>(tx.proofs, false, f)
+}
 
-#sum up every valid proof to get at least 2
+# outer fold step for each public key
+func signedFoldStep(acc:Int, pk:ByteVector)
+   = acc + (if(signedBy(pk)) then 1 else 0)
 
-
-aliceSigned + bobSigned + cooperSigned == 3
-
+# comparing total number of correct signatures
+# to required number of correct signatures
+FOLD<5>(pks, 0, signedFoldStep) >= 3
 ```
+
+У такого решения вопроса есть несколько проблем:
+
+- В случае отсутствия консенсуса у оракулов, данные просто не будут поставлены в блокчейн
+- Отсутствует экономическая мотивация у поставщиков данных
+- Заранее ограниченный список оракулов
+
