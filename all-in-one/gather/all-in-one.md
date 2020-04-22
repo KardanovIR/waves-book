@@ -38,6 +38,14 @@
 
 :[6-3](../../sections/6-Ride/6-3-main-functions.md)
 
+:[6-4](../../sections/6-Ride/6-4-tooling.md)
+
 :[7-1](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
 
-:[7-3](../../sections/7-dApp-Examples-and-Recipes/7-3-dApps-without-fees.md)
+:[7-2](../../sections/7-dApp-Examples-and-Recipes/7-2-Billy.md)
+
+:[7-3](../../sections/7-dApp-Examples-and-Recipes/7-3-best-practices.md)
+
+:[7-4](../../sections/7-dApp-Examples-and-Recipes/7-4-dApps-without-fees.md)
+
+:[7-5](../../sections/7-dApp-Examples-and-Recipes/7-5-taxation.md)
