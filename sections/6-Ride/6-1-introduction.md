@@ -119,7 +119,7 @@ func callable() = {
   42
 }
 
-func caller() = { 
+func caller() = {
   let a = callable()
   true
 }
@@ -171,7 +171,7 @@ let age = 21
 
 ```scala
 List    # [16, 10, "hello"]
-Nothing # 
+Nothing #
 Unit    # unit
 ```
 
@@ -264,8 +264,8 @@ let realStringValue2 = getStringValue(this, "someKey")
 ```scala
 let amount = 1610
 if (amount > 42) then "I claim that amount is bigger than 42"
-else if (amount > 100500) then "Too big!"
-else "I claim something else"
+  else if (amount > 100500) then "Too big!"
+  else "I claim something else"
 ```
 
 `if` операторы довольно просты и похожи на большинство других языков, за исключением двух отличий: `if` может использоваться как выражение (результат присваивается переменной) и ветвь `else` всегда обязательна.
@@ -308,10 +308,10 @@ let amount = match tx { # tx - текущий объект исходящей т
 ```scala
 let a = getInteger(this, "key").extract()
 throw("I will terminate it!")
-let result = if a < 0 then 
-	"a is negative" 
-else 
-	"a is positive or 0"
+let result = if a < 0 then
+  "a is negative"
+else
+  "a is positive or 0"
 ```
 
 В приведенном выше примере скрипт завершится на строке 2 с сообщением `I will terminate it!` и никогда не достигнет выражения `if`.
@@ -323,10 +323,10 @@ else
 ```scala
 func getPayment(i: Invocation) = {
   let pmt = extract(i.payment)
-  if (isDefined(pmt.assetId)) then 
+  if (isDefined(pmt.assetId)) then
     throw("This function accetps waves tokens only")
   else
-  	pmt.amount
+    pmt.amount
 }
 
 @Callable(i)
@@ -441,7 +441,7 @@ func giveAway(age: Int) = {
 
 Каждый результирующий Issue увеличивает комиссию за вызов такой функции на 1 Waves (если выпускается не NFT токен).
 
-Результирующий массив может содержать до 100 изменений данных в хранилище и 10 операций с токенами (выпуск, сожжение, отправка, перевыпуск). 
+Результирующий массив может содержать до 100 изменений данных в хранилище и 10 операций с токенами (выпуск, сожжение, отправка, перевыпуск).
 
 ## Исключения
 
@@ -491,7 +491,7 @@ a == assetInfo(base58'5fmWxmtrqiMp7pQjkCZG96KhctFHm9rJkMbq2QbveAHR') # true ес
 
 ```scala
 func sum(acc:Int, el:Int) = acc + el
-let arr = [1,2,3,4,5]
+let arr = [1, 2, 3, 4, 5]
 let sum = FOLD<5>(arr, 0, sum) # result: 15
 ```
 
@@ -510,10 +510,10 @@ sum(6, 4)  # 10
 sum(10, 5) # 15
 ```
 
-`FOLD<N>` является макросом, то есть синтаксическим сахаром. Интерпретатор Ride ничего не знает про `FOLD`, потому что момент компиляции `FOLD` превращается в подобный код:
+`FOLD<N>` является макросом, то есть синтаксическим сахаром. Интерпретатор Ride ничего не знает про `FOLD`, потому что в момент компиляции `FOLD` превращается в подобный код:
 
 ```scala
-let restult = {
+let result = {
    let size = arr.size()
    if(size == 0) then acc0 else {
       let acc1 = function(acc0, arr[0])
@@ -525,12 +525,11 @@ let restult = {
                let acc4 = function(acc3, arr[3])
                if(size == 4) then acc4 else {
                   let acc5 = function(acc4, arr[4])
-                  if(size == 5) 
-                     then acc5 
-                     else 
+                  if(size == 5)
+                     then acc5
+                     else
                        throw("Too big array, max 5 elements")
 }}}}}}
-
 ```
 
 Выглядит намного хуже, чем `FOLD<N>`. Параметр `N` всегда должен являться целым числом выше 0 и является обязательным. То есть, разработчик должен знать максимальный размер списка, который будет обрабатываться с помощью `FOLD`.
