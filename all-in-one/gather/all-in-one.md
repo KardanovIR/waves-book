@@ -1,6 +1,37 @@
-# Waves Book
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h1 align="center">Web3 приложения на Waves</h1>
+<h3 align="center">пособие для начиюнающих по блокчейну и смарт-контрактам</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h5 align="center">Inal Kardanov<br>2020</h5>
+</div>
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 :[1-0](../../sections/1-Waves-Introduction/1-0-general-intro.md)
+
+:[1-0-1](../../sections/1-Waves-Introduction/1-0-1-web3.md)
 
 :[1-1](../../sections/1-Waves-Introduction/1-1-history-of-waves.md)
 
