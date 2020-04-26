@@ -150,9 +150,9 @@
 \pagebreak
 </div>
 
-:[9-0](../../sections/9-next-big-things/9-0-gravity-hub.md)
+:[9-0](../../sections/9-next-big-things/9-0-defi.md)
 
-:[9-1](../../sections/9-next-big-things/9-1-defi.md)
+:[9-1](../../sections/9-next-big-things/9-1-gravity-hub.md)
 
 
 <div style="page-break-after: always; visibility: hidden">
