@@ -550,7 +550,6 @@ console.log(wholeStorage, oneKeyValue);
 Транзакции типа `SetSсript` мы косвенно затрагивали, когда говорили про смарт-аккаунты. Логику поведения смарт-аккаунта и децентрализованных приложений мы описываем с помощью языка Ride, который компилируется в `base64` представление одним из доступных способов (JS бибиотека `ride-js`, API ноды, Java пакет в Maven, online IDE или плагин для Visual Studio Code) и отправляется в составе `SetScript` транзакции:
 
 ```js
-
 const { setScript } = require('@waves/waves-transactions')
 const seed = 'example seed phrase'
 const params = {
@@ -703,7 +702,6 @@ console.log(signedInvokeScriptTx)
 - `UpdateAssetInfo` позволяет обновить название и описание токена, но не чаще, чем раз в 100 000 блоков.
 
 ```js
-
 const { updateAssetInfo } = require('@waves/waves-transactions')
 const seed = 'example seed phrase'
 const params = {
@@ -766,4 +764,53 @@ broadcast(updateAssetInfoTx);
 
 ## Подпись транзакций
 
-<!-- TODO: добавить про количество подписей и как сделать с помощью JS -->
+У каждой транзакции последних версий может быть не одна подпись, а до 8. В примерах выше мы всегда использовали сид фразу, из которой библиотека `waves-transactions` сама получала публичный ключ `senderPublicKey` и подпись в массив `proofs`. Бывают ситуации, когда отправить необходимо транзакцию с одного аккаунта, а подписать ключом другого (мы рассмотрим такие примеры позже в главе 6). В таком случае, формировать транзакцию нужно с явным указанием `senderPublicKey` отправителя следующим образом:
+
+```js
+const { setScript } = require('@waves/waves-transactions')
+const seed = 'example seed phrase'
+const params = {
+  script: 'AQa3b8tH', // TRUE в base64 представлении
+  senderPublicKey: '4VStEwhXhsv6wQ6PBR5CfEYD8m91zYg2pcF7v17QGSbJ',
+}
+
+const signedSetScriptTx = setScript(params, seed)
+```
+
+Если же необходимо подписать несколькими ключами, то существует 2 варианта это сделать:
+
+- использовать функцию `addProof(tx: ITransaction, seed: string)`, которая принимает тело сформированной транзакции и добавляем подпись от сида, передаваемого вторым аргументом
+- при формировании транзакции передавать массив сид фраз
+
+
+```js
+const { setScript } = require('@waves/waves-transactions')
+const seeds = ['0 - example seed phrase', '1 - example seed phrase', null, '3 - example seed phrase']
+const params = {
+  script: 'AQa3b8tH', // TRUE в base64 представлении
+  senderPublicKey: '4VStEwhXhsv6wQ6PBR5CfEYD8m91zYg2pcF7v17QGSbJ',
+}
+
+const signedSetScriptTx = setScript(params, seeds)
+```
+
+В таком случае, созданная транзакция будет содержать 3 подписи в массиве `proofs` под индексами 0, 1 и 3, а под индексом 2 будет `null`:
+
+```json
+{
+  "type": 13,
+  "version": 1,
+  "senderPublicKey": "4VStEwhXhsv6wQ6PBR5CfEYD8m91zYg2pcF7v17QGSbJ",
+  "chainId": 82,
+  "fee": 1000000,
+  "timestamp": 1587883659092,
+  "proofs": [
+    "4cajf7tKFJR2rvzWpsufytU1p1dTtstbnRLg1A89eCgg2ezFRqe1UKyux5vzK1BeFeoiGFpZ8Vu6epzFTdhZQqWe",
+    "3PVzmWVnS2CJWpXDonCuWGgE48FsxZWQVriwNJXmstxZvqWQaowsebnAC5zca7j71cHQpZxB5yizmhzzKT9cvWXh",
+    null,
+    "2d6yyeTzjF5J8frSyuyBf3B2qKyoKuHEJq4X22joghjyeW7nZJBWdQhLVfxaUYQ6GnAhjXA7Mz7FXXkhRz7n5Zh9"
+  ],
+  "id": "8btD3NufMo8VApFi4opTPPdfa2ej6w2SFTojCaMcaqQq",
+  "script": "base64:..."
+}
+```

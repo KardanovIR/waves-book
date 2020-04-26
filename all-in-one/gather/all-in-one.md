@@ -29,6 +29,40 @@
 \pagebreak
 </div>
 
+# Оглавление
+
+[Введение](../../sections/0-intro.md)
+
+[Глава 1. Краткая история веба и протокола Waves](../../sections/1-Waves-Introduction/1-0-intro-web3.md)
+
+[Глава 2. Нода Waves и как она работает, ее конфигурация](../../sections/2-Network-Features/2-1-node-configuration.md)
+
+[Глава 3. Аккаунты и ключи](../../sections/3-Accounts/3-1-keys.md)
+
+[Глава 4. Токены](../../sections/4-Tokens/4-1-tokens-and-how-to-work.md)
+
+[Глава 5. Транзакции](../../sections/5-Transactions/5-1-transactions-intro.md)
+
+[Глава 6. Язык программирования Ride](../../sections/6-Ride/6-1-introduction.md)
+
+[Глава 7. Практикум: пишем Web3 приложения](../../sections/7-dApp-Examples-and-Recipes/7-2-Billy.md)
+
+[Глава 8. Лучшие друзья разработчика](../../sections/8-important-aspects/8-0-important-aspects.md)
+
+[Глава 9. Смотрим в будущее](../../sections/9-next-big-things/9-0-gravity-hub.md)
+
+[Заключение](../../sections/10-outro.md)
+
+<div style="page-break-after: always; visibility: hidden">
+\pagebreak
+</div>
+
+:[0](../../sections/0-intro.md)
+
+<div style="page-break-after: always; visibility: hidden">
+\pagebreak
+</div>
+
 :[1-0](../../sections/1-Waves-Introduction/1-0-intro-web3.md)
 
 :[1-1](../../sections/1-Waves-Introduction/1-1-history-of-waves.md)
@@ -94,13 +128,15 @@
 \pagebreak
 </div>
 
-:[7-1](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
-
 :[7-2](../../sections/7-dApp-Examples-and-Recipes/7-2-Billy.md)
 
-:[7-3](../../sections/7-dApp-Examples-and-Recipes/7-3-best-practices.md)
+:[7-1](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
+
+:[7-3](../../sections/7-dApp-Examples-and-Recipes/7-3-hot-potato-token.md)
 
 :[7-4](../../sections/7-dApp-Examples-and-Recipes/7-4-taxation.md)
+
+:[7-5](../../sections/7-dApp-Examples-and-Recipes/7-5-best-practices.md)
 
 <div style="page-break-after: always; visibility: hidden">
 \pagebreak
@@ -108,7 +144,20 @@
 
 :[8-0](../../sections/8-important-aspects/8-0-important-aspects.md)
 
+:[8-1](../../sections/8-important-aspects/8-1-keeper-singer.md)
 
 <div style="page-break-after: always; visibility: hidden">
 \pagebreak
 </div>
+
+:[9-0](../../sections/9-next-big-things/9-0-gravity-hub.md)
+
+:[9-1](../../sections/9-next-big-things/9-1-defi.md)
+
+
+<div style="page-break-after: always; visibility: hidden">
+\pagebreak
+</div>
+
+:[10](../../sections/10-outro.md)
+
