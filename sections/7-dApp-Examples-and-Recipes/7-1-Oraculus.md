@@ -112,7 +112,7 @@ FOLD<5>(pks, 0, signedFoldStep) >= 3
 
 @Callable(i)
 func registerAsOracle(dataType: String) = {
-    let neededKey = inv.callerPublicKey.toBase58String() + "_" + dataType
+    let neededKey = i.callerPublicKey.toBase58String() + "_" + dataType
     let ratingKey = i.callerPublicKey.toBase58String() + "_rating"
 
     let currentRating = match getInteger(this, ratingKey) {
@@ -135,7 +135,7 @@ func registerAsOracle(dataType: String) = {
 
 - `id` - уникальный идентификатор каждого вопроса.
 - `question` - непосредственно задаваемый вопрос в заранее оговоренном формате.
-- `consensusType` - правило агрерации данных, `consensus`, `median` или `average`. 
+- `consensusType` - правило агрерации данных, `consensus`, `median` или `average`.
 - `minOraclesCount` - минимальное количество оракулов.
 - `maxOraclesCount` - максимальное количество оракулов.
 - `oraclesWhiteList` - список оракулов (публичные ключи через запятые или пустая строка)

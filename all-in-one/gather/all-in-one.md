@@ -146,6 +146,8 @@
 
 :[8-1](../../sections/8-important-aspects/8-1-keeper-singer.md)
 
+:[8-2](../../sections/8-important-aspects/8-2-5-things-to-know.md)
+
 <div style="page-break-after: always; visibility: hidden">
 \pagebreak
 </div>
