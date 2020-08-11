@@ -1,3 +1,5 @@
+<!-- <p>&nbsp;</p> -->
+<!-- <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -5,12 +7,10 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>&nbsp;</p> -->
+<!-- <p>&nbsp;</p> -->
 
-<h1 align="center">Web3 приложения на Waves</h1>
+<!-- <h1 align="center">Web3 приложения на Waves</h1>
 <h3 align="center">пособие для начинающих</h3>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -22,9 +22,12 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<h5 align="center">Inal Kardanov<br>2020</h5>
-</div>
+<p>&nbsp;</p> -->
+<!-- <h5 align="center">Inal Kardanov<br>2020</h5> -->
+<!-- </div> -->
+
+<img src="./../../assets/A4_Cver_Waves_B.png" width='100%' height='100%'>
+
 <div style="page-break-after: always; visibility: hidden">
 \pagebreak
 </div>

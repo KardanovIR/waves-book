@@ -1,170 +1,44 @@
 {
-	"type": "modal",
-	"submit": {
-		"type": "plain_text",
-		"text": "Send",
-		"emoji": true
+	"id": "U014S6EUKGW",
+	"tz": "America/Sao_Paulo",
+	"name": "felipe.mantovanello",
+	"color": "9f69e7",
+	"is_bot": false,
+	"deleted": false,
+	"profile": {
+		"team": "T014YTZHU6N",
+		"email": "felipe.mantovanello@gmail.com",
+		"phone": "",
+		"skype": "",
+		"title": "",
+		"fields": null,
+		"image_24": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-24.png",
+		"image_32": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-32.png",
+		"image_48": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-48.png",
+		"image_72": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-72.png",
+		"image_192": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-192.png",
+		"image_512": "https://secure.gravatar.com/avatar/42ac633c4435e34eb203be0c31195fb0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0006-512.png",
+		"last_name": "Mantovanello",
+		"real_name": "Felipe Mantovanello",
+		"first_name": "Felipe",
+		"avatar_hash": "g42ac633c443",
+		"status_text": "",
+		"display_name": "",
+		"status_emoji": "",
+		"status_expiration": 0,
+		"real_name_normalized": "Felipe Mantovanello",
+		"status_text_canonical": "",
+		"display_name_normalized": ""
 	},
-	"close": {
-		"type": "plain_text",
-		"text": "Cancel",
-		"emoji": true
-	},
-	"title": {
-		"type": "plain_text",
-		"text": "Send a review to Elena ",
-		"emoji": true
-	},
-	"blocks": [
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Leave your feedback about *Elena Kamisnskaia*, Senior Branding Coordinator\n You've interacteed 12 times in the last month"
-			},
-			"accessory": {
-				"type": "image",
-				"image_url": "https://ca.slack-edge.com/TT84WV3PE-UTR7R9U9Z-9d0fd8613a8c-512",
-				"alt_text": "alt text for image"
-			}
-		},
-		{
-			"type": "divider"
-		},
-		{
-			"type": "input",
-			"element": {
-				"type": "static_select",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "Select an item",
-					"emoji": true
-				},
-				"options": [
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Elena Kaminskaia only",
-							"emoji": true
-						},
-						"value": "value-0"
-					},
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Elena Kaminskaia & their manager",
-							"emoji": true
-						},
-						"value": "value-1"
-					},
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Whole team",
-							"emoji": true
-						},
-						"value": "value-2"
-					}
-				]
-			},
-			"label": {
-				"type": "plain_text",
-				"text": "Visibility of the feedback",
-				"emoji": true
-			}
-		},
-		{
-			"type": "input",
-			"element": {
-				"type": "static_select",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "Select an item",
-					"emoji": true
-				},
-				"options": [
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "🥇 Leadership",
-							"emoji": true
-						},
-						"value": "value-0"
-					},
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "*this is plain_text text*",
-							"emoji": true
-						},
-						"value": "value-1"
-					},
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "*this is plain_text text*",
-							"emoji": true
-						},
-						"value": "value-2"
-					}
-				]
-			},
-			"label": {
-				"type": "plain_text",
-				"text": "Our team value to want to give a feedback about",
-				"emoji": true
-			}
-		},
-		{
-			"type": "input",
-			"label": {
-				"type": "plain_text",
-				"text": "What you would like to tell to Elena?",
-				"emoji": true
-			},
-			"element": {
-				"type": "plain_text_input",
-				"multiline": true
-			},
-			"optional": false
-		},
-		{
-			"type": "input",
-			"element": {
-				"type": "checkboxes",
-				"options": [
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Yes",
-							"emoji": true
-						},
-						"value": "value-0"
-					}
-				]
-			},
-			"label": {
-				"type": "plain_text",
-				"text": "Anonymous",
-				"emoji": true
-			}
-        },
-		{
-			"type": "context",
-			"elements": [
-				{
-					"type": "mrkdwn",
-					"text": "Can't be public"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "|"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Managers can see authors name"
-				}
-			]
-		},
-	]
+	"team_id": "T014YTZHU6N",
+	"updated": 1591470839,
+	"is_admin": true,
+	"is_owner": true,
+	"tz_label": "Brasilia Time",
+	"real_name": "Felipe Mantovanello",
+	"tz_offset": -10800,
+	"is_app_user": false,
+	"is_restricted": false,
+	"is_primary_owner": true,
+	"is_ultra_restricted": false
 }
