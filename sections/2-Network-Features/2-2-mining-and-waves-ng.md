@@ -1,16 +1,16 @@
-# Процесс майнинга и Waves NG
+# Mining process and Waves NG
 
-Процесс майнинга является ключевым для ноды, в конце концов ее основная задача в том, чтобы производить блоки с транзакциями. Чтобы это эффективно делать, нода также должна получать информацию о блоках от других нод и отправлять им свои блоки. Давайте рассмотрим упрощенную модель майнинга в Waves. Более подробная информация о процессе майнинга, включая формулы, есть в статье [Fair Proof of Stake](https://forum.wavesplatform.com/uploads/default/original/1X/b9f220c13f73c3a41dff7f4523c6c4a1fc03ebf6.pdf).
+The mining process is key for a node, after all, its main task is to produce blocks with transactions. To do this effectively, a node must also receive information about blocks from other nodes and send them its blocks. Let's take a look at a simplified Waves mining model. For more information on the mining process, including formulas, see the article [Fair Proof of Stake](https://forum.wavesplatform.com/uploads/default/original/1X/b9f220c13f73c3a41dff7f4523c6c4a1fc03ebf6.pdf).
 
 ## Proof of Stake
 
-В основе майнинга лежит алгоритм Proof-of-Stake, который подразумевает, что вероятность сгенерировать блок каким-либо аккаунтом прямо пропорциональна балансу этого аккаунта. Давайте рассмотрим простейший случай: допустим, у нас есть аккаунт с балансом 10 млн Waves (из 100 млн выпущенных в момент создания). Вероятность смайнить блок будет 10%, иными словами мы будем генерировать примерно 144 блока в сутки (1440 всего блоков за сутки в среднем появляется в сети).
+Mining is based on the Proof-of-Stake algorithm, which implies that the probability of generating a block by any account is directly proportional to the balance of this account. Let's consider the simplest case: let's say we have an account with a balance of 10 million Waves (out of 100 million issued at the time of creation). The probability of mining a block will be 10%, in other words, we will generate approximately 144 blocks per day (1440 total blocks per day appear on the network on average).
 
-Теперь немного усложним. Хоть и выпущено всего 100 миллионов токенов, не все из них участвуют в майнинге (например, токены могут быть на бирже, а не на аккаунте ноды). Если в майнинге участвует 50 миллионов, то нода с балансом в 10 млн уже будет генерировать 288 блоков в сутки. Но на самом деле количество токенов, которые участвуют в майнинге, постоянно меняется, поэтому прямо предсказать, сколько будет смайнено блоков, не получится.
+Now let's complicate things a little. Although only 100 million tokens were issued, not all of them participate in mining (for example, tokens can be on the exchange, and not on the node's account). If 50 million are involved in mining, then a node with a balance of 10 million will already generate 288 blocks per day. But in fact, the number of tokens that participate in mining is constantly changing, so it is impossible to directly predict how many blocks will be mined.
 
-Вопрос, который возник у самых любопытных - *в каком порядке ноды будут генерировать блоки?*. Для ответа на этот вопрос потребуется углубиться в особенности реализации PoS в Waves, поэтому пристегнитесь и взбодритесь.
+The question that arose from the most curious - *in what order will the nodes generate blocks?*. To answer this question, you will need to delve into the specifics of the PoS implementation in Waves, so buckle up and cheer up.
 
-Можно сказать, что для ответа на вопрос "Кто будет следующим генератороом блока?" ноды используют информацию о балансах, времени между блоками и генератор псевдо-случайных чисел. Начнем с последнего, использовать `urandom` в данном случае не получится, так как он недетерминированный, и каждая нода получит свой результат. Поэтому ноды "договариваются" о рандоме. Каждый блок в цепочке содержит наряду с транзакциями, адресом ноды, сгенерировавшей блок, версией и времеменем, поле, называемое `generation-signature`. Взгляните, как выглядит блок номер 1908853 в мейннете в JSON представлении (без транзакций):
+We can say that to answer the question "Who will be the next generator of the block?" nodes use information about balances, time between blocks and a pseudo-random number generator. Let's start with the latter, using `urandom` in this case will not work, since it is non-deterministic, and each node will receive its own result. Therefore, the nodes "agree" about the randomness. Each block in the chain contains, along with transactions, the address of the node that generated the block, version and time, a field called `generation-signature`. Take a look at what block number 1908853 looks like in the mainnet in JSON representation (without transactions):
 
 ```json
 {
@@ -33,23 +33,23 @@
 }
 ```
 
-Обратите внимание: для удобства структуры данных в этой книге представлены в формате JSON, но сами ноды работают с блоками, транзакциями, подписями и т.д. в бинарном формате. Для этого есть описания бинарных структур данных в документации, а с недавнего времени бинарный формат данных представляет из себя Protobuf.
+Note that for convenience, the data structures in this book are presented in JSON format, but the nodes themselves work with blocks, transactions, signatures, etc. in binary format. For this, there are descriptions of binary data structures in the documentation, and more recently the binary data format is Protobuf.
 
-Generation signature является SHA256 хэшом от `generation-signature` предыдущего блока и публичного ключа генератора этого блока. Первые 8 байт хэша `generting-signature` конвертируются в число и используется как некий рандом, называемый `hit`. Значение `base-target` отвечает за среднее время между блоками и пересчитывается во время генерации каждого блока. Если бы в сети постоянно были все ноды со всем стейком сети, готовые сгенерировать блок, то `base-target` не был бы нужен, но коль это не так, нужен синтетический параметр, который меняется в зависимости от текущего времени между блоками и автоматически выравнивать среднее время между блоками в 60 секунд.
+Generation signature is the SHA256 hash of the `generation-signature` of the previous block and the public key of the generator of this block. The first 8 bytes of the `generting-signature` hash are converted to a number and used as a kind of random, called` hit`. The base-target value is responsible for the average time between blocks and is recalculated during the generation of each block. If the network constantly had all the nodes with the entire network stake, ready to generate a block, then `base-target` would not be needed, but if this is not the case, a synthetic parameter is needed, which changes depending on the current time between blocks and automatically align the average time between blocks is 60 seconds.
 
-Итак, у нас есть параметры `hit`, который является псевдо-случайным числом, баланс каждого аккаунта и значение `base-target`, но что делать ноде со всем этим? Каждая нода, в момент получения нового блока по сети, запускает функцию проверки, когда будет ее очередь генерировать блок.
+So, we have the parameters `hit`, which is a pseudo-random number, the balance of each account and the value of` base-target`, but what should the node do with all this? Each node, at the moment of receiving a new block over the network, starts the check function when it is its turn to generate a block.
 
 >    Δt = f(hit, balance, baseTarget)
 
- В результате выполнения этой функции, нода получает число секунд до момента, когда наступит ее время генерировать блок. Фактически, после этого нода устанавливает таймер, при наступлении которого начнет генерировать блок. Если она получит следующий блок до наступления таймера, то операция будет выполнена заново и таймер будет переставлен на новое значение `Δt`.
+ As a result of executing this function, the node gets the number of seconds until the moment when it is time to generate the block. In fact, after this, the node sets a timer, upon the occurrence of which it will start generating a block. If it receives the next block before the timer occurs, then the operation will be performed again and the timer will be reset to the new value `Δt`.
 
- Валидация блоков происходит таким же образом, за одним исключением, что в формулу подставляется баланс не этой ноды, а сгенерировавшей блок.
+ Blocks are validated in the same way, with one exception that the balance is not substituted into the formula of this node, but of the one that generated the block.
 
 ## Waves NG
 
-Если вы вообще что-то знаете про Waves, то могли слышать про Waves NG, который делает блокчейн Waves быстрым и отзывчивым. Waves-NG получил свое названия от статьи [Bitcoin-NG: A Scalable Blockchain Protocol](https://www.usenix.org/system/files/conference/nsdi16/nsdi16-paper-eyal.pdf), которая была опубликована в 2016 году и предлагала способ масштабирования сети Bitcoin за счет изменения протокола генерации блоков. NG в названии расшифровывается как Next Generation, и действительно предложение помогло бы сети Bitcoin выйти на новый уровень по пропускной способности, но эта инициатива так никогда и не была реализована в Bitcoin. Зато была воплощена в протоколе Waves в конце 2017 года. Waves NG влияет на то, как генерируются блоки и ноды общаются друг с другом.
+If you know anything about Waves at all, you may have heard of Waves NG, which makes the Waves blockchain fast and responsive. Waves-NG gets its name from the article [Bitcoin-NG: A Scalable Blockchain Protocol](https://www.usenix.org/system/files/conference/nsdi16/nsdi16-paper-eyal.pdf), which was published in 2016 and offered a way to scale the Bitcoin network by changing the block generation protocol. NG in the name stands for Next Generation, and indeed the proposal would have helped the Bitcoin network reach a new level of bandwidth, but this initiative was never implemented in Bitcoin. But it was embodied in the Waves protocol at the end of 2017. Waves NG affects how blocks are generated and how nodes communicate with each other.
 
-В момент наступления своего времени майнинга, нода генерирует так называемый *ключевой блок* (key block), становясь лидером. Ключевой блок не содержит транзакций, он является только началом блока, который будет меняться. Далее лидер получает право генерировать так называемые *микроблоки*, которые добавляют новые транзакции в конец блока и меняют его сигнатуру. Например, лидер генерирует ключевой блок со следующими параметрами:
+At the moment of its mining time, the node generates the so-called * key block *, becoming the leader. The key block does not contain transactions, it is only the beginning of the block that will change. Then the leader gets the right to generate the so-called * microblocks *, which add new transactions to the end of the block and change its signature. For example, the leader generates a key block with the following parameters:
 
 ```json
 {
@@ -72,7 +72,7 @@ Generation signature является SHA256 хэшом от `generation-signatu
 }
 ```
 
-В блоке нет транзакций, что видно из значения `transactionCount`, но основные параметры вроде подписи и ссылки на предыдущий блок (поле `reference`) уже есть. Создатель этого блока сможет через несколько секунд сгенерировать микроблок со всеми транзакциями, которые появились в сети за эти секунды, и разослать остальным нодам. При этом в блоке поменяются некоторые поля:
+There are no transactions in the block, as can be seen from the `transactionCount` value, but the basic parameters such as the signature and the link to the previous block (the` reference` field) are already there. The creator of this block will be able in a few seconds to generate a microblock with all the transactions that appeared on the network during those seconds, and send it to the rest of the nodes. In this case, some fields in the block will change:
 
 ```json
 {
@@ -85,29 +85,29 @@ Generation signature является SHA256 хэшом от `generation-signatu
 }
 ```
 
-В блок добавились 167 транзакций, которые увеличили размер блока, так же поменялась подпись блока и комиссия, которую заработает лидер.
+167 transactions were added to the block, which increased the block size, the block signature and the commission that the leader will earn has also changed.
 
-Несколько важных моментов, которые важно понимать:
+A few important points to understand:
 
-- Микроблок содержит только транзакции и подпись лидера, параметры консенсуса не дублируются
-- Время генерации микроблоков зависит от настроек майнера (поле `waves.miner.micro-block-interval` в конфигурации задает значение для каждой ноды). По умолчанию лидер будет генерировать микроблоки каждые 5 секунд.
-- При каждом новом микроблоке меняются данные последнего блока, поэтому последний блок называют "жидким" (liquid) блоком
-- Ключевой блок и все микроблоки, которые к нему относятся, объединяются в один блок так, что в блокчейне не остается никаких данных о микроблоках. Можно сказать, что они используются только для передачи информации о транзакциях между нодами.
+- Microblock contains only transactions and the leader's signature, consensus parameters are not duplicated
+- The generation time of microblocks depends on the miner's settings (the `waves.miner.micro-block-interval` field in the configuration sets a value for each node). By default, the leader will generate microblocks every 5 seconds.
+- With each new microblock, the data of the last block changes, so the last block is called a "liquid" block
+- The key block and all the microblocks that belong to it are combined into one block so that no microblock data remains in the blockchain. We can say that they are used only to transfer information about transactions between nodes.
 
-Лидер блока будет генерировать микроблоки и менять жидкий блок до тех пор, пока не будет сгенерирован другой ключевой блок в сети (то есть у какой-то другой ноды сработает таймер начала майнинга) или достигнуты лимиты блока на размер (1 МБ).
+The block leader will generate microblocks and change the liquid block until another key block in the network is generated (that is, the mining start timer is triggered for some other node) or the block size limits (1 MB) are reached.
 
-## Что дает Waves NG?
+## What does Waves NG do?
 
-**Благодаря Waves NG сокращается время попадания транзакции в блок. То есть можно в своем приложении обеспечивать гораздо лучший пользовательский опыт.** Пользователь может получать обратную связь по своей транзакции за ~5 секунд, если нет большой очереди за попадание в блок. Только надо понимать, что попадание в блок не является гарантией финализации и блок может быть отменен (до 100 блоков в глубину, но на практике 2-3 блока в крайне редких случаях).
+**Thanks to Waves NG, the time it takes for a transaction to enter a block is reduced. That is, you can provide a much better user experience in your application.** The user can receive feedback on his transaction in ~ 5 seconds, if there is no long queue for hitting the block. You just need to understand that hitting a block is not a guarantee of finalization and the block can be canceled (up to 100 blocks deep, but in practice 2-3 blocks in extremely rare cases).
 
-**Waves NG делает нагрузку на сеть более равномерной.** В случае отсутствия Waves NG, блоки генерировались бы раз в минуту (сразу 1 МБ данных) и отправлялись бы по сети целиком. То есть можно представить ситуации, когда 50 секунд ноды (кроме майнера) ничего не делают и ждут, а потом принимают блок и валидируют его на протяжении 10 секунд. С Waves NG эта нагрузка более размазана по времени, ноды получают каждые 5 секунд новую порцию данных и валидируют их. Это в целом повышает пропускную способность.
+**Waves NG makes the load on the network more even.** In the absence of Waves NG, blocks would be generated once a minute (1 MB of data at once) and sent over the network as a whole. That is, you can imagine situations when for 50 seconds the nodes (except for the miner) do nothing and wait, and then accept the block and validate it for 10 seconds. With Waves NG, this load is more spread out over time, the nodes receive a new portion of data every 5 seconds and validate it. This generally improves throughput.
 
-Waves NG однако может себя иногда вести не очень удобно. Как вы помните, каждый блок содержит в себе поле `reference`, которое является ссылкой на поле `signature` предыдущего блока. `reference` фиксируется в момент генерации ключевого блока, и может случиться такое, что новый майнер поставит в своем ключевом блоке ссылку не на последнее состояние жидкого блока. Иными словами, если новый майнер блока `N` не успел получить и применить последний микроблок блока `N - 1` от предыдущего майнера, то он сошлется на "старую" версию блока `N - 1`, транзакции из последнего микроблока будут удалены из блока `N - 1` для всей сети.
+Waves NG, however, can sometimes behave not very conveniently. As you remember, each block contains a reference field, which is a reference to the signature field of the previous block. `reference` is fixed at the moment of generation of the key block, and it may happen that the new miner puts in his key block a link not to the last state of the liquid block. In other words, if the new miner of block `N` did not manage to get and apply the last microblock of block` N - 1` from the previous miner, then it will refer to the "old" version of block `N - 1`, transactions from the last microblock will be deleted from the block `N - 1` for the whole network.
 
-Но не пугайтесь, это приведет только к тому, **что исключенные транзакции попадут в блок `N`**, вместо блока `N - 1`, в котором мы уже могли успеть увидеть эти транзакции в своем клиентском коде.
+But do not be alarmed, this will only lead to the **that the excluded transactions will fall into the `N`** block, instead of the` N - 1` block, in which we could already have time to see these transactions in our client code.
 
-Waves NG так же влияет на распределение комиссий в блоке. Майнер получает 60% от комиссий из предыдущего блока и 40% из своего блока. Сделано это для того, чтобы исключить возможную "грязную игру" узлов, когда они будут специально ссылаться на самую первую версию предыдущего блока, чтобы забрать все транзакции оттуда и положить в свой блок, а соответственно получить и комиссии.
+Waves NG also affects the distribution of commissions in the block. The miner receives 60% of the commissions from the previous block and 40% from his block. This was done in order to exclude a possible "dirty game" of nodes, when they specifically refer to the very first version of the previous block in order to take all transactions from there and put them in their own block, and therefore receive commissions.
 
 ![Waves NG Fees model](../../assets/2-2-1-how-ng-fees-work.png "Waves NG Fees model")
 
-Получаемая комиссия может быть потрачена майнером в этом же блоке. Он может добавить в блок транзакцию, за которую получит комиссию в 0.1 Waves и следующей же транзакцией положить в блок, переводящую эти 0.1 Waves с его аккаунта.
+The resulting commission can be spent by the miner in the same block. He can add a transaction to the block, for which he will receive a commission of 0.1 Waves and, in the next transaction, put it in a block that transfers these 0.1 Waves from his account.

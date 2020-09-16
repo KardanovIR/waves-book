@@ -1,100 +1,99 @@
-# Глава 3. Аккаунты и ключи
+# Chapter 3. Accounts and Keys
 
-Первое, с чем сталкивается человек, когда начинает пользоваться блокчейном - работа с ключами. В отличие от классических веб приложений, где у нас есть логин и пароль, в блокчейнах есть только ключи, которые позволяют идентифицировать пользователя и валидность его действий.
+The first thing a person encounters when he starts using the blockchain is working with keys. Unlike classic web applications, where we have a username and password, blockchains only have keys that allow us to identify the user and the validity of his actions.
+Each account has a public key and a corresponding private key. The public key is actually the account identifier (ID), while the private key allows you to form a signature. Waves uses signatures with [curve Curve25519-Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519) with X25519 keys (which is sometimes a problem, because not all libraries for languages ​​have support for X25519 keys programming).
 
-У каждого аккаунта есть публичный ключ и соответствующий ему приватный. Публичный ключ является фактически идентификатором аккаунта (ID), в то время как приватный позволяет сформировать подпись. В Waves используется подписи с [кривой Curve25519-Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519) с ключами X25519 (что иногда является проблемой, потому что поддержка ключей X25519 есть далеко не во всех библиотеках для языков программирования).
+The public and private keys are 32 byte values ​​that correspond to each other according to certain rules (you can find more details in the [EdDSA](https://blog.filippo.io/using-ed25519-keys-for-encryption/) description... It is important to understand several things that make Waves different from other blockchains:
 
-Публичный и приватный ключи представляют из себя 32 байтовые значения, которые соответствуют друг другу по определенным правилам (подробнее можете найти в описании [EdDSA](https://blog.filippo.io/using-ed25519-keys-for-encryption/)). Важно понимать несколько вещей, которые отличаю Waves от других блокченов:
+- not any 32 bytes can be a private key
+- the private key does not contain the public key (for example, in Ethereum, the private key contains the public one, therefore it has a size of 64 bytes, in Waves the public key is calculated each time for the private key)
+- the signature using EdDSA is non-deterministic, that is, the same data can be signed with the same key and receive different signatures, since random values ​​are also used
 
-- не любые 32 байта могут быть приватным ключом
-- приватный ключ не содержит в себе публичный ключ (например, в Ethereum приватный ключ содержит публичный, поэтому имеет размер в 64 байта, в Waves публичный ключ вычисляется каждый раз для приватного ключа)
-- подпись с помощью EdDSA является недетерменированной, то есть одни и те же данные можно подписать одним и тем же ключом и получать разные подписи, так как используются и случайные значения
+## Key Travel
 
-## Путешествия ключа
+Most users still come across keys not in the form of an array of bytes, but in the form of a seed phrase, often also called a mnemonic phrase. Any combination of bytes can be a seed, but Waves clients typically use 15 English words. Based on the seed phrase, the private key is calculated as follows:
 
-Большинство пользователей все-таки сталкивается с ключами не в виде массива байт, а в виде сид-фразы, часто так же называемой мнемонической фразой. Любая комбинация байт может быть сидом, но в клиентах Waves обычно используется 15 английских слов. На основе сид фразы вычисляется приватный ключ следующим образом:
+1.the string is translated into a byte array
+2.calculated hash `blake2b256` for the given array of bytes
+3.calculate hash `keccak256` for the result of the previous step
+4.the private key is calculated based on the previous step, an example of the function for this step is presented below
 
-1. строка переводится в массив байт
-2. вычисляется хэш `blake2b256` для данного массива байт
-3. вычисляется хэш `keccak256` для результата предыдущего шага
-4. вычисляется приватный ключ на основе предыдущего шага, пример функции для этого шага представлен ниже
-
-```go
-func GenerateSecretKey(hash []byte) SecretKey {
+```, go
+func GenerateSecretKey (hash [] byte) SecretKey {
     var sk SecretKey
-    copy(sk[:], hash[:SecretKeySize])
-    sk[0] &= 248
-    sk[31] &= 127
-    sk[31] |= 64
+    copy (sk [:], hash [: SecretKeySize])
+    sk [0] & = 248
+    sk [31] & = 127
+    sk [31] | = 64
     return sk
 }
 
 ```
 
-Иными словами, а точнее кодом:
-`privateKey = GenerateSecretKey(keccak256(blake2b256(accountSeedBytes)))`
+In other words, or rather the code:
+`privateKey = GenerateSecretKey (keccak256 (blake2b256 (accountSeedBytes)))`
 
-Публичный и приватный ключи обычно представляют в виде `base58` строк вроде `3kMEhU5z3v8bmer1ERFUUhW58Dtuhyo9hE5vrhjqAWYT`.
+Public and private keys are usually represented as `base58` strings like` 3kMEhU5z3v8bmer1ERFUUhW58Dtuhyo9hE5vrhjqAWYT`.
 
-При отправке транзакций (например, отправке токенов) пользователь имеет дело с адресом, а не публичным ключом получателя. Адрес генерируется из публичного ключа получателя с некоторыми дополнительными параметрами: версия спецификации адреса, байт сети и чек-сумма. В данный момент в сети Waves есть только одна версия адресов, поэтому первым байтом в этой последоствальности является `1`, второй байт - уникальный идентификатор сети, который позволяет отличать адреса в разных сетях (mainnet, testnet, stagenet и т.д.). Байты сети для перечисленных выше сетей `W`, `T`, `S` соответственно. Благодаря байту сети невозможно ошибиться и отправить токены на адрес, которого не может существовать в сети, в которой отправляется транзакция (нельзя отправить токены в mainnet на адрес в сети testnet). После первых двух служебных байт идут 20 байт, полученных в результате функций хэширования blake2b256 и keccak256 над публичным ключом. Эта операция `keccak256(blake2b256(publicKey))` возвращает 32 байта, но последние 12 байт отбрасываются. Последние 4 байта в адресе являются чек-суммой, которая считается как `keccak256(blake2b256(data))`, где `data` это первые 3 параметра (версия, байт сети и 20 байт хэша публичного ключа). Полученная последовательность байт переводится в base58 представление, чтобы получилось похожее на это: `3PPbMwqLtwBGcJrTA5whqJfY95GqnNnFMDX`.
+When sending transactions (for example, sending tokens), the user deals with the address, not the recipient's public key. The address is generated from the recipient's public key with some additional parameters: version of the address specification, network byte and check-sum. At the moment, there is only one version of the addresses on the Waves network, so the first byte in this sequence is `1`, the second byte is a unique network identifier that allows you to distinguish addresses in different networks (mainnet, testnet, stagenet, etc.). Network bytes for the above networks `W`,` T`, `S`, respectively. Thanks to the network byte, it is impossible to make a mistake and send tokens to an address that cannot exist on the network in which the transaction is sent (you cannot send tokens in the mainnet to an address in the testnet network). After the first two overhead bytes, there are 20 bytes obtained as a result of the blake2b256 and keccak256 hashing functions over the public key. This operation `keccak256 (blake2b256 (publicKey))` returns 32 bytes, but the last 12 bytes are discarded. The last 4 bytes in the address are the check sum, which counts as `keccak256 (blake2b256 (data))`, where `data` are the first 3 parameters (version, network byte and 20 bytes of the public key hash). The resulting sequence of bytes is converted to base58 representation to get something like this: `3PPbMwqLtwBGcJrTA5whqJfY95GqnNnFMDX`.
 
-> Опытные разработчики на Waves пользуются особенностями формирования адресов, чтобы по одному только виду определять к какой сети относится адрес. Благодаря тому, что первые 2 байта в адресе похожи для всех адресов в одной сети, можно примерно понимать к какой сети относится адрес. Если адрес выглядит как `3P...`, то адрес с большой долей вероятности относится к mainnet, а если адрес начинается с `3M...` или `3N`, то перед вами скорее всего адрес из testnet или stagenet.
+> Experienced developers at Waves use the features of address generation to determine which network the address belongs to by the type alone. Due to the fact that the first 2 bytes in the address are similar for all addresses in the same network, you can roughly understand which network the address belongs to. If the address looks like `3P ...`, then the address most likely belongs to the mainnet, and if the address starts with `3M ...` or `3N`, then you are most likely an address from testnet or stagenet.
 
-## Работа с ключами
+## Working with keys
 
-Если по какой-то причине, приложение необходимо генерировать ключи для пользователя, то можно воспользоваться библиотеками для разных языков программирования. Например, в библиотеке `waves-transactions` для JavaScript/TypeScript сгенерировать seed фразу можно с помощью следующего кода:
+If, for some reason, the application needs to generate keys for the user, then you can use libraries for different programming languages. For example, in the JavaScript / TypeScript `waves-transactions` library, you can generate a seed phrase using the following code:
 
 ```js
-import {seedUtils} from '@waves/waves-transactions'
+import {seedUtils} from '@ waves / waves-transactions'
 
-const seedPhrase = seedUtils.generateNewSeed(24);
+const seedPhrase = seedUtils.generateNewSeed (24);
 
-console.log(seedPhrase);
+console.log (seedPhrase);
 
 // infant history cram push sight outer off light desert slow tape correct chuckle chat mechanic jacket camp guide need scale twelve else hard cement
 ```
 
-В консоль выведется строка из 24 слов, которые являются seed фразой нового аккаунта. Эти слова являются случайным подмножеством из словаря, который есть в [коде библиотеки @waves/ts-lib-crypto](https://github.com/wavesplatform/ts-lib-crypto/blob/master/src/crypto/seed-words-list.ts) и в котором содержится 2048 слов.
+The console will display a string of 24 words, which are the seed phrase of the new account. These words are a random subset of the dictionary found [in the @ waves / ts-lib-crypto library code](https://github.com/wavesplatform/ts-lib-crypto/blob/master/src/crypto/seed-words-list.ts) and which contains 2048 words.
 
-В данном примере я сгенерировал 24 слова, но по умолчанию во многих приложениях Waves генерируется набор из 15 слов. Почему именно 15 и увеличивается ли безопасность, если сгенерировать больше слов?
+In this example, I've generated 24 words, but by default, many Waves apps generate a set of 15 words. Why exactly 15 and does the safety increase if more words are generated?
 
-15 слов из 2048 в любом порядке достаточно, для того, чтобы вероятность генерации двух одинаковых seed фраз была пренебрежительно мала. В то же время, 24 слова еще уменьшают такую вероятность, почему бы не использовать большие значения? Ответ прост - чем больше слов мы используем, тем больше надо записывать и/или запоминать пользователю и тем сложнее ему будет. Смысл использования seed фразы (а не приватного ключа) именно в упрощении опыта пользователя, а с 24 словами мы заметно ухудшаем пользовательский опыт (user experience).
+15 words out of 2048 in any order is enough for the probability of generating two identical seed phrases to be negligible. At the same time, 24 words further reduce this probability, why not use larger meanings? The answer is simple - the more words we use, the more the user needs to write down and / or memorize and the more difficult it will be for him. The point of using a seed phrase (rather than a private key) is to simplify the user experience, and with 24 words, we noticeably degrade the user experience.
 
-> Какова вероятность, что кто-то сможет подобрать 15 слов какого-либо кошелька? Этим вопросом задаются многие пользователи, поэтому пользователь `deemru` на одном из форумов про Waves даже провел [рассчеты](https://wavestalk.ru/t/bezopasnost-koshelka-waves/123/2). Приведу их ниже.
+> What is the likelihood that someone will be able to pick up 15 words of a wallet? This question is asked by many users, so the user `deemru` on one of the forums about Waves even carried out [calculations] (https://wavestalk.ru/t/bezopasnost-koshelka-waves/123/2). I will give them below.
 
-- Имеем 20 байт хэша публичного ключа в адресе, которые должны совпасть, это 2^160 вариантов.
-- (Здесь же отметим, что 15 слов по 2048 (2^11) вариантов каждый, что даёт 2^(11*15) = 2^165, то есть перекрывают 160 бит с запасом в 5 бит, то есть 15 слов взяты не с потолка, это минимально достаточное количество, больше будет излишним, меньше не покроет всех бит публичного ключа в адресе).
-- Предположим скорость перебора у нас 2 миллиона проб в секунду (такие результаты даёт например F72s_v2 (72 виртуальные цп, память 144 ГБ) на Azure, стоит сие 171 тысяча рублей в месяц).
-- Начинаем считать: 2 миллиона это ~2^21 проб в секунду, за год будет 60\*60\*24*365 = 31536000 секунд, это ~2^25, получаем 2^(21+25) = 2^46 проб за год.
-- Вероятность найти конкретный кошелёк 1/2^(160-46) = 1/2^114
-- Миллион это ~2^20, тогда вероятность найти кошелёк из миллиона кошельков: 1/2^(114-20) = 1/2^94
-- Пока тяжело… давайте предположим у нас не 1 машина, а миллион: 1/2^(94-20) = 1/2^74
-- И не один год, а миллион лет: 1/2^(74-20) = 1/2^54
-- Умножим миллион имеющихся мощностей на миллион дата-центров: 1/2^(54-20) = 1/2^34
-- Ну вот, получилась нормальная такая вероятность (которую хотя бы в голове можно представить): 1 шанс из 17 миллиардов найти за миллион лет, в миллионах дата-центров с миллионом машин в каждом 1 кошелёк из миллиона.
-- Удачи.
+- We have 20 bytes of the public key hash in the address, which should match, these are 2 ^ 160 options.
+- (Here we note that 15 words of 2048 (2 ^ 11) options each, which gives 2 ^ (11 * 15) = 2 ^ 165, that is, they overlap 160 bits with a margin of 5 bits, that is, 15 words are not taken from the ceiling, this is the minimum sufficient amount, more will be redundant, less will not cover all the bits of the public key in the address).
+- Suppose we have a search speed of 2 million samples per second (for example, F72s_v2 (72 virtual CPUs, 144 GB memory) gives such results on Azure, it costs 171 thousand rubles a month).
+- We start counting: 2 million is ~ 2 ^ 21 samples per second, for a year it will be 60 \ * 60 \ * 24 * 365 = 31536000 seconds, this is ~ 2 ^ 25, we get 2 ^ (21 + 25) = 2 ^ 46 samples in a year.
+- The probability of finding a specific wallet is 1/2 ^ (160-46) = 1/2 ^ 114
+- A million is ~ 2 ^ 20, then the probability of finding a wallet out of a million wallets is 1/2 ^ (114-20) = 1/2 ^ 94
+- While it's hard ... let's suppose we have not 1 car, but a million: 1/2 ^ (94-20) = 1/2 ^ 74
+- And not one year, but a million years: 1/2 ^ (74-20) = 1/2 ^ 54
+- Multiply a million available capacities per million data centers: 1/2 ^ (54-20) = 1/2 ^ 34
+- Well, this is a normal probability (which you can imagine at least in your head): 1 chance in 17 billion to find in a million years, in millions of data centers with a million machines in each 1 wallet in a million.
+- Good luck.
 
-Теперь вернемся к тому, как работать с сид фразой. Имея seed фразу можно получить приватный ключ, публичный ключ и адрес. Я снова покажу как это сделать на JS, но вы же помните, что есть библиотеки и для других языков?
+Now let's get back to how to work with the seed phrase. Having a seed phrase, you can get a private key, public key and address. I'll show you again how to do this in JS, but do you remember that there are libraries for other languages ​​too?
 
 ```js
 
-import {seedUtils} from '@waves/waves-transactions';
+import {seedUtils} from '@ waves / waves-transactions';
 import {
   address,
   privateKey,
   publicKey
-} from '@waves/ts-lib-crypto'
+} from '@ waves / ts-lib-crypto'
 
 
-const seedPhrase = seedUtils.generateNewSeed(24);
+const seedPhrase = seedUtils.generateNewSeed (24);
 
-console.log(privateKey(seedPhrase));   // 3kMEhU5z3v8bmer1ERFUUhW58Dtuhyo9hE5vrhjqAWYT
-console.log(publicKey(seedPhrase));    // HBqhfdFASRQ5eBBpu2y6c6KKi1az6bMx8v1JxX4iW1Q8
-console.log(address(seedPhrase, 'W')); // 3PPbMwqLtwBGcJrTA5whqJfY95GqnNnFMDX
+console.log (privateKey (seedPhrase)); // 3kMEhU5z3v8bmer1ERFUUhW58Dtuhyo9hE5vrhjqAWYT
+console.log (publicKey (seedPhrase)); // HBqhfdFASRQ5eBBpu2y6c6KKi1az6bMx8v1JxX4iW1Q8
+console.log (address (seedPhrase, 'W')); // 3PPbMwqLtwBGcJrTA5whqJfY95GqnNnFMDX
 ```
 
-Обратите внимание, что в функции `privateKey` и `publicKey` мы передаем только сид фразу, в то время как в `address` передаем еще один параметр `chainId` (он же байт сети). Как вы помните из объяснения выше, адрес в себе содержит такой дополнительный параметр.
+Please note that in the `privateKey` and` publicKey` functions we pass only the seed phrase, while in the `address` we pass one more` chainId` parameter (aka the network byte). As you remember from the explanation above, the address itself contains such an additional parameter.
 
-## Как аккаунт появляется в блокчейне
+## How an account appears on the blockchain
 
-Мы разобрали как работают ключи, как связаны сид фраза, приватный и публичный ключ, а также как к ним относится адрес, но я не упомянул один очень важный момент, о котором забывают некоторые начинающие разработчики. До момента совершения какого-либо действия с аккаунтом (отправка с него или на него транзакции), блокчейн ничего не знает об этом аккаунте. Если вы сгенерировали аккаунт (у себя локально или в любом клиенте), но в блокчейне не было транзакций, связанных с этим аккаунтом (входящих или исходящих), вы не сможете найти никакую информацию о вашем аккаунте в эксплорере или с помощью API. Это отличается от поведения в централизованных системах и API, поэтому может быть не так интуитивно понятным и простым, но об этом важно помнить.
+We examined how the keys work, how the seed phrase, private and public keys are related, as well as how the address relates to them, but I did not mention one very important point that some novice developers forget about. Until the moment of performing any action with the account (sending a transaction from it or to it), the blockchain knows nothing about this account. If you generated an account (locally or in any client), but there were no transactions associated with this account (incoming or outgoing) in the blockchain, you will not be able to find any information about your account in the explorer or using the API. This is different from the behavior in centralized systems and APIs, so it might not be as intuitive or straightforward, but it's important to keep this in mind.

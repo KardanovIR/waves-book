@@ -1,84 +1,84 @@
-# 1.3 Отличительные особенности блокчейна Waves
+# 1.3 Distinctive features of the Waves blockchain
 
-Если у вас уже есть опыт работы с другими блокчейнами, вам может быть интересно, чем же отличается Waves от условного Ethereum и почему он другой. Давайте быстро пройдемся по отличиям, которые будут детально рассматриваться в следующих разделах.
+If you already have experience with other blockchains, you may be wondering how Waves differs from conditional Ethereum and why it is different. Let's quickly go over the differences, which will be explored in detail in the following sections.
 
-## Работа с токенами/ассетами
+## Working with tokens / assets
 
-Одной из особенностей работы с Waves с первого дня была простота выпуска токенов. Для этого достаточно отправить транзакцию или [заполнить форму из 5 полей](https://docs.waves.exchange/en/waves-exchange/waves-exchange-online-desktop/online-desktop-asset/online-desktop-token-creation)) в любом UI клиенте.
-Выпущенный токен автоматически становится доступен для переводов, торговки на децентрализованной бирже, использования в dApp и сжигания.
+One of the features of working with Waves from day one was the ease of issuing tokens. To do this, just send a transaction or [fill out a 5-field form](https://docs.waves.exchange/en/waves-exchange/waves-exchange-online-desktop/online-desktop-asset/online-desktop-token-creation) in any UI client.
+The issued token automatically becomes available for transfers, trading on a decentralized exchange, dApp use and burning.
 
-В отличие от Ethereum, в Waves токены не являются смарт-контрактами, а являются "гражданами первого сорта", то есть являются отдельной полноценной сущностью. У этого есть как преимущества, так и недостатки, о которых мы поговорим в разделе 4 "Токены".
+Unlike Ethereum, Waves tokens are not smart contracts, but are "first-class citizens", that is, they are a separate full-fledged entity. This has both advantages and disadvantages, which we'll talk about in Section 4 Tokens.
 
-## Транзакции
+## Transactions
 
-Другая отличительная особенность Waves заключается в наличии большого количества типов транзакций. Например, в Ethereum есть смарт-контракты, которые могут являться чем угодно, в зависимости от их реализации. ERC-20, описывающий токен, это просто описание интерфейса смарт контракта - какие методы он должен иметь. В Waves подразумеватся, что лучше иметь легковесные/узкие специфичные вещи, чем абстрактные "обо всем и ни о чем". Специфичность примитивов упрощает во многих местах разработку, но это иногда является менее гибким решением.
+Another distinctive feature of Waves is the large number of transaction types. For example, Ethereum has smart contracts that can be anything, depending on their implementation. The ERC-20 describing the token is just a description of the smart contract interface - what methods it should have. Waves assumes that it is better to have lightweight/narrow specific things than abstract "about everything and nothing". The specificity of the primitives makes development easier in many places, but this is sometimes a less flexible solution.
 
-Ниже представлен список актуальных транзакций на момент написания этих строк:
+Below is a list of current transactions at the time of this writing:
 
 ![Waves transaction types](../../assets/5-1-1-transaction-types.png "Waves Transaction Types")
 
-В главе 5 "Транзакции" мы подробно разберем каждую из них.
+In Chapter 5, "Transactions," we'll go over each of them in detail.
 
 ## Leasing
 
-В Waves есть механизм стейкинга, который называется leasing. Любой владелец токена Waves может отправить токены в лизинг любой ноде Waves, чтобы та производила блоки "от имени этих токенов".
+Waves has a staking mechanism called leasing. Any Waves token holder can lease tokens to any Waves node to produce blocks "on behalf of those tokens."
 
-> Лизингодатель передает право на генерацию блоков от имени его токенов лизингополучателю (владельцу ноды).
+> The lessor transfers the right to generate blocks on behalf of its tokens to the lessee (the owner of the node).
 
-Обычно это делается, когда пользователь не хочет или не может заниматься разворачиванием своей ноды и ее поддержкой. Обычно, владельцы лизнговых пулов выплачивают б**О**льшую часть заработанного за счет лизинга средств лизингодателям. Отправить в лизинг средства можно моментально, но в генерируюющем балансе ноды они начнут учитываться только через 1000 блоков.
+This is usually done when the user does not want or cannot deal with the deployment of his node and its support. Typically, the owners pay lizngovyh pools used about most of the earned through leasing by the lessor. You can lease funds instantly, but they will start to be taken into account in the generating balance of the node only after 1000 blocks.
 
-Забрать же токены из лизинга можно моментально.
+You can pick up tokens from leasing instantly.
 
 ## Fair PoS
 
-В Waves используется алгоритм Proof-of-Stake для определения права на генерацию блока. Блоки генерируются в среднем каждую минуту, а вероятность генерации блока нодой зависит от 3 параметров:
+Waves uses the Proof-of-Stake algorithm to determine the right to generate a block. Blocks are generated on average every minute, and the probability of a block being generated by a node depends on 3 parameters:
 
-- Генерирующего баланса ноды, то есть баланса самой ноды + количества токенов, которые сдали ей в лизинг.
-- Текущего времени и рандома (великий Рандом есть всегда в жизни!)
-- Генерирующего баланса сети, ведь не все токены в сети участвуют в генерации блоков, они могут быть в ордерах на биржах или лежать на холодных кошельках.
+- The generating balance of the node, that is, the balance of the node itself + the number of tokens that have been leased to it.
+- Current time and randomness (great random is always in life!)
+- Generating network balance, because not all tokens in the network participate in block generation, they can be in orders on exchanges or lie in cold wallets.
 
-Чтобы начать генерировать блоки, достаточно иметь 1000 Waves генерирующего баланса (свои + полученные в лизинг). Зачем вам генерировать блоки? За каждый блок нода получает на свой баланс комиссии из транзакций в этом блоке и вознаграждение "из воздуха". Оба этих момента не такие простые, так что рассмотрим их чуть позже.
+To start generating blocks, it is enough to have 1000 Waves generating balance (own + leased). Why do you need to generate blocks? For each block, the node receives commissions from transactions in this block and a reward "out of thin air" on its balance sheet. Both of these points are not so simple, so we will look at them a little later.
 
-Очень частый вопрос, который встречается - сколько блоков я буду генерировать в месяц с балансом N? Точное числе предсказать невозможно, так как зависит от случайностей и изменений в сети, но примерно предсказать можно. Чтобы сделать это, надо знать текущие параметры сети:
+A very common question that comes up - how many blocks will I generate per month with balance N? It is impossible to predict the exact number, as it depends on chances and changes in the network, but it is possible to predict approximately. To do this, you need to know the current network parameters:
 
-1. *Сколько токенов Waves участвуют в генерации блоков?* Это так называемый генерирующий баланс сети в целом. Для легкости рассчета скажем, что 50 млн токенов участвуют в генерации блоков.
-2. *Какой баланс нашей ноды?* То есть, сколько у нас своих токенов на аккаунте ноды и сколько нам сдали в лизинг. В нашем случае возьмем генерирующий баланс равный 10 000 Waves.
-3. Среднее время блока составляет 1 минуту, то есть в сети генерируется примерно 1440 блоков в день или 43200 блоков в месяц.
+1. *How many Waves tokens are involved in block generation?* This is the so-called generating balance of the network as a whole. For ease of calculation, let's say that 50 million tokens are involved in block generation.
+2. *What is the balance of our node?* That is, how many tokens we have on the node's account and how many we have been leased. In our case, let's take the generating balance equal to 10,000 Waves.
+3. The average block time is 1 minute, that is, the network generates approximately 1440 blocks per day or 43,200 blocks per month.
 
-Для вычисления примерного количества блоков, которые мы сгенерируем, делим количество блоков за период на генерирующий баланс сети и умножаем на наш баланс:
+To calculate the approximate number of blocks that we will generate, divide the number of blocks for the period by the generating network balance and multiply by our balance:
 
-$ForgedBlocks = BlocksCountInPeriod / NetworkGenBalance * NodeGenBalance$
+$ ForgedBlocks = BlocksCountInPeriod / NetworkGenBalance * NodeGenBalance $
 
-Сделав нехитрые вычисления получаем:
+Having done some simple calculations, we get:
 
-`43200 / 50000000 * 10000 = 8.64`
+`43200/50000000 * 10000 = 8.64`
 
-То есть, в среднем нода будет генерировать 8-9 блоков в месяц, если будет работать стабильно и параметры сети не изменятся, но, такого, конечно, не бывает, ведь в сети постоянно делается большое количество транзакций, которые меняют генерирующие балансы всей сети в целоом и каждой ноды в отдельности.
+That is, on average, a node will generate 8-9 blocks per month if it works stably and the network parameters do not change, but, of course, this does not happen, because a large number of transactions are constantly being made on the network, which change generating balances of the entire network in as a whole and each node separately.
 
 ## Community driven monetary policy
 
-Первое время в Waves была ограниченная эмиссия в 100 млн. токенов, которые были выпущены сразу на момент запуска мейннета, но с осени 2019 года в сообществе решили, что для дальнейшего роста экосистемы, лучше будет включить в протокол эмиссию токенов. То есть, в каждом новом блоке появляются новые токены Waves. Какое именно количество токенов определяется сообществом, которое голосует за размер вознаграждения каждые 100 тысяч блоков. На момент написания этих строк, вознаграждение за блок составляло 6 Waves. При этом гарантируется, что размер вознаграждения не может изменяться больше, чем на 0.5 Waves после каждого периода голосования.
+At first, Waves had a limited emission of 100 million tokens, which were issued immediately at the time the mainnet was launched, but since the fall of 2019, the community decided that for the further growth of the ecosystem, it would be better to include the emission of tokens in the protocol. That is, new Waves tokens appear in each new block. The exact number of tokens is determined by the community, which votes for the size of the reward every 100 thousand blocks. At the time of this writing, the block reward was 6 Waves. At the same time, it is guaranteed that the size of the reward cannot change by more than 0.5 Waves after each voting period.
 
 ## Sponsorship
 
-Функция спонсирования токена является способом снижения входных барьеров для пользователей. Суть в том, что аккаунт, выпустивший токен, может спонсировать транзакции с этим токеном. Представим, есть токен А, его выпустил Cooper и включил спонсирование. Например, Alice заработала 100 токенов A и хочет 10 из них отправить Bob. Мы то с вами знаем, что для каждой транзакции в блокчейне необходимо платить комиссию, в сети Waves майнеры принимают только Waves в виде комиссии, а у Alice нет Waves. Придется идти и как-то покупать Waves?
+The token sponsorship feature is a way to reduce barriers to entry for users. The bottom line is that the account that issued the token can sponsor transactions with that token. Let's say there is token A, it was issued by Cooper and sponsored. For example, Alice has earned 100 A tokens and wants to send 10 of them to Bob. We know that for each transaction in the blockchain, you need to pay a commission, in the Waves network, miners accept only Waves in the form of a commission, and Alice does not have Waves. Have to go and buy Waves somehow?
 
-Нет. Спонсорство токена позволяет его владельцу сказать, что он готов взять на себя комиссии за операции с этим токеном (токеном А в нашем случае). Владельцы токена А будут платить этот же токен в виде комиссии при отправке транзакции. В нашем примере, Alice сможет указать в своей транзакции, что получатель - Bob, количество для отправления - 10 токенов A, комиссия - 5 токенов A. В итоге, с ее аккаунта спишется 15 токенов, 10 получит Bob, 5 получит Cooper, как выпустивший и спонсирующий токен, а майнер получит Waves c аккаунта Cooper'а.
+No. Sponsoring a token allows its owner to say that he is ready to take on commissions for operations with this token (token A in our case). The owners of token A will pay the same token as a commission when sending a transaction. In our example, Alice will be able to indicate in her transaction that the recipient is Bob, the amount to be sent is 10 tokens A, the commission is 5 tokens A. As a result, 15 tokens will be debited from her account, 10 will receive Bob, 5 will receive Cooper as the issuer and the sponsoring token, and the miner will receive Waves from Cooper's account.
 
-Почему Alice заплатит 5 токенов и сколько получит майнер? Поговорим об этом в следующих главах. Главное, что сейчас необходимо запомнить - **в Waves существуют способы отправить транзакцию, не имея токенов Waves у себя на балансе.**
+Why will Alice pay 5 tokens and how much will the miner receive? We'll talk about this in the next chapters. The main thing to remember now is **there are ways to send a transaction in Waves without having Waves tokens on your balance sheet.**
 
-## Ride и смарт контракты
+## Ride and smart contracts
 
-Waves является блокчейном общего назначения, не специализирующемся на чем-то одном, поэтому появление смарт-контрактов стало логичным продолжением развития платформы. Про смарт-контракты в Waves мы поговорим в главе 6 "Ride". Сейчас стоит отметить, что контракты пишутся на языке Ride, который был придуман специально для смарт-контрактов и является не Тьюринг-полным. В языке нет циклов, но зато нет газа, не бывает ошибок "Out of gas" как в Ethereum и стоимость транзакции всегда известна заранее. Заинтриговал? Это ведь только начало, мы поговорим про модель исполнения Ride и синтаксис языка позже.
+Waves is a general purpose blockchain that does not specialize in one thing, so the emergence of smart contracts was a logical continuation of the platform's development. We'll talk about smart contracts in Waves in Chapter 6 "Ride". Now it is worth noting that contracts are written in the Ride language, which was invented specifically for smart contracts and is not Turing complete. There are no cycles in the language, but there is no gas, there are no "Out of gas" errors like in Ethereum, and the cost of a transaction is always known in advance. Intrigued? This is just the beginning, we will talk about the Ride execution model and language syntax later.
 
 ## Waves NG
 
-Чуть раньше я уже [затрагивал тему](./1-1-history-of-waves.md), связанную с Waves NG и упоминал, что она позволяет транзакциям быстрее попадать в блоки и работать блокчейну так быстро, что платформа в состоянии обрабатывать сотни транзакций в секунду в основной сети. А там, на минуточку, больше 400 нод, распределенных по всему миру, на совершенно разном железе и с разной пропускной способностью.
+Earlier, I already [touched on the topic](./1-1-history-of-waves.md) related to Waves NG and mentioned that it allows transactions to get into blocks faster and work on the blockchain so quickly that the platform is able to process hundreds of transactions per second on the mainnet. And there, for a minute, there are more than 400 nodes distributed around the world, on completely different hardware and with different bandwidth.
 
 ![Waves nodes map](../../assets/1-3-2-nodes-on-the-map.png "Waves nodes map")
 
 ## DEX
 
-Легкий и быстрый выпуск токенов наряду с "классовым равенством" (помните, что токены являются гражданами первого сорта?) позволяют сделать торговлю токенами простой. Нода Waves (речь про версию на Scala) поддерживает возможность создания расширений, одним из таких расширений является матчер. Матчер принимает ордера на покупку и продажу токенов и хранит их (централизованно). Например, Alice хочет продать токен wBTC и купить Waves, а Bob наоборот. Они формируют ордера (криптографически подписанные примитивы) и отправляют их в матчер, который определяет, что эти ордера выставлены в одной паре и их можно сматчить по определенной цене. В результате матчер формирует Exchange транзакцию, которая содержит 2 ордера (один от Alice, другой от Bob) и отправляет в блокчейн. При этом, матчер забирает себе комиссию с пользователей, а нода, которая смайнит блок с Exchange транзаций, получает комиссию от матчера.
+The easy and fast token issuance along with "class equality" (remember that tokens are first class citizens?) Make token trading easy. The Waves node (talking about the Scala version) supports the ability to create extensions, one of such extensions is the matcher. The matcher accepts orders to buy and sell tokens and stores them (centrally). For example, Alice wants to sell wBTC token and buy Waves, while Bob wants to do the opposite. They form orders (cryptographically signed primitives) and send them to the matcher, which determines that these orders are placed in one pair and that they can be matched at a certain price. As a result, the matcher forms an Exchange transaction that contains 2 orders (one from Alice, the other from Bob) and sends it to the blockchain. At the same time, the matcher takes a commission from users, and the node that will mine the block from the Exchange of transactions receives a commission from the matcher.
 
 ![How does DEX work](../../assets/1-3-3-how-dex-works.png "How does DEX work")
