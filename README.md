@@ -1,17 +1,17 @@
 # Waves Book
 
-## Идея
+## Idea
 
-В данном репоризитории будет контент для книги про Waves. Книга направлена в первую очередь на разработчиков и является практической книгой, которая в большей степени покрывает вопросы работы с блокчейном и разработки децентрализованных приложений, нежели вопросы разработки самого протокола Waves.
+This repository will contain content for a book about Waves. The book is aimed primarily at developers and is a practical book that more covers the issues of working with the blockchain and the development of decentralized applications, rather than the development of the Waves protocol itself.
 
-Данная книга построена по принципам Learning-by-doing и содержит большое количество примеров, которые рассматриваются в рамках книги. До начала чтения данной книги рекомендуется.
+This book is built on the principles of Learning-by-doing and contains a large number of examples that are considered within the framework of the book. Before reading this book, it is recommended.
 
-Структура книги описана в файле [Structure](./structure.md).
+The structure of the book is described in the [Structure](./structure.md) file 
 
-## Лицензия
+## License
 
-Данная книгая является интеллектуальной собственностью автора и любое использование книги (за исключением чтения), должно быть предварительно согласовано и одобрено автором.
+This book is the intellectual property of the author and any use of the book (except for reading) must be previously agreed and approved by the author.
 
-## Принять участие
+## Participate
 
-Чтобы принять участие в создании этой книги, можете отправлять pull request в данном репозитории на Github c вашим вопросом.
+To participate in the creation of this book, you can submit a pull request in this repository on Github with your question.

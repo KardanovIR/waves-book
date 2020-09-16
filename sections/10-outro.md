@@ -1,9 +1,9 @@
-# Заключение
+# Conclusion
 
-Мир Web3 приложений, блокчейнов и децентрализованных систем активно развивается, все больше новых интересных решений и идей возникает в сообществе, поэтому покрыть все особенности Web3 приложений или платформы Waves не представляется возможным в рамках одной книги (или даже трех). В то же время, полученные в этой книге знания помогут вам начать разработку приложений на протоколе Waves максимально быстро, правильно спроектировать архитектуру и найти правильные ресурсы для дальнейшего погружения.
+The world of Web3 applications, blockchains and decentralized systems is actively developing, more and more new interesting solutions and ideas appear in the community, so it is not possible to cover all the features of Web3 applications or the Waves platform within one book (or even three). At the same time, the knowledge gained in this book will help you to start developing applications on the Waves protocol as quickly as possible, design the architecture correctly, and find the right resources for further immersion.
 
-Я желаю вам наслаждаться созданием вашего первого (или может быть уже далеко не первого) работающего децентрализованного приложения на Waves. Блокчейн платформам не хватает приложений, которые смогли бы привлечь большое количество пользователей, поэтому я желаю, чтобы ваше приложение стало именно таким и смогло поменять пользовательские привычки и в конечном итоге сделать жизнь людей лучше.
+I wish you to enjoy creating your first (or maybe not the first) working decentralized app on Waves. Blockchain platforms lack applications that can attract a large number of users, so I want your application to be just that and be able to change user habits and ultimately make people's lives better.
 
-Если вы хотите продолжить изучение протокола Waves или хотите принять непосредственное участие в его развитии, я приглашаю вас посетить страницу Github [Waves Protocol](https://github.com/wavesplatform) и пройти курс [Mastering Web3 With Waves на Coursera]().
+If you would like to continue exploring the Waves Protocol or would like to be directly involved in its development, I invite you to visit the [Waves Protocol](https://github.com/wavesplatform) Github page and take the course [Mastering Web3 With Waves on Coursera](https://www.coursera.org/learn/mastering-web3-waves)
 
-Если вы хотите пообщаться с такими же разработчиками как вы или задать вопрос автору книги, то присоединяйтесь к группе в Telegram - https://t.me/waves_ride_dapps_dev
+If you want to chat with the same developers like you or ask a question to the author of the book, then join the group on Telegram - https://t.me/waves_ride_dapps_dev
