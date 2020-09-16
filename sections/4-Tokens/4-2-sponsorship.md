@@ -1,36 +1,36 @@
-# Спонсирование транзакций
+# Sponsoring transactions
 
-Среди разработчиков децентрализованных приложений есть несколько тем, обсуждение которых приводит к явно выраженной боли на лицах. Такими темами являются:
+There are several topics among developers of decentralized applications, the discussion of which leads to pronounced pain on the faces. These topics are:
 
-1. **Работа с ключами.** Просить у пользователя ключи нельзя, но он должен как-то подписывать транзакции.
-2. **Необходимость платить комиссию в токенах за каждую транзакцию**. Как объяснить пользователям, что каждая транзакция требует комиссии в токене платформы, и что не менее важно - откуда они возьмут комиссии для своих первых транзакций?
+1. **Working with keys.** You cannot ask the user for keys, but he must somehow sign transactions.
+2. **The need to pay a commission in tokens for each transaction**. How to explain to users that each transaction requires a commission in the platform token, and what is equally important - where will they get commissions for their first transactions?
 
-Обозначенные проблемы приводят к очень высокой стоимости привлечения одного пользователя. Например, один из популярных dApp в экосистеме Waves имел стоимость привлечения клиента около $80 (!), при LTV (Lifetime Value или приибыль от клиента за все время) меньше $10. Конверсию портили именно барьеры с необходиимостью установки расширения для работы с ключами и комиссии.
+These problems lead to a very high cost of attracting one user. For example, one of the popular dApps in the Waves ecosystem had a customer acquisition cost of about $ 80 (!), With LTV (Lifetime Value or customer profit for all time) less than $ 10. The conversion was spoiled by the barriers with the need to install an extension for working with keys and commission.
 
-Первая проблема часто решается с помощью браузерных расширений вроде Metamask и Waves Keeper, но это решение не дружественное для пользователей и требует большого количества усилий, поэтому в экосистеме Waves появился Signer. Он не требует предоставлять ключи dApp, и в то же время не заставляет устанавливать браузерные расширения. В [статье @Vladimir Zhuravlev рассказывается](https://medium.com/@izhur27/getting-started-with-waves-signer-893017c9b7ae) об этом и как интегрировать Waves Signer в свое приложение.
+The first problem is often solved with browser extensions like Metamask and Waves Keeper, but this solution is not user friendly and requires a lot of effort, which is why Signer appeared in the Waves ecosystem. It does not require dApp keys to be provided, and at the same time does not force browser extensions to be installed. See [@Vladimir Zhuravlev's article](https://medium.com/@izhur27/getting-started-with-waves-signer-893017c9b7ae) about this and how to integrate Waves Signer into your application.
 
-А что же по поводу второй проблемы? Многие создатели dApp просто не заботятся этим вопросом, пользователи должны откуда-то взять токены для комиссий. Другие требуют привязывать банковские карты во время регистрации, что очень сильно снижает мотивацию.
+What about the second problem? Many dApp creators simply do not care about this issue, users have to get tokens for commissions from somewhere. Others require you to bind your bank cards during registration, which greatly reduces motivation.
 
-**Сейчас я расскажу как решить проблему с комиссиями**. Как же сделать такое приложение на блокчейне, которое не требует наличия нативного токена у пользователя? Это позволило бы, например, делать триальные периоды для ваших проектов на блокчейне!
+**Now I will tell you how to solve the problem with fees**. How can you create such an application on the blockchain that does not require a user to have a native token? This would allow, for example, to make trial periods for your projects on the blockchain!
 
-## Как работает спонсирование
+## How sponsoring works
 
-Если у вас есть свой токен, который нужен пользователям вашего прилложения, то вы можете использовать [механизм спонсирования транзакций в Waves](https://docs.wavesplatform.com/en/blockchain/waves-protocol/sponsored-fee). Пользователи будут платить комиссию в вашем токене, но так как майнеры всегда получают комиссию только в Waves, то фактически Waves будут списываться с аккаунта, выпустившего этот токен. Давайте еще раз по шагам, так как это важно понимать:
+If you have your own token that the users of your application need, then you can use the [Waves transaction sponsor mechanism](https://docs.wavesplatform.com/en/blockchain/waves-protocol/sponsored-fee). Users will pay a commission in your token, but since miners always receive commission only in Waves, Waves will actually be debited from the account that issued this token. Let's take the steps again, as it is important to understand:
 
-- Пользователь платит комиссию за транзакцию в вашем токене (например, он отправляет 10 ваших токенов, дополнительно платит 1 токен в виде комиссии, в итоге с его аккаунта списывается 11 токенов)
-- Вы получаете эти токены (1 в нашем примере), так как выпустили токен именно вы
-- С вашего аккаунта списываются WAVES в необходимом количестве и уходят майнерам (количество спонсируемых токенов и их соотетствие Waves настраивается с помощью отправки специальной транзакции `SetSponsorship`)
+- The user pays a commission for a transaction in your token (for example, he sends 10 of your tokens, additionally pays 1 token in the form of a commission, as a result, 11 tokens are debited from his account)
+- You receive these tokens (1 in our example), since it was you who issued the token
+- WAVES are debited from your account in the required amount and go to miners (the number of sponsored tokens and their correspondence Waves is configured by sending a special transaction `SetSponsorship`)
 
 ![How sponsorship works](../../assets/4-2-1-sponsorship.png "How sponsorship works")
 
-> *Вопрос, который должен был сразу возникнуть - сколько токенов заплатит пользователь и сколько токенов спишется с аккаунта спонсора?*
+> *A question that should have immediately arisen - how many tokens will the user pay and how many tokens will be debited from the sponsor's account?*
 
-Ответ: владелец может сам установить соотношение. В момент начала спонсирования, создатель токена задает сколько его токенов соответствуют минимальной комиссии (0.001 Waves или 100 000 в минимальной фракции). Давайте перейдем к примерам и коду, чтобы было понятнее.
+Answer: the owner can set the ratio himself. At the start of sponsoring, the creator of the token sets how many of his tokens correspond to the minimum commission (0.001 Waves or 100,000 in the minimum fraction). Let's move on to examples and code to make it clearer.
 
-Для включения спонсирования, необходимо отправить транзакцию типа `Sponsorship`. С помощью пользовательского интерфейса это можно сделать в Waves.Exchange, а с помощью [waves-transactions](https://github.com/wavesplatform/waves-transactions) можно выполнить следующий код:
+To enable sponsorship, you need to send a transaction of type `Sponsorship`. Using the UI this can be done in Waves.Exchange, and using [waves-transactions](https://github.com/wavesplatform/waves-transactions) the following code can be executed:
 
 ```js
-const { sponsorship } = require('@waves/waves-transactions')
+const {sponsorship} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
 
@@ -39,12 +39,12 @@ const params = {
   minSponsoredAssetFee: 100
 }
 
-const signedSponsorshipTx = sponsorship(params, seed)
+const signedSponsorshipTx = sponsorship (params, seed)
 ```
 
-Код выше сформирует (но не отправит в блокчейн) транзакцию:
+The code above will form (but not send to the blockchain) a transaction:
 
-```json
+``` 'json
 {
   "id": "...",
   "type": 14,
@@ -60,15 +60,15 @@ const signedSponsorshipTx = sponsorship(params, seed)
 }
 ```
 
-Самым главным параметром в транзакции является `minSponsoredAssetFee`, который задает соответствие, что 100 токенов `A` равны 0.001 Waves. Таким образом, чтобы отправить `Transfer` транзакцию пользователь должен будет в качестве комиссии приложить 100 токенов `A`.
+The most important parameter in the transaction is `minSponsoredAssetFee`, which sets the correspondence that 100` A` tokens are equal to 0.001 Waves. Thus, to send a `Transfer` transaction, the user will have to attach 100` A` tokens as a commission.
 
-Важно понимать некоторые ограничения, связанные со спонсированием. Использовать спонсированные токены как комиссию можно только для транзакций типов `Transfer` и `Invoke`. Спонсировать токен может только аккаунт, выпустивший этот токен. То есть, вы не сможете спонсировать токены, выпущенные не вами. Как только баланс создателя токена станет меньше 1.005 Waves, спонсирование автоматически выключится (и обратно включится, когда баланс снова станет больше этого значения).
+It is important to understand some of the limitations associated with sponsoring. You can use sponsored tokens as a commission only for transactions of types `Transfer` and` Invoke`. Only the account that issued this token can sponsor a token. That is, you will not be able to sponsor tokens not issued by you. As soon as the balance of the token creator becomes less than 1.005 Waves, sponsorship will automatically turn off (and turn back on when the balance becomes more than this value again).
 
-### Безопасность
+### Safety
 
-Прежде чем включать спонсирование, надо понимать несколько важных моментов.
+Before including sponsorship, there are several important points to understand.
 
-1. Пользователь может использовать спонсируемые токены для операций не только с этим токеном. Например, аккаунт с токенами `A` на балансе может отправлять токены `B`, а как комиссию приложить токены `A`.
-2. Пользователь может платить не минимальную комиссию за транзакцию. Например, если у пользователя есть 100 000 ваших токенов, а вы поставили параметр `minSponsoredAssetFee` равным 100, то пользователь сможет все свои 100 000 токенов указать в качестве комиссии за 1 транзакцию. Вы получите 100 000 токенов `A`, а майнер получит 1000 Waves с вашего аккаунта (100 000 / 100 = 1000), если они есть на вашем аккаунте.
+1. The user can use sponsored tokens for transactions not only with this token. For example, an account with `A` tokens on the balance can send` B` tokens, and apply `A` tokens as a commission.
+2. The user can pay no minimum transaction fee. For example, if a user has 100,000 of your tokens, and you set the `minSponsoredAssetFee` parameter to 100, then the user will be able to specify all his 100,000 tokens as a commission for 1 transaction. You will receive 100,000 `A` tokens, and the miner will receive 1000 Waves from your account (100,000 / 100 = 1000), if you have them on your account.
 
-Функция спонсирования есть в Waves долгое время и отлично работает, но есть [WEP-2 Customizable Sponsorship](https://forum.wavesplatform.com/t/wep-2-customizable-sponsorship/15880), в котором высказывались идеи по его улучшению. Если вам есть что добавить - присоединяйтесь к обсуждению на форуме.
+The sponsorship feature has been in Waves for a long time and works great, but there is a [WEP-2 Customizable Sponsorship](https://forum.wavesplatform.com/t/wep-2-customizable-sponsorship/15880) that has ideas for it. improvement. If you have anything to add - join the discussion on the forum.

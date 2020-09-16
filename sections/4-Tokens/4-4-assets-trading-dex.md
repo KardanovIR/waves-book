@@ -1,12 +1,12 @@
-# Торговля ассетами и DEX
+# Asset and DEX trading
 
-После появления возможности создания своих токенов, было логичным сделать и возможность торговли ими (а если быть точнее - обмена) без участия посредников. Для этого в Waves был создан матчер (от англ "match" - соответствовать, подходить под пару), долгое время являвшийся частью ноды, по умолчанию выключенной (достаточно было в конфигурации ноды включить флаг `waves.matcher.enabled`), который сейчас распространяется как расширение для ноды.
+After the possibility of creating your own tokens appeared, it was logical to make it possible to trade them (or, to be more precise, exchange) without the participation of intermediaries. To do this, a matcher was created in Waves (from the English "match" - match, match), which for a long time was part of the node, disabled by default (it was enough to enable the `waves.matcher.enabled` flag in the node configuration), which is now distributed as a node extension.
 
-## Как работает матчер
+## How matcher works
 
-Матчер принимает от пользователей заявки на обмен токенов, в экосистеме Waves такие заявки принято называть Order. Пример такой "заявки" или "намерения" пользователя совершить обмен, представлен ниже:
+The matcher accepts applications for exchanging tokens from users; in the Waves ecosystem, such applications are called Order. An example of such an "order" or "intention" of a user to make an exchange is presented below:
 
-```json
+``` 'json
 {
   "version": 3,
   "senderPublicKey": "FMc1iASTGwTC1tDwiKtrVHtdMkrVJ1S3rEBQifEdHnT2",
@@ -29,13 +29,13 @@
 }
 ```
 
-Помимо информации об отправителе, служебных полей и подписи, каждый ордер содержит в себе информацию о том, в какой паре токенов должен произойти обмен, тип ордера (`buy` или `sell`), срок истечения действия ордера, количество токенов для обмена и цену, по которой пользователь хочет совершить обмен. Посмотрев на пример выше, можно понять, что пользователь хочет обменять `Waves`, потому что `assetPair.priceAsset` равен `null` и тип ордера `buy`, на токен c assetId равным `BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQa` и [названием `Zcash`](https://wavesexplorer.com/tx/BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQa), которое можно найти в эксплорере.
+In addition to information about the sender, service fields and signature, each order contains information about which pair of tokens should be exchanged, the type of order (`buy` or` sell`), the expiration date of the order, the number of tokens to be exchanged and the price the user wants to exchange. Looking at the example above, you can understand that the user wants to exchange `Waves`, because` assetPair.priceAsset` is `null` and the order type is` buy`, for a token with assetId equal to `BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQca` and [] with the name https://wavesexplorer.com/tx/BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQa) which can be found in the explorer.
 
-Количество токенов для обмена указано 150000000 (всегда помним, что у Waves 8 знаков после запятой, поэтому фактически он хочет обменять 1.5 Waves) на Zcash по цене 17.99925005 за единицу (у Zcash количество знаков после запятой тоже 8). Иными словами, если найдется желающий продать 1 Zchah токен в обмен на 17.99925005 Waves не позднее указанной даты экспирации (1551252872383 или 02/27/2019 @ 7:34am UTC), то будет совершен обмен.
+The number of tokens for exchange is indicated as 150,000,000 (we always remember that Waves has 8 decimal places, so he actually wants to exchange 1.5 Waves) for Zcash at a price of 17.99925005 per unit (Zcash also has 8 decimal places). In other words, if there is a person willing to sell 1 Zchah token in exchange for 17.99925005 Waves no later than the specified expiration date (1551252872383 or 02/27/2019 @ 7:34 am UTC), then the exchange will be made.
 
-Давайте представим, что другой пользователь отправил контр-ордер для этой же пары со следующими параметрами:
+Let's imagine that another user sent a counter order for the same pair with the following parameters:
 
-```json 
+``` 'json
 {
   "version": 3,
   "senderPublicKey": "FMc1iASTGwTC1tDwiKtrVHtdMkrVJ1S3rEBQifEdHnT2",
@@ -58,38 +58,38 @@
 }
 ```
 
-Отправитель этого ордера хочет сделать обратную операцию обмена (`Zcash` -> `Waves`) по такой же цене, но хочет обменять 30 Zcash.
+The sender of this order wants to make a reverse exchange operation (`Zcash` ->` Waves`) at the same price, but wants to exchange 30 Zcash.
 
-Оба ордера отправляются на один матчер с публичным ключом `7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy`, который увидев совпадение параметров (пара, цена) и валидность подписи и даты экспирации, сформирует транзакцию обмена - `Exchange`. При этом, первый ордер будет исполнен полностью (все 1.5 Waves будут обменены на Zcash), а второй только частично и будет дальше ждать подходящий ордеров для совершения обмена. Примерная схема работы представлена на рисунке:
+Both orders are sent to one matcher with the public key `7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy`, which, after seeing the match of parameters (pair, price) and the validity of the signature and expiration date, will form an exchange transaction -` Exchange`. At the same time, the first order will be fully executed (all 1.5 Waves will be exchanged for Zcash), and the second will only partially wait for a suitable order for the exchange. An approximate scheme of work is shown in the figure:
 
 ![How matching works](../../assets/4-4-1-how-dex-works.png "How matching workks")
 
-Пример `Exchange` транзакции мы рассмотрим в следующей главе, которая посвящена транзакциям, давайте сейчас поговорим про особенности матчера.
+We will look at an example of an `Exchange` transaction in the next chapter, which is devoted to transactions, let's now talk about the features of the matcher.
 
-## Функции матчера
+## Matcher functions
 
-Матчер является сердцем децентрализованных бирж (DEX) на базе прокола Waves, cамой популярной из которых сейчас является waves.exchange. Давайте разберемся как работает матчер и вся процедура децентрализованного обмена.
+Matcher is the heart of Waves-based decentralized exchanges (DEXs), the most popular of which is waves.exchange. Let's take a look at how the matcher works and the whole decentralized exchange procedure.
 
-Матчер принимает от всех желающих их ордера на покупку или продажу токенов, хранит их в стакане (orderbook) и при нахождении соответствия, формирует транзакцию обмена и отправляет в блокчейн (отправляет ноде, которая уже добавляет в блок, непосредственно производя обмен токенов на балансах пользователей).
+The matcher accepts orders for the purchase or sale of tokens from everyone who wants them, stores them in the orderbook and, when a match is found, forms an exchange transaction and sends it to the blockchain (sends it to the node, which already adds to the block, directly exchanging tokens on user balances) ...
 
-Давайте опишем весь путь для обмена токенов:
+Let's describe the entire path for exchanging tokens:
 
-1. Пользователь формирует ордер на совершения обмена, указывая пару токенов, тип ордера (что на что хочет обменять), цену обмена, количество токенов для обмена, срок действия, размер комиссии для матчера и на какой матчер хочет отправить свой ордер.
-2. Пользователь подписывает ордер и отправляет на матчер по API.
-3. Матчер проверяет валидность подписи ордера, правильность указанных дат, указанную пользователем комиссию и наличие токенов для обмена и комиссии на балансе у пользователя (для этого делает запрос к блокчейн ноде).
-4. Если обмен совершается в паре, где один или оба токена являются смарт-ассетами, матчер выполняет скрипт ассета и только при получении `true` считает ордер валидным. В случае получения `false` или исключения, матчер считает ордер не валидным и он отклоняется.
-5. В случае нахождения в стакане (orderbook) контр-ордера, с которым можно совершить операцию обмена, матчер формирует `Exchange` транзакцию, подписывает ее и отправляет блокчейн ноде. Если подходящего ордера не было в стакане, то свежесозданный ордер добавляется в стакан, где будет находиться до тех пока, не найдется правильный контр-ордер или не закончится срок действия ордера. Стоит заметить, что транзакция обмена делается от имени матчера и с подписью матчера, а не от имени пользователей, соответственно, комиссию за попадание в блокчейн платится матчером.
-6. Блокчейн нода при получении `Exchange` транзакции валидирует её и входящие в него ордера (транзакция обмена в себя включает сами ордера тоже) и добавляет в блок.
-7. Состояние балансов аккаунтов в блокчейне меняется в соответствии с параметрами `Exchange` транзакции.
+1. The user creates an order for the exchange, indicating a pair of tokens, the type of order (what he wants to exchange for), the exchange price, the number of tokens to exchange, validity period, the size of the commission for the matcher and to which matcher he wants to send his order.
+2. The user signs the order and sends it to the matcher via API.
+3. The matcher checks the validity of the order signature, the correctness of the specified dates, the commission specified by the user and the presence of tokens for exchange and commission on the user's balance (for this, he makes a request to the blockchain node).
+4. If the exchange is made in a pair, where one or both tokens are smart assets, the matcher executes the asset script and considers the order as valid only upon receiving `true`. In case of receiving `false` or an exception, the matcher considers the order invalid and it is rejected.
+5. If there is a counter-order in the orderbook, with which an exchange operation can be performed, the matcher generates an `Exchange` transaction, signs it and sends it to the blockchain node. If there was no suitable order in the order book, then the newly created order is added to the order book, where it will remain until a correct counter order is found or the order expires. It is worth noting that the exchange transaction is done on behalf of the match and with the signature of the match, and not on behalf of the users; accordingly, the commission for getting into the blockchain is paid by the matcher.
+6. When the blockchain node receives an `Exchange` transaction, it validates it and the orders included in it (the exchange transaction includes the orders themselves too) and adds it to the block.
+7. The state of account balances in the blockchain changes in accordance with the parameters of the `Exchange` transaction.
 
-## Особенности обмена в блокчейне Waves
+## Features of the exchange in the Waves blockchain
 
-Децентрализованный обмен в Waves может осуществляться и без матчера: два пользователя могут свои ордера объединить в `Exchange` транзакцию и отправить в сеть от имени третьего аккаунта (или одного из них), но в виду неудобности такого способа, большинство транзакций обмена совершается с помощью матчера.
+Decentralized exchange in Waves can be carried out without a matcher: two users can combine their orders in an `Exchange` transaction and send them to the network on behalf of a third account (or one of them), but in view of the inconvenience of this method, most exchange transactions are made using a matcher ...
 
-Каждый отдельно взятый матчер является централизованной сущностью и контролируется одним лицом или командой, но почему мы тогда называем обмен децентрализованным, а биржи с использованием матчера - DEX? Надо разобраться в главном отличии обычных централизованных бирж от DEX - в контроле над средствами пользователей. Централизованные биржи имеют прямой доступ к средствам пользователей и их ключам, поэтому могут делать с ними все, что хотят, в то время как матчер в Waves имеет доступ только к намерениям пользоваталей (ордерам) и не могут ничего сделать с вашими токенами напрямую. Самое плохое, что может сделать матчер - обменять по не самой выгодной цене, которая есть на рынке или не совершить транзакцию обмена, хотя контр-ордер был в стакане.
+Each individual matcher is a centralized entity and is controlled by one person or team, but why then do we call the exchange decentralized, and exchanges using the matcher - DEX? It is necessary to understand the main difference between ordinary centralized exchanges and DEX - control over user funds. Centralized exchanges have direct access to users' funds and their keys, so they can do whatever they want with them, while the matcher in Waves has access only to user intentions (orders) and cannot do anything with your tokens directly. The worst thing that a matcher can do is exchange at a not the best price available on the market or not complete an exchange transaction, although the counter order was in the order book.
 
-Есть ли более децентрализованные решения? Конечно есть, есть полностью децентрализованные биржи, однако при полной децентрализации невозможно решить проблему [фронт-раннинга](https://www.investopedia.com/terms/f/frontrunning.asp) блокчейн нод (в схеме матчера Waves ноды не могут осуществлять такую атаку, однако может сам матчер, которому вы доверяете).
+Are there more decentralized solutions? Of course there are, there are completely decentralized exchanges, but with full decentralization, it is impossible to solve the problem of [front-running](https://www.investopedia.com/terms/f/frontrunning.asp) blockchain nodes (in the Waves matcher scheme, nodes cannot implement such an attack, however, the matcher itself, which you trust).
 
-Другой особенностью обмена является то, что матчеров в экосистеме Waves много, но они не обмениваются ордерами друг с другом. Фактически, вы доверяете одному матчеру, когда отправляете ему свой ордер. Вы ему доверяете, что он сделает операцию и он сделает это честно (например, не пустит вперед вашего ордер, который пришел позже). Именно это доверие мешает сделать обмен ордерами между матчерами: скорее всего, вы готовы довериться одному матчеру, но не готовы довериться всем, потому что любой из множества может оказаться "вредителем".
+Another feature of the exchange is that there are many matchers in the Waves ecosystem, but they do not exchange orders with each other. In fact, you trust one matchmaker when you send him your order. You trust him that he will perform the operation and he will do it honestly (for example, he will not let your order forward, which came later). It is this trust that prevents the exchange of orders between matchers: most likely, you are ready to trust one match, but you are not ready to trust all of them, because any of the many may turn out to be a "pest".
 
-Наличие централизованного матчинга позволяет достичь отличной пропускной способности в тысячи формируемых `Exchange` транзакций в секунду. Максимально возможная скорость работы матчера сейчас намного выше, чем пропускная способность блокчейна. Конечно, торговать в режиме высокочастотной торговли (HFT, high-frequency trading) не получится, но есть большое количество ботов, которые делает сотни транзакций в секунду. Примеры ботов вы можете найти в Github, самые популярные из них это [Scalping Bot](https://docs.wavesplatform.com/en/building-apps/waves-api-and-sdk/examples/trading-bot) и [Grid Trading Bot](https://github.com/PyWaves/BlackBot).
+The presence of centralized matching allows to achieve excellent throughput of thousands of generated `Exchange` transactions per second. The maximum possible speed of the matcher is now much higher than the throughput of the blockchain. Of course, trading in high-frequency trading (HFT) will not work, but there are a large number of bots that make hundreds of transactions per second. You can find examples of bots in Github, the most popular of which are [Scalping Bot](https://docs.wavesplatform.com/en/building-apps/waves-api-and-sdk/examples/trading-bot) and [Grid Trading Bot](https://github.com/PyWaves/BlackBot).
