@@ -1,32 +1,32 @@
-# Глава 4. Токены
+# Chapter 4. Tokens
 
-После того, как мы поговорили об аккаунтах вполне логично поговорить про другую важную сущность в блокчейне Waves - токены. Мне лично кажется необходимым начать с истории вопроса, потому что многие все еще знают Waves как платформу для выпуска токенов. В эру бума ICO (2017 год) Waves был второй по популярности платформой для выпуска токенов, потому что позволяла сделать это очень легко и просто. На первом месте был Ethereum, в котором для выпуска токенов необходимо писать смарт-контракт (простой и чаще всего в соответствии с ERC-20, но все же). В Waves же выпуск токена делается крайне просто - отправкой одной транзакции специального типа `Issue`.
+After we talked about accounts, it is quite logical to talk about another important entity in the Waves blockchain - tokens. For me personally, it seems necessary to start with the background, because many people still know Waves as a platform for issuing tokens. During the ICO boom era (2017), Waves was the second most popular platform for issuing tokens, because it made it very easy and simple. In the first place was Ethereum, in which a smart contract must be written in order to issue tokens (simple and most often in accordance with ERC-20, but still). In Waves, issuing a token is very simple - sending one transaction of a special type `Issue`.
 
-В некоторых клиентах для Waves (например, в Waves.Exchange) достаточно заполнить одну небольшую форму для выпуска обычного токена, который автоматически будет доступен для переводов между аккаунтами, работы с децентрализованными приложениями или торговли на децентрализованной бирже DEX. В данный момент в блокчейне Waves выпущено более 20 000 различных видов токенов.
+In some Waves clients (for example, Waves.Exchange), it is enough to fill out one small form to issue a regular token, which will automatically be available for transfers between accounts, work with decentralized applications, or trade on the DEX decentralized exchange. At the moment, more than 20,000 different types of tokens have been issued on the Waves blockchain.
 
-## Принципы работы токенов
+## How tokens work
 
-В Waves все токены являются "гражданами первого сорта" (first-class citizens), они есть прямо в ядре блокчейна, как есть, например, аккаунты. Некоторые (особенно с опытом работы с Ethereum) удивляются этому, но такой подход имеет ряд преимуществ:
+In Waves, all tokens are "first-class citizens", they are right in the core of the blockchain, as there are, for example, accounts. Some (especially those with experience with Ethereum) are surprised by this, but this approach has several advantages:
 
-- **Простота выпуска.** В 2017 году Waves занимал второе место именно благодаря простоте выпуска, что не надо было разбираться, как работает Solidity или Ethereum Virtual Machine, чтобы сделать токен, привязать к каким-то активам в реальной жизни, и начать использовать.
-- **Быстрота работы.** Простые токены в Waves не исполняют никакого кода смарт-контрактов для своей работы, поэтому будут работать быстрее, чем в случае с Solidity. Фактически простой токен в Waves - запись в базе данных LevelDB.
-- **Возможность торговли из коробки.** Выпускаемые токены на Waves автоматически поддерживаются для торговли на децентрализованных биржах на базе матчера Waves. Про работу матчера мы поговорим отдельно.
+- **Ease of release.** In 2017, Waves ranked second precisely because of the ease of release, that there was no need to understand how Solidity or Ethereum Virtual Machine works to make a token, peg to some assets in real life, and start use.
+- **Fast work.** Simple tokens in Waves do not execute any smart contract code for their work, so they will work faster than in the case of Solidity. In fact, a simple token in Waves is an entry in the LevelDB database.
+- **Ability to trade out of the box.** Issued tokens on Waves are automatically supported for trading on decentralized exchanges based on the Waves Matcher. We will talk about the work of the matcher separately.
 
-> *У вас уже должен был возникнуть вопрос, а что если я хочу не просто выпустить токен, но сделать для него свою логику?*
+> *You should already have a question, what if I want to not just issue a token, but make my own logic for it?*
 
-**Такое тоже возможно с помощью создания смарт-ассетов, которые мы рассмотрим позже в этой главе.**
+**This is also possible by creating smart assets, which we will look at later in this chapter.**
 
-Много новых разработчиков спрашивают, чем отличается **ассет** от **токена**. В коде ноды Waves вы гораздо чаще будете встречать слоово `asset`, нежели `token`, но для удобства в рамках этой книги предлагаю считать эти 2 понятия взаимозаменяемыми. Да, в реальной жизни `asset` это скорее актив, а `токен` скорее что-то близкое к жетону/монете, но в мире блокчейна граница между понятиями размылась.
+A lot of new developers are asking how a **asset** differs from a ** token **. In the code of the Waves node, you will more often come across the word `asset` than` token`, but for convenience, for the sake of this book, I suggest that these two concepts be considered interchangeable. Yes, in real life, `asset` is more of an asset, and` token` is more like something close to a token / coin, but in the world of blockchain the border between the concepts has become blurred.
 
-В Waves есть только один токен, который не является ассетом - это сам токен Waves, который платится как комиссия майнерам. Можно сказать, что все токены в Waves равны по возможностям, но токен Waves чуть "равнее" и его поведение отличается от других ассетов.
+Waves has only one token that is not an asset - the Waves token itself, which is paid as a commission to miners. We can say that all tokens in Waves are equal in capabilities, but the Waves token is a little "more equal" and its behavior differs from other assets.
 
-## Выпуск токена
+## Token Issue
 
-Как я уже писал выше, для выпуска токена достаточно отправить транзакцию типа `Issue`, что можно легко сделать с помощью библиотеки на JavaScript:
+As I wrote above, to issue a token, it is enough to send a transaction of type `Issue`, which can be easily done using a JavaScript library:
 
 ```js
 
-const { issue } = require('@waves/waves-transactions')
+const {issue} = require ('@ waves / waves-transactions')
 
 const seed = 'seed phrase of fifteen words'
 
@@ -34,22 +34,22 @@ const params = {
   name: 'Euro',
   description: 'It is an example of token',
   quantity: 1000000,
-  //senderPublicKey: 'by default derived from seed',
+  // senderPublicKey: 'by default derived from seed',
   reissuable: false,
   decimals: 2,
   script: null,
-  timestamp: Date.now(),
+  timestamp: Date.now (),
   fee: 100000000,
 }
 
-const signedIssueTx = issue(params, seed)
-console.log(signedIssueTx)
+const signedIssueTx = issue (params, seed)
+console.log (signedIssueTx)
 
 ```
 
-В результате выполнения этого кода в консоль выведется следующий JSON объект транзакции:
+As a result of executing this code, the following JSON transaction object will be displayed in the console:
 
-```json
+``` 'json
 {
   "id": "CZw4KCpPUv5t1Uym3rLc9yEaQyDsP3VVPspdpmWKvVPE",
   "type": 3,
@@ -70,44 +70,44 @@ console.log(signedIssueTx)
 }
 ```
 
-Давайте разберем основные параметры:
+Let's take a look at the main parameters:
 
-- **name** - название токена (4-16 байт)
-- **description** - описание для токена (0-1000 байт)
-- **quantity** - количество выпускаемых токенов
-- **decimals** - количество знаков после запятой. Обратите внимание, что если поставить значение равное `0`, то токен будет неделимый. В примере выше минимальной единицой будет не 1 токен, а одна сотая от токена, что логично, так как мы выпускаем аналог евро как пример. Если быть точнее, то выпускаем 1 миллион токенов под название `Euro`, минимальной единицей которой будет евроцент.
-- **reissuable** - флаг перевыпускаемости токена. Если значение равно `true`, то владелец токена в любой момент может довыпустить сколько угодно новых токенов такого вида. В момент перевыпуска владелец может поменять значение этого флага, таким образом зафиксировав количество токенов в блокчейне.
-- **script** - скомпилированный Ride скрипт, описывающий логику работы токена. В нашем примере значаение равно `null`, так как мы не хотим задавать никаких правил обращения токена.
-- **fee** - комиссия за выпуск токена. В Waves минимальный транзакция для выпуска обычного токена (не NFT) составляет 1 Waves. Почему же тогда в транзакции указано 100000000, где аж 8 нолей? Все просто, у токена Waves количество decimals равно 8, а комиссия указывается в самых маленьких единицах, в случае с Waves минимальные единицы называют иногда ***waveslet***.
+- **name** - token name (4-16 bytes)
+- **description** - description for the token (0-1000 bytes)
+- **quantity** - the number of tokens issued
+- **decimals** - number of decimal places. Please note that if you set the value to `0`, then the token will be indivisible. In the example above, the minimum unit will not be 1 token, but one hundredth of the token, which is logical, since we are issuing an analogue of the euro as an example. To be more precise, we issue 1 million tokens under the name `Euro`, the minimum unit of which will be the euro cent.
+- **reissuable** - token reissuable flag. If the value is `true`, then the owner of the token at any time can add as many new tokens of this type as he wants. At the time of re-release, the owner can change the value of this flag, thus fixing the number of tokens in the blockchain.
+- **script** - compiled Ride script that describes the logic of the token. In our example, the value is `null`, since we don't want to set any rules for token circulation.
+- **fee** - commission for issuing a token. At Waves, the minimum transaction for issuing a regular token (not NFT) is 1 Waves. Why, then, is 100,000,000 indicated in the transaction, where there are already 8 zeros? It's simple, the Waves token has 8 decimals, and the commission is indicated in the smallest units, in the case of Waves, the minimum units are sometimes called ***waveslet***.
 
-Отправив такую подписанную транзакцию, можно создать новый токен с названием `Euro`. Конечно, никакой ценности в таком токене нет, но ценность это уже следующий вопрос. Новосозданный токен получит уникальный идентификатор `assetId` равный ID транзакциии, которая его породила, в нашем случае `CZw4KCpPUv5t1Uym3rLc9yEaQyDsP3VVPspdpmWKvVPE`.
+By sending such a signed transaction, you can create a new token called `Euro`. Of course, there is no value in such a token, but value is the next question. The newly created token will receive a unique identifier `assetId` equal to the ID of the transaction that generated it, in our case` CZw4KCpPUv5t1Uym3rLc9yEaQyDsP3VVPspdpmWKvVPE`.
 
-Данное правило может быть крайне полезным, поэтому предлагаю запомнить - `assetId` токена равен `ID` issue транзакции, которая его создала. В дальнейшем при работе с этим токеном в подавляющем боольшинстве случаев придется использовать именно его assetId, а не название.
+This rule can be extremely useful, so I propose to remember - the `assetId` of the token is equal to the` ID` issue of the transaction that created it. In the future, when working with this token, in the overwhelming majority of cases, you will have to use its assetId, and not its name.
 
-Другой важный параметр, который надо запомнить, у токена Waves (нативного/системного для оплаты комиссий за транзакци) нет `assetId`, поэтому в местах, где для других токенов вставляется длинная строка, для Waves необходимоо ставить `null`.
+Another important parameter to remember is that the Waves token (native / system for paying transaction fees) does not have an `assetId`, so in places where a long string is inserted for other tokens, you need to set` null` for Waves.
 
-## Выпуск NFT токена
+## Issue NFT token
 
-Non-fungible токены очень часто используются для различных механик, чаще всего игровых. NFT отличаются тем, что каждый токен уникален и имеет свой уникальный идентификатор.
+Non-fungible tokens are very often used for various mechanics, most often gaming. NFTs differ in that each token is unique and has its own unique identifier.
 
-> Проще всего объяснить суть NFT на простой аналогии. Например, если вы возьмете одну монету, положите в мешок к 100 таким же монетам и перемешаете мешок, то вы не сможете потом опредить какую монету вы положили в мешок последней. Другое дело, если бы на монетах были номера. NFT - это монеты с уникальным идентификатором (номером), когда никогда нельзя спутать с другими такими же.
+> The easiest way to explain the essence of NFT is with a simple analogy. For example, if you take one coin, put it in a bag with 100 of the same coins and mix the bag, then you cannot later determine which coin you put in the bag last. It would be another matter if the coins had numbers. NFT are coins with a unique identifier (number), when they can never be confused with others of the same.
 
-В Waves выпуск Non-fungible токена осуществляется так же, как и выпуск fungile токенов, но с несколькими ограничениями:
+In Waves, the issuance of Non-fungible tokens is carried out in the same way as the issuance of fungile tokens, but with several restrictions:
 
-- `quantity` обязательно должно быть равно единице
-- `decimals` всегда должно быть 0
-- `reissuable` должно быть задано `false`
+- `quantity` must be equal to one
+- `decimals` must always be 0
+- `reissuable` must be set to` false`
 
-При соблюдении условий выше уже можно выпускать токен с комиссией не в 1 Waves, а в тысячу раз меньше - 0.001 Waves. Для удобной работы с NFT токенами существует JavaScript библиотека `@waves/waves-games`, которая упрощает создание и сохранение мета-информации о токене. Пример выпуска NFT с помощью этой библиотеки найдете ниже:
+If the conditions above are met, it is already possible to issue a token with a commission not in 1 Waves, but a thousand times less - 0.001 Waves. For convenient work with NFT tokens, there is a JavaScript library `@ waves / waves-games`, which simplifies the creation and storage of meta-information about the token. An example of NFT release using this library can be found below:
 
 ```js
 
-import { wavesItemsApi } from '@waves/waves-games'
+import {wavesItemsApi} from '@ waves / waves-games'
 const seed = 'my secret backend seed'
 
-const items = wavesItemsApi('T') //testnet, use 'W' for mainnet
+const items = wavesItemsApi ('T') // testnet, use 'W' for mainnet
 const item = await items
-  .createItem({
+  .createItem ({
     version: 1,
     quantity: 100,
     name: 'The sword of pain',
@@ -116,20 +116,20 @@ const item = await items
       damage: 22,
       power: 13,
     },
-  }).broadcast(seed)
-console.log(item)
+  }). broadcast (seed)
+console.log (item)
 
 ```
 
-Обратите внимание, что в примере выше выпускается 100 токенов, не токен с количеством 100, а 100 разных, у каждого из которых будет уникальный ID. Другими словами, библиотека отправит 100 issue транзакций. Минимальная комиссия за каждый токен составит 0.001 Waves, а для всех 100 - 0.1 Waves. Больше примеров по работе с библиотекой для NFT вы найдете в [их туториалах](https://docs.item.market/sdk/lib.html#installation).
+Note that in the example above, 100 tokens are issued, not a token with a quantity of 100, but 100 different ones, each of which will have a unique ID. In other words, the library will send 100 issue transactions. The minimum commission for each token will be 0.001 Waves, and for all 100 - 0.1 Waves. You can find more examples on working with the library for NFT in [their tutorials](https://docs.item.market/sdk/lib.html#installation).
 
-## Перевыпуск токенов
+## Token re-issue
 
-Если у токена в момент создания стояло значение `true` для поля `reissuable`, то создатель может отправлять транзакции типа `Reissue`, который позволит довыпустить еще токенов. Пример генерации reissue транзакции во многом похож на пример с issue:
+If the token at the time of creation had the value `true` for the` reissuable` field, then the creator can send transactions of the `Reissue` type, which will allow additional tokens to be issued. The example of generating a reissue transaction is very similar to the example from the issue:
 
 ```js
 
-const { reissue } = require('@waves/waves-transactions')
+const {reissue} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
 
@@ -139,25 +139,25 @@ const params = {
   reissuable: false
 }
 
-const signedReissueTx = reissue(params, seed)
+const signedReissueTx = reissue (params, seed)
 
 ```
 
-Главное отличие в том, что название или описание мы поменять не можем. В нашем примере мы довыпускаем к уже выпущенному миллиону токенов с названием Euro, еще один миллион.
+The main difference is that we cannot change the title or description. In our example, we add another million to the already issued one million Euro tokens.
 
-Вы так же можете заметить, что в этой транзакции тоже есть флаг `reissuable`. Если отправить reissue транзакцию с полем `reissuable` равным `false`, то в дальнейшем отправлять такие транзакции перевыпуска для этого токена уже будет нельзя.
+You may also notice that this transaction also has a `reissuable` flag. If you send a reissue transaction with the `reissuable` field equal to` false`, then it will no longer be possible to send such reissue transactions for this token in the future.
 
-В примере выше поле для комиссии (`fee`) опущено, но библиотека `@waves/waves-transactions` автоматически подставит минимальное значение в 1 Waves. Я часто пишу "минимальное значание" комиссии, чтобы показать, что это значение можно сделать больше, но сейчас сеть Waves не испытывает проблем с пропускной способностью, поэтому даже транзакции с минимальной комиссией почи моментально попадают в блоки.
+In the example above, the field for the commission (`fee`) is omitted, but the library` @ waves / waves-transactions` will automatically substitute the minimum value in 1 Waves. I often write the "minimum value" of the commission to show that this value can be increased, but the Waves network is not experiencing any bandwidth problems right now, so even transactions with the lowest commission almost instantly fall into blocks.
 
-Обратите внимание, что в истории Waves недолгое время был баг, который позволял перевыпускать токены, у которых `reissuable` был равен `false`. Баг был оперативно исправлен, но в блокчейне могут встратиться некоторые токены, которые всегда были неперевыпускаемые, но были перевыпущены. Удалить их оттуда не получится, ведь блокчейн иммутабелен. Так что об этом только стоит знать, если вы вдруг делаете эксплорер или какую-то аналитику.
+Please note that there was a bug in the history of Waves for a short time, which allowed reissuing tokens for which the `reissuable` was` false`. The bug was promptly fixed, but some tokens may be embedded in the blockchain, which were always unreleased, but were reissued. It will not be possible to remove them from there, because the blockchain is immutable. So it's only worth knowing about this if you suddenly do an explorer or some kind of analytics.
 
-## Сжигание токенов
+## Burning tokens
 
-Иногда бывает, что токен мешает и не хочется видеть его в портфолио, а очень часто встречается необходимость сжигать по какой-то бизнес логике. Для этого в Waves есть транзакция типа `Burn`, которая позволяет сжечь токены (но только со своего аккаунта, конечно).
+Sometimes it happens that a token gets in the way and you don't want to see it in your portfolio, but very often you need to burn it according to some business logic. For this, Waves has a `Burn` transaction that allows you to burn tokens (but only from your account, of course).
 
 ```js
 
-const { burn } = require('@waves/waves-transactions')
+const {burn} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
 
@@ -166,16 +166,16 @@ const params = {
   quantity: 100
 }
 
-const signedBurnTx = burn(params, seed)
+const signedBurnTx = burn (params, seed)
 
 ```
 
-Транзакция burn максимально прооста и позволяет задать assetId токена, который хотим сжечь и количество. Собственно, это все.
+The burn transaction is as simple as possible and allows you to set the assetId of the token that you want to burn and the amount. Actually, that's all.
 
-## Изменение информации о токене
+## Changing token information
 
-Очень много пользователей спрашивают, можно ли поменять название или описание своего токена. Причин для этого может быть много - переименование компании, изменение адреса веб-сайта (адрес сайта мог быть в описании токена). До недавнего времени такое изменение было невозможно и заданное в самом начале жизни название и описание были навсегда с токеном, но в начале 2020 года появилась транзакция `UpdateAssetInfo`, которая позволяет обновить название и описание, но не чаще, чем раз в 100 000 блоков, что примерно равно 2,5 месяцев. На момент написания этих строк функционал был активирован только в stagenet и транзакция `UpdateAssetInfo` еще не поддерживалась библиотеками.
+Many users ask if it is possible to change the name or description of their token. There can be many reasons for this - renaming the company, changing the website address (the website address could be in the token description). Until recently, such a change was impossible and the name and description set at the very beginning of life were forever with the token, but at the beginning of 2020 the `UpdateAssetInfo` transaction appeared, which allows you to update the name and description, but not more often than once every 100,000 blocks. which is about 2.5 months. At the time of this writing, the functionality was activated only in stagenet and the `UpdateAssetInfo` transaction was not yet supported by the libraries.
 
-## А дальше что?
+## What next?
 
-Выпуск токена в большинстве случаев является только началом интеграции, поэтому в дальнейшем мы поговорим о том, как использовать Ride для задания логики и API для интеграций вашей бизнес логики с блокчейном.
+The release of a token in most cases is just the beginning of the integration, so in the future we will talk about how to use Ride to define the logic and API for integrating your business logic with the blockchain.
