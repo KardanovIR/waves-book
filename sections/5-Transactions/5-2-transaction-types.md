@@ -10,7 +10,7 @@ There are two types of transactions in Waves that are currently not used and tha
 
 ** Note: ** Many people confuse the `genesis` block and the` genesis` transaction. The `Genesis` block is the very first block in the blockchain network (in all blockchains it is customary to call it that), which differs from the rest of the blocks only by the absence of a reference to the previous block, since the previous block simply did not exist. The `Genesis` block contains the` genesis` transactions that are responsible for the initial distribution of issued Waves tokens. The very first block on the Waves network is shown below:
 
-`` 'json
+``` 'json
 {
   "reference": "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
   "blocksize": 500,
@@ -83,7 +83,7 @@ There are two types of transactions in Waves that are currently not used and tha
   "timestamp": 1460678400000,
   "height": 1
 }
-``
+```
 
 You can see that there were 6 public keys-recipients of the newly issued Waves tokens. All transactions have the same `timestamp` and they were all free (the` fee` is zero) because there was nothing else to pay the `fee` at the time these transactions were created.
 
@@ -93,9 +93,9 @@ These transactions are not created manually, they are generated automatically by
 
 ## Payment transaction (type = 2) [deprecated]
 
-At the time of the launch of the Waves blockchain, only 2 types of transactions were implemented - the already considered type `genesis` and` payment`, which allowed transferring Waves tokens from one account to another. Examples of the `payment` transaction in JSON representation can be found in [block 2000] (http://nodes.wavesplatform.com/blocks/at/2000).
+At the time of the launch of the Waves blockchain, only 2 types of transactions were implemented - the already considered type `genesis` and` payment`, which allowed transferring Waves tokens from one account to another. Examples of the `payment` transaction in JSON representation can be found in [block 2000](http://nodes.wavesplatform.com/blocks/at/2000).
 
-`` 'json
+``` 'json
     {
       "senderPublicKey": "6q5VhGeTanU5T8vWx6Jka3wsptPKSSHA9uXHwdvBMTMC",
       "amount": 10000000000,
@@ -111,7 +111,7 @@ At the time of the launch of the Waves blockchain, only 2 types of transactions 
       "type": 2,
       "timestamp": 1465865163143
     }
-``
+```
 
 A `Payment` transaction can only send Waves tokens (not other ones issued on the platform) from one address to another. It became obsolete with the advent of `Transfer` transactions that can send both Waves tokens and custom tokens, so now` Payment` is no longer used anywhere.
 
@@ -126,7 +126,7 @@ Issuing a unique token differs in that the parameters `amount`,` reissuable`, `d
 
 An example JSON representation of the `Issue` transaction is shown below:
 
-`` 'json
+``` 'json
 {
     senderPublicKey: "7nSKRN4XZiD3TGYsMRQGQejzP7x8EgiKoG2HcY7oYv6r",
     quantity: 210000000,
@@ -149,15 +149,15 @@ An example JSON representation of the `Issue` transaction is shown below:
     timestamp: 1528867061493,
     height: 1039500
 }
-``
+```
 
 > Important: if a token is issued without a script, then it cannot be added to it later, so if you want to add a script in the future, but do not have this script yet, then specify `AwZd0cYf` as a script (` true` in the compiled base64 version)
 
 ## Tranfer transaction (type = 4)
 
-The `Tranfser` transaction came to replace the` Payment` transaction, because `Payment` did not allow sending tokens created with the` Issue` transaction. Currently, the `Transfer` transaction is the most frequent one according to [dev.pywaves.org] (http://dev.pywaves.org/txs/) and accounts for about 70% of transactions on the network. Sending a `Transfer` transaction is similar to sending most token-related transactions:
+The `Tranfser` transaction came to replace the` Payment` transaction, because `Payment` did not allow sending tokens created with the` Issue` transaction. Currently, the `Transfer` transaction is the most frequent one according to [dev.pywaves.org](http://dev.pywaves.org/txs/) and accounts for about 70% of transactions on the network. Sending a `Transfer` transaction is similar to sending most token-related transactions:
 
-`` `js
+```js
 
 const {transfer} = require ('@ waves / waves-transactions');
 
@@ -176,7 +176,7 @@ const params = {
 const signedTransferTx = transfer (params, seed);
 broadcast (signedTransferTx);
 
-``
+```
 
 The example above will generate a transaction from the account with the seed phrase `example seed phrase`, automatically substitute additional fields (` timestamp`, `senderPublicKey`,` proofs`) into the created transaction, sign it with a private key from the specified seed phrase and add the transaction signature to the array `proofs`.
 
@@ -191,7 +191,7 @@ The `Transfer` transaction allows you to specify 0 in the` amount` field, that i
 
 An example of a `Transfer` transaction is shown below:
 
-`` 'json
+``` 'json
 {
     senderPublicKey: "CXpZvRkJqBfnAw3wgaRbeNjtLJcithoyQQQSzGQZRF3x",
     amount: 32800000000,
@@ -212,7 +212,7 @@ An example of a `Transfer` transaction is shown below:
     timestamp: 1528867058828,
     height: 1039500
 }
-``
+```
 
 ## Reissue transaction (type = 5)
 
@@ -220,7 +220,7 @@ If, when issuing a token using the `Issue` transaction, set the` reissuable` fla
 
 An example of a `Reissue` transaction is shown below:
 
-`` 'json
+``` 'json
 {
     senderPublicKey: "4X2Fv5XaDwBj2hjRghfqmsQDvBHqSa2zBUgZPDgySSJG",
     quantity: 10000000000000000,
@@ -240,7 +240,7 @@ An example of a `Reissue` transaction is shown below:
     timestamp: 1528733511933,
     height: 1037381
 }
-``
+```
 
 ## Burn transaction (type = 6)
 
@@ -248,7 +248,7 @@ A token burn transaction allows you to burn any number of tokens of the same typ
 
 An example of a `Burn` transaction is shown below:
 
-`` 'json
+``` 'json
 {
     senderPublicKey: "EhuzuzEWHhZGo1th6YGy34AecoRP4sVi863xXCQUmgUT",
     amount: 10000000000,
@@ -266,13 +266,13 @@ An example of a `Burn` transaction is shown below:
     timestamp: 1528814759445,
     height: 1038647
 }
-``
+```
 
 ## Exchange transaction (type = 7)
 
 In the previous chapter, we talked a lot about the token exchange procedure, the work of the order matcher and the `Exchange` transactions. Among other things, they touched upon the topic that a transaction contains orders, and that is why this transaction is the most complex in JSON representation:
 
-`` 'json
+``` 'json
 {
     senderPublicKey: "7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy",
     amount: 74,
@@ -334,7 +334,7 @@ In the previous chapter, we talked a lot about the token exchange procedure, the
     timestamp: 1528814695635,
     height: 1038644
 }
-``
+```
 
 As you can see, the transaction contains the fields `order1` (an order of the` buy` type) and `order2` (an order of the` sell` type). There is also a signature in the `proofs` array, which is the signature of the matcher (not the order senders!), The size of the commission for the match (` sellMatcherFee`), the commission for the node that will mine the block (the `fee` field for the entire transaction and not for the order ).
 
@@ -342,7 +342,7 @@ The values ​​of the `matcherPublicKey` fields in the orders must match the` 
 
 Forming an `Exchange` transaction in most cases is not necessary for users and developers, therefore it is not supported in many libraries for different programming languages. Another thing is orders, the formation of which is necessary for bots and many user interfaces. Formation of an order using `waves-tranasctions` does not fundamentally differ from the formation of a transaction:
 
-`` `js
+``` js
 const {order} = require ('@ waves / waves-transactions')
 
 const seed = 'b716885e9ba64442b4f1263c8e2d8671e98b800c60ec4dc2a27c83e5f9002b18'
@@ -357,15 +357,15 @@ const params = {
 
 
 const signedOrder = order (params, seed)
-``
+```
 
-Please note that unlike the examples with transactions, the example does not use the `broadcast` function to send the transaction, because the` broadcast` sends the transaction to the node, and we need to send the order to the matcher. You can find information about the matcher API in the [waves.exchange documentation] (https://docs.waves.exchange/en/waves-matcher/matcher-api), since Waves.exchange works on the basis of the matcher.
+Please note that unlike the examples with transactions, the example does not use the `broadcast` function to send the transaction, because the` broadcast` sends the transaction to the node, and we need to send the order to the matcher. You can find information about the matcher API in the [waves.exchange documentation](https://docs.waves.exchange/en/waves-matcher/matcher-api), since Waves.exchange works on the basis of the matcher.
 
 ## Lease and Lease Cancel transactions (types 8 and 9)
 
 At the very beginning of this book, we touched on the topic of leasing a little, which allows you to lease your tokens to other nodes "for rent" to generate blocks. To do this, you need to send a transaction of type `Lease`.
 
-`` `js
+``` js
 const {lease} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
@@ -378,13 +378,13 @@ const params = {
 
 const signedLeaseTx = lease (params, seed)
 broadcast (signedLeaseTx);
-``
+```
 
 As you can see, the transaction is extremely simple, we indicate the recipient in the `recipient` field in the form of an address or an alias (we'll talk about them below) and the amount we want to lease. It should be borne in mind that these tokens will participate in mining only 1000 blocks after they are leased.
 
 The sender of the lease can cancel the lease at any time, again gaining access to them for trading, transfers or mining at their address. To do this, you need to send the transaction `LeaseCancel`:
 
-`` `js
+``` js
 const {cancelLease} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
@@ -399,7 +399,7 @@ const params = {
 
 const signedCancelLeaseTx = cancelLease (params, seed)
 broadcast (signedCancelLeaseTx);
-``
+```
 
 A lease cancellation transaction requires the transfer of the `ID` of the lease transaction. You can only cancel the entire lease transaction. For example, if you lease 1000 Waves to any node of one transaction, you will not be able to withdraw part of this amount - it can only be canceled in its entirety.
 
@@ -415,7 +415,7 @@ Waves has a unique feature that many other blockchains do not have - the presenc
 
 Ethereum has a slightly similar concept of ENS, which is built on the principles of DNS, with different levels (namespace) and management through smart contracts. In Waves, aliases are part of the protocol and all are in the global namespace, without division into domains and subdomains. One account can create an unlimited number of aliases by sending a special type of transaction:
 
-`` `js
+``` js
 const {alias} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
@@ -427,7 +427,7 @@ const params = {
 
 const signedAliasTx = alias (params, seed)
 broadcast (signedAliasTx)
-``
+```
 
 Alias ​​can consist of:
 
@@ -444,7 +444,7 @@ The alias must be between 4 and 30 characters long. The problem with aliases on 
 
 At the dawn of its history, Waves was known as a blockchain with very easy token issuance, and the community's natural desire was to simplify the next step of many token issuance campaigns - distributing tokens to recipients. To meet this demand, a transaction was created that allows you to send tokens from one address to many. There are only 2 restrictions - there can be no more than 100 recipients, and only 1 type of token is sent to all of them (you cannot make a `MassTransfer` and send the` A` token to the first half of the addresses, and `B` to the second).
 
-`` `js
+``` js
 const {massTransfer} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
@@ -467,7 +467,7 @@ const params = {
 
 const signedMassTransferTx = massTransfer (params, seed);
 broadcast (signedMassTransferTx);
-``
+```
 
 In addition to the convenience of working with such a transaction, compared to sending 100 transactions of the `Transfer` type, such a transaction is also cheaper. If the minimum commission for `Transfer` is 0.001 Waves (100000 Wavelet), then the minimum commission for` MassTransfer` is calculated by the formula:
 
@@ -477,71 +477,71 @@ That is, sending 100 `Transfer` transactions will cost us 0.1 Waves, while sendi
 
 ## Data transaction (type = 12)
 
-Особенность Waves, которая делает его крайне удобным блокчейном для работы с данными, является наличие `Data` транзакций, которые появились в апреле 2018 года и позволили записывать данные в блокчейн в очень удобном формате.
+A feature of Waves that makes it an extremely convenient blockchain for working with data is the presence of `Data` transactions, which appeared in April 2018 and made it possible to write data to the blockchain in a very convenient format.
 
-С введением `Data` транзакций, у каждого аккаунта появилось key-value хранилище, в которое можно записывать данные четырех типов: строки, числа, булевые значения и массивы байт.
+With the introduction of `Data` transactions, each account now has a key-value storage, into which you can write data of four types: strings, numbers, boolean values ​​and byte arrays.
 
-Хранилище аккаунта не имеет ограничения по общему размеру данных, которое можно туда записывать, но есть ограничения на:
+Account storage does not have a limit on the total size of data that can be written there, but there are limits on:
 
-- размер одной транзакции записи данных в хранилище не более 140 килобайт. Комиссия за транзакцию зависит от размера транзакции и считается по формуле `100000 + bytes.length * 100000`.
-- размер данных на один ключ не более 32 килобайт
-- размер ключа не более 100 символов. Ключами в хранилище могут быть только строки в формате UTF-8.
+- the size of one transaction for writing data to the storage is not more than 140 kilobytes. The transaction fee depends on the size of the transaction and is calculated using the formula `100000 + bytes.length * 100000`.
+- data size per key no more than 32 kilobytes
+- key size no more than 100 characters. Keys in the store can only be UTF-8 strings.
 
-Давайте посмотрим как записать данные с помощью JavaScript библиотеки:
+Let's see how to write data using the JavaScript library:
 
-`` `js
-const { data } = require('@waves/waves-transactions')
+``` js
+const {data} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
 
 const params = {
   data: [
-    { key: 'integerVal', value: 1 },
-    { key: 'booleanVal', value: true },
-    { key: 'stringVal', value: 'hello' },
-    { key: 'binaryVal', value: [1, 2, 3, 4] },
+    {key: 'integerVal', value: 1},
+    {key: 'booleanVal', value: true},
+    {key: 'stringVal', value: 'hello'},
+    {key: 'binaryVal', value: [1, 2, 3, 4]},
   ],
   // senderPublicKey: 'by default derived from seed',
-  //timestamp: Date.now(),
-  //fee: 100000 + bytes.length * 100000
+  // timestamp: Date.now (),
+  // fee: 100000 + bytes.length * 100000
 }
 
-const signedDataTx = data(params, seed);
-broadcast(signedDataTx);
+const signedDataTx = data (params, seed);
+broadcast (signedDataTx);
 
-``
+```
 
-Надо понимать, что состояние хранилища со всеми ключами и значениями может прочитать любой пользователь, более того, значение по любому ключу доступно всем смарт-контрактам в сети, будь то децентрализованное приложение, смарт ассет или смарт аккаунт.
+It should be understood that the state of the storage with all the keys and values ​​can be read by any user, moreover, the value for any key is available to all smart contracts on the network, be it a decentralized application, smart asset or smart account.
 
-Данные по ключу могут перезаписываться неограниченное количество раз, если обратное не указано в контракте аккаунта. В дальнейшем мы рассмотрим, как реализовать на аккаунте read-only пары, которые могут быть записаны только один раз и не могут быть изменены или удалены.
+Key data can be rewritten an unlimited number of times, unless otherwise specified in the account contract. In the future, we will consider how to implement read-only pairs on an account that can be written only once and cannot be changed or deleted.
 
-Многие пользователи ожидают, что у ассетов тоже есть свои key-value хранилища, однако это не так. Только аккаунт имеет такое хранилище, поэтому если вам необходимо записывать данные для использования ассетом - записывайте в аккаунт, который выпустил токен. Вы можете так же записывать в любой другой аккаунт, ведь можно читать любые ключи любых аккаунтов в коде вашего смарт-ассета.
+Many users expect that assets also have their own key-value stores, but this is not the case. Only an account has such storage, so if you need to record data for use by an asset, write to the account that issued the token. You can also write to any other account, because you can read any keys of any accounts in the code of your smart asset.
 
-Другой частый вопрос - "Можно ли удалить из хранилища ключ?". До недавнего времени такое было невозможно, но с релизом языка программирования Ride версии 4 это становится возможным. Чтобы сейчас не смешивать и Ride, и транзакции, давайте отложим рассмотрение кода Ride до следующей главы. Лучше сейчас поговорим по получение данных из хранилища аккаунта. Это можно сделать с помощью REST запроса к API ноды:
+Another frequent question is "Can a key be deleted from the repository?" Until recently, this was not possible, but with the release of the Ride programming language version 4, it becomes possible. To avoid confusing both Ride and transactions for now, let's defer reviewing the Ride code until the next chapter. Better now let's talk about getting data from the account storage. This can be done using a REST request to the node's API:
 
-1. Эндпоинт `/addresses/data/{address}?matches={regexp}` позволяет получить все данные из хранилища, при необходимости фильтруя ключи по регулярному выражению, передаваемому как параметр `matches`. Фильтрация по значениям пока не поддерживается в ноде.
-2. Эндпоинт `/addresses/data/{address}/{key}` позволяет получить значение одного ключа в хранилище одного аккаунта.
+1. The endpoint `/ addresses / data / {address}? Matches = {regexp}` allows you to get all data from the repository, if necessary, filtering keys by the regular expression passed as the parameter `matches`. Filtering by values ​​is not yet supported in the node.
+2. The endpoint `/ addresses / data / {address} / {key}` allows you to get the value of one key in the storage of one account.
 
-В библиотеке `waves-transactions` есть дополнительные методы, которые позволяют делать это без необходимости писать самим логику отправки запроса к API. Ниже пример получения всего состояния хранилища и значения по одному ключу:
+There are additional methods in the `waves-transactions` library that allow you to do this without having to write the logic for sending a request to the API yourself. Below is an example of getting the entire storage state and value by one key:
 
-`` `js
-const { nodeInteractions } = require('@waves/waves-transactions')
+``` js
+const {nodeInteractions} = require ('@ waves / waves-transactions')
 
 const address = '3P23fi1qfVw6RVDn4CH2a5nNouEtWNQ4THs'
 
-const wholeStorage = await accountData(address);
-const oneKeyValue = await accountDataByKey(address, "demoKey");
+const wholeStorage = await accountData (address);
+const oneKeyValue = await accountDataByKey (address, "demoKey");
 
-console.log(wholeStorage, oneKeyValue);
+console.log (wholeStorage, oneKeyValue);
 
-``
+```
 
-Как видите, все достаточно несложно. У API ноды Waves есть несколько особенностей, некоторые из которых хорошо бы знать до начала работы, чтобы в самый неподходящий момент не получить ошибку в момент исполнения вашего кода. К таким особенностям работы я бы отнес следующее:
+As you can see, everything is quite simple. The Waves API node has several features, some of which it would be good to know before starting work, so that at the most inopportune moment you do not get an error at the time of your code execution. These features of work, I would include the following:
 
-1. Нода предназначена в первую очередь для поддержания работы блокчейна, а не оптимальной работы с API, поэтому запросы всего хранилища для аккаунтов с большим количеством данных могут приводить к проблемам. Я бы никогда и никому не рекомендовал запрашивать весь стейт аккаунта, и если вы это делаете - вы скорее всего что-то делаете не так.
-2. Нода возвращает результаты в JSON, но в JSON нет возможности передавать массив байт, поэтому в отличие от других типов данных (строк, чисел и булевых значений), они кодируются в `base64` представление. На самом деле, при записи данных типа массив байт в блокчейн с помощью `waves-transactions` он так же конвертирует байты в `base64` строку и отправляет это, а не массив байт в виде чисел или нулей и единиц. Вот, например, как выглядит сформированная транзация для отправки в API c помощью `POST` запроса:
+1. The node is designed primarily to support the operation of the blockchain, and not to work optimally with the API, therefore, requests for the entire storage for accounts with a large amount of data can lead to problems. I would never recommend anyone to request the entire state of the account, and if you do this, you are most likely doing something wrong.
+2. The node returns the results in JSON, but there is no way to transfer an array of bytes in JSON, therefore, unlike other data types (strings, numbers and boolean values), they are encoded in the `base64` representation. In fact, when writing data like an array of bytes to the blockchain using `waves-transactions`, it also converts the bytes to a` base64` string and sends it, and not an array of bytes in the form of numbers or zeros and ones. For example, this is how the generated transaction looks for sending to the API using the `POST` request:
 
-`` 'json
+``` 'json
 
 {
   "type": 12,
@@ -572,53 +572,53 @@ console.log(wholeStorage, oneKeyValue);
     {
       "type": "binary",
       "key": "binaryVal",
-      "value": "base64:AQIDBA=="
+      "value": "base64: AQIDBA =="
     }
   ]
 }
 
-``
+```
 
-Будучи DevRel компании Waves, я получал много вопросов относительно потенциально некотролируемого роста размера блокчейна из-за хранилищ аккаунтов. Многих людей, особенно у которых есть опыт работы с другими блокчейнами, смущает факт возможности записывать много данных по фиксированной и достаточно низкой цене, а так же масштабируемость такого решения. В некоторых случаях (особенно долгосрочного хранения) блокчейн Waves может быть экономически выгоднее, чем хранение в Amazon S3, что потенциально опасно для масштабирования сети. Простого ответа на этот вопрос действительно нет, пока размер блокчейна Waves составляет порядка 40 гигабайт (не ~2.8 ТБ как в Ethereum), так что проблема не актуальна, зато простота записи позволяет делать "блокчейн для людей", о чем мы говорили в самом начале книги. Проблема станет актуальной только в случае быстрого роста популярности блокчейна Waves, но в таком случае будет расти и цена токенов, соответственно, стоимость хранилища тоже, что будет приводить к меньшему количеству желающих писать в блокчейн большие объемы данных. Там, где технология не могут полностью решить проблему, приходит на помощь экономика, что и будет происходить в случае роста популярности.
+As a DevRel at Waves, I received a lot of questions about the potentially uncontrolled growth of blockchain size due to account storage. Many people, especially those who have experience with other blockchains, are confused by the fact that it is possible to record a lot of data at a fixed and fairly low price, as well as the scalability of such a solution. In some cases (especially long-term storage), the Waves blockchain can be more cost effective than Amazon S3 storage, potentially dangerous for network scalability. There really is no simple answer to this question, while the size of the Waves blockchain is about 40 gigabytes (not ~ 2.8 TB as in Ethereum), so the problem is not relevant, but the ease of writing allows you to make a "blockchain for people", which we talked about at the very beginning books. The problem will become relevant only if the popularity of the Waves blockchain grows rapidly, but in this case the price of tokens will also grow, respectively, the cost of storage will also, which will lead to fewer people willing to write large amounts of data to the blockchain. Where technology cannot completely solve the problem, the economy comes to the rescue, which will happen if popularity grows.
 
-## SetScript транзакция (type = 13)
+## SetScript transaction (type = 13)
 
-Транзакции типа `SetSсript` мы косвенно затрагивали, когда говорили про смарт-аккаунты. Логику поведения смарт-аккаунта и децентрализованных приложений мы описываем с помощью языка Ride, который компилируется в `base64` представление одним из доступных способов (JS бибиотека `ride-js`, API ноды, Java пакет в Maven, online IDE, плагин для Visual Studio Code или консольная утилита `Surfboard`) и отправляется в составе `SetScript` транзакции:
+We indirectly touched on the transactions of the SetScript type when we talked about smart accounts. We describe the logic of the behavior of a smart account and decentralized applications using the Ride language, which is compiled into a `base64` representation in one of the available ways (JS library` ride-js`, API nodes, Java package in Maven, online IDE, plugin for Visual Studio Code or console utility `Surfboard`) and sent as part of the` SetScript` transaction:
 
-`` `js
-const { setScript } = require('@waves/waves-transactions')
+``` js
+const {setScript} = require ('@ waves / waves-transactions')
 const seed = 'example seed phrase'
 const params = {
-  script: 'AQa3b8tH', // TRUE в base64 представлении
+  script: 'AQa3b8tH', // TRUE in base64 representation
   // senderPublicKey: 'by default derived from seed',
-  //timestamp: Date.now(),
-  //fee: 100000,
-  //chainId: 'W'
+  // timestamp: Date.now (),
+  // fee: 100000,
+  // chainId: 'W'
 }
 
-const signedSetScriptTx = setScript(params, seed)
-broadcast(signedSetScriptTx);
-``
+const signedSetScriptTx = setScript (params, seed)
+broadcast (signedSetScriptTx);
+```
 
-`SetScript` транзакция используется только для аккаунтов, чтобы сделать из них Smart Account или децентрализованное приложение (dApp), но не для токенов. Установка скрипта с помощью `SetScript` транзакции меняет поведение аккаунта не только с точки зрения того, какие транзакции будут попадать в блокчейн, но и с точки зрения комиссии. Смарт-аккаунт платит на 0.004 Waves больше за каждый вид транзакции, по сравнению с обычным аккаунтом.
+The `SetScript` transaction is used only for accounts to make Smart Accounts or a decentralized application (dApp) out of them, but not for tokens. Installing a script using a `SetScript` transaction changes the behavior of an account, not only in terms of which transactions will go to the blockchain, but also in terms of fees. A smart account pays 0.004 Waves more for each type of transaction compared to a regular account.
 
-Чтобы превратить смарт-аккаунт в обычный аккаунт без скрита, необходимо отправить транзакцию `SetScript` с параметром `script` равным `null`. Но не каждый смарт-аккаунт может снова стать обычным аккаунтов. Скрипт смарт-аккаунта может прямо запрещать делать транзакцию `SetScript` или накладывать другие ограничения.
+To turn a smart account into a regular account without a script, you need to send a `SetScript` transaction with the` script` parameter equal to `null`. But not every smart account can become regular accounts again. The smart account script can explicitly prohibit making a `SetScript` transaction or impose other restrictions.
 
-## SetSponsorship транзакция (type = 14)
+## SetSponsorship transaction (type = 14)
 
-Особенности спонсирования транзакций и пример SetSponsorship транзакции мы рассматривали в [главе 4](../../sections/4-Tokens/4-2-sponsorship.md), но давайте кратко вспомнил основную суть.
+We discussed the specifics of transaction sponsorship and the SetSponsorship example of a transaction in [Chapter 4](../../ections/4-Tokens/4-2-sponsorship.md), but let's briefly recall the main point.
 
-Создать токена имеет возможность отправить транзакцию, которая включает спонсирование транзакций с использованием этого токена в качестве комиссии. Пользователи будут платить комиссию в токене, но так как майнеры всегда получают комиссию только в Waves, то Waves будут списываться с аккаунта, выпустившего токен.
+Create a token has the ability to send a transaction that includes sponsoring transactions using that token as a commission. Users will pay commission in token, but since miners always receive commission only in Waves, Waves will be debited from the account that issued the token.
 
-- Пользователь платит комиссию за транзакцию спонсируемым токеном (например, он отправляет 10 токенов, дополнительно платит 1 токен в виде комиссии, в итоге с его аккаунта списывается 11 токенов)
-- Создатель токена получает комиссию в его токене (1 в нашем примере)
-- С аккаунта создателя списываются WAVES в необходимом количестве и уходят майнерам (количество спонсируемых токенов и их соотетствие Waves настраивается в момент отправки транзакции SetSponsorship)
+- The user pays a commission for the transaction with a sponsored token (for example, he sends 10 tokens, additionally pays 1 token in the form of a commission, as a result, 11 tokens are debited from his account)
+- The creator of the token receives a commission in his token (1 in our example)
+- WAVES in the required amount are debited from the creator's account and go to the miners (the number of sponsored tokens and their correspondence Waves is configured at the time of sending the SetSponsorship transaction)
 
-! [How sponsorship works] (../../ assets / 4-2-1-sponsorship.png "How sponsorship works")
+![How sponsorship works](../../assets/4-2-1-sponsorship.png "How sponsorship works")
 
-Отправить транзакцию включения спонсирования можно достаточно просто:
+Submitting a sponsorship enable transaction is quite simple:
 
-`` `js
+``` js
 const {sponsorship} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
@@ -629,11 +629,11 @@ const params = {
 }
 
 const signedSponsorshipTx = sponsorship (params, seed)
-``
+```
 
 The code above will form (but not send to the blockchain) a transaction:
 
-`` 'json
+``` 'json
 {
   "id": "A",
   "type": 14,
@@ -647,53 +647,53 @@ The code above will form (but not send to the blockchain) a transaction:
     "42vz3SxqxzSzNC7AdVY34fM7QvQLyJfYFv8EJmCgooAZ9Y69YDNDptMZcupYFdN7h3C1dz2z6keKT9znbVBrikyG"
   ]
 }
-``
+```
 
-Чтобы отменить спонсирование транзакций, достаточно отправить транзакцию c полем `minSponsoredAssetFee` равным `null`.
+To cancel sponsoring a transaction, it is enough to send a transaction with the `minSponsoredAssetFee` field equal to` null`.
 
-## SetAssetScript транзакция (type = 15)
+## SetAssetScript transaction (type = 15)
 
-Данная транзакция по своей сути похожа на `SetScript` транзакцию, за одним исключением - она позволяет менять скрипт для токена, а не аккаунта.
+This transaction is in its essence similar to the `SetScript` transaction, with one exception - it allows you to change the script for the token, not the account.
 
-`` `js
+``` js
 
-const { setAssetScript } = require('@waves/waves-transactions')
+const {setAssetScript} = require ('@ waves / waves-transactions')
 const seed = 'example seed phrase'
 const params = {
-  script: 'AQa3b8tH', // TRUE в base64 представлении
+  script: 'AQa3b8tH', // TRUE in base64 representation
   assetId: '4uK8i4ThRGbehENwa6MxyLtxAjAo1Rj9fduborGExarC',
   // senderPublicKey: 'by default derived from seed',
-  //timestamp: Date.now(),
-  //fee: 100000,
-  //chainId: 'W'
+  // timestamp: Date.now (),
+  // fee: 100000,
+  // chainId: 'W'
 }
 
-const signedSetAssetScriptTx = setAssetScript(params, seed)
-broadcast(signedSetAssetScriptTx);
-``
+const signedSetAssetScriptTx = setAssetScript (params, seed)
+broadcast (signedSetAssetScriptTx);
+```
 
-`SetAssetScript` возможна только для ассетов, на которых уже есть скрипт. Если вы с помощью `Issue` транзакции выпустили токен, который не имеет скрипта, то установить на него скрипт в дальнейшем не удастся.
+`SetAssetScript` is only possible for assets that already have a script. If you issued a token using the `Issue` transaction that does not have a script, then you will not be able to install a script on it in the future.
 
-Установка скрипта на токен увеличивает минимальную комиссию для операций с этим токеном на 0.004 Waves (прямо как в случае со смарт-аккаунтами и децентрализованными приложениями).
+Installing a script on a token increases the minimum commission for operations with this token by 0.004 Waves (just like in the case of smart accounts and decentralized applications).
 
-Например, минимальная комиссия `Transfer` транзакции составляет 0.001, но для смарт-ассетов составляет 0.005 Waves. Если мы захотим сделать перевод смарт-ассета со смарт-аккаунта, то придется уже заплатить не менее 0.009 Waves (0.001 базовой стоимости, 0.004 прибавки за выполнение скрипта смарт-аккаунта/децентрализованного приложения и столько же за выполнение кода смарт-ассета).
+For example, the minimum `Transfer` transaction fee is 0.001, but for smart assets it is 0.005 Waves. If we want to transfer a smart asset from a smart account, then we will have to pay at least 0.009 Waves (0.001 base cost, 0.004 increments for executing the smart account / decentralized application script and the same amount for executing the smart asset code).
 
-## InvokeScript транзакция (type = 16)
+## InvokeScript transaction (type = 16)
 
-`InvokeScript` транзакция является одной из самых важных транзакций в сети, так как она предназначена для вызова функций в децетрализованных приложениях.
+The `InvokeScript` transaction is one of the most important transactions on the network, as it is designed to call functions in decentralized applications.
 
-`` `js
-const { invokeScript } = require('@waves/waves-transactions')
+``` js
+const {invokeScript} = require ('@ waves / waves-transactions')
 
 const seed = 'example seed phrase'
 
 const params = {
 
   call: {
-    args: [{ type: 'integer', value: 1 }],
-    args: [{ type: 'binary', value: 'base64:AAA=' }],
-    args: [{ type: 'string', value: 'foo' }],
-    args: [{ type: 'boolean', value: true }],
+    args: [{type: 'integer', value: 1}],
+    args: [{type: 'binary', value: 'base64: AAA ='}],
+    args: [{type: 'string', value: 'foo'}],
+    args: [{type: 'boolean', value: true}],
     function: 'foo',
   },
   payment: [
@@ -710,130 +710,130 @@ const params = {
   fee: 500000,
   feeAssetId: '73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK',
   // senderPublicKey: 'by default derived from seed',
-  //timestamp: Date.now(),
-  //fee: 100000,
-  //chainId:
+  // timestamp: Date.now (),
+  // fee: 100000,
+  // chainId:
 }
 
-const signedInvokeScriptTx = invokeScript(params, seed)
-console.log(signedInvokeScriptTx)
+const signedInvokeScriptTx = invokeScript (params, seed)
+console.log (signedInvokeScriptTx)
 
-``
+```
 
-Пример выше вызовет функцию `foo` децентрализованного приложения на аккаунте с адресом  `3Fb641A9hWy63K18KsBJwns64McmdEATgJd`. При вызове функции передаются 4 аргумента. Аргументы в `InvokeScript` не именованные, но их порядок должен совпадать с порядком, объявленным в коде децентрализованного приложения. `InvokeScript` позволяет так же прикрепить к вызову до 2 видов токенов в качестве платежа. В примере выше в качестве оплаты прикрепляются токен `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK` и Waves (с `assetId = null`).
+The example above will call the `foo` function of the decentralized application on the account with the address` 3Fb641A9hWy63K18KsBJwns64McmdEATgJd`. When calling the function, 4 arguments are passed. The arguments in `InvokeScript` are unnamed, but their order must match the order declared in the code of the decentralized application. `InvokeScript` also allows you to attach up to 2 types of tokens to the call as payment. In the example above, the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK` and Waves (with` assetId = null`) are attached as payment.
 
-`InvokeScript` наряду с `Transfer` могут быть спонсированы, поэтому в примере выше вызов контракта оплачивается токеном `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK`, который должен быть спонсированным.
+`InvokeScript` along with` Transfer` can be sponsored, so in the example above the contract call is paid for with the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK`, which must be sponsored.
 
-При работе с некоторыми приложениями может возникать желание отправлять транзакции типа `InvokeScript` с больш**и**ми аргументами, но сделать это не получится, так как ограничение на размер всей транзакции составляет 5кб (включая все аргументы). Если функции в децентрализованном приложении надо передавать аргументы, которые больше этого ограничения, то возможен следующий сценарий:
+When working with some applications, there may be a desire to send transactions like `InvokeScript` with large ** and ** arguments, but this will not work, since the size limit for the entire transaction is 5Kb (including all arguments). If the functions in the decentralized application need to be passed arguments that are larger than this limit, then the following scenario is possible:
 
-1. Отправить `Data` транзакцию (до ~140кб данных)
-2. При вызове функции с помощью `InvokeScript` передавать в качестве аргумента ключи, которые были записаны с помощью `Data` транзакции.
-3. В коде децентрализованного приложения читать значения по переданным ключам и их обрабатывать.
+1. Send `Data` transaction (up to ~ 140kb of data)
+2. When calling a function using `InvokeScript`, pass as an argument the keys that were written using the` Data` transaction.
+3. In the code of the decentralized application, read the values ​​by the passed keys and process them.
 
-## UpdateAssetInfo транзакция (type = 17) [stagenet]
+## UpdateAssetInfo transaction (type = 17) [stagenet]
 
-Новая транзакция `UpdateAssetInfo` (type = 17) доступна только в сети Stagenet на момент написания этих строк. Она позволяет обновлять данные о выпущенном токене. В протоколе давно существует транзакция перевыпуска (`Reissue`), которая позволяет довыпустить токены и запретить перевыпуск в дальнейшем, но возможности изменить название или описание токена раньше не было.
+The new transaction `UpdateAssetInfo` (type = 17) is only available on Stagenet at the time of this writing. It allows you to update the data on the issued token. The protocol has long had a `Reissue` transaction, which allows to reissue tokens and prohibit reissue in the future, but there was no possibility to change the name or description of the token before.
 
-Чтобы избежать недопониманий, давайте зафиксируем отличия транзакций перевыпуска (`Reissue`) и обновления информации (`UpdateAssetInfo`):
+To avoid misunderstandings, let's capture the differences between the `Reissue` and` UpdateAssetInfo` transactions:
 
-- `Reissue` позволяет довыпустить токен (количество задается создателем) и поменять флаг `reissuable` (только на `false`), если в момент выпуска токена создатель поставил `reissuable = true`.
-- `UpdateAssetInfo` позволяет обновить название и описание токена, но не чаще, чем раз в 100 000 блоков.
+- `Reissue` allows you to reissue a token (the amount is set by the creator) and change the` reissuable` flag (only to `false`), if the creator set` reissuable = true` at the time the token is issued.
+- `UpdateAssetInfo` allows you to update the name and description of the token, but not more often than once every 100,000 blocks.
 
-`` `js
-const { updateAssetInfo } = require('@waves/waves-transactions')
+``` js
+const {updateAssetInfo} = require ('@ waves / waves-transactions')
 const seed = 'example seed phrase'
 const params = {
-  script: 'AQa3b8tH', // TRUE в base64 представлении
+  script: 'AQa3b8tH', // TRUE in base64 representation
   assetId: '4uK8i4ThRGbehENwa6MxyLtxAjAo1Rj9fduborGExarC',
   description: "New description",
   name: "New name"
   // senderPublicKey: 'by default derived from seed',
-  //timestamp: Date.now(),
-  //fee: 100000,
-  //chainId: 'W'
+  // timestamp: Date.now (),
+  // fee: 100000,
+  // chainId: 'W'
 }
 
-const updateAssetInfoTx = updateAssetInfo(params, seed)
-broadcast(updateAssetInfoTx);
-``
+const updateAssetInfoTx = updateAssetInfo (params, seed)
+broadcast (updateAssetInfoTx);
+```
 
-## Особенности работы с транзакциями
+## Peculiarities of working with transactions
 
-При формировании транзакций с использованием библиотек часто хочется указывать минимальное количество параметров, чтобы библиотека сама заполнила все остальные. Библиотека `waves-transactions` так и делает, предлагая заполнить только самые важные поля и подставляя остальные параметры по умолчанию. Однако существуют поля в библиотеке, заполнять которые самим не обязательно, но понимать их и знать об их существовании желательно.
+When forming transactions using libraries, you often want to specify the minimum number of parameters so that the library itself will fill all the rest. The `waves-transactions` library does just that, offering to fill in only the most important fields and substituting the rest of the parameters by default. However, there are fields in the library, which you do not need to fill in yourself, but it is advisable to understand them and know about their existence.
 
 ### additionalFee
 
-Для всех типов транзакций есть дополнительное поле `additionalFee`, который позволяет добавить дополнительную комиссию к значениям по умолчанию. Это может быть полезно в 2 случаях:
+For all types of transactions there is an additional field `additionalFee`, which allows you to add an additional fee to the default values. This can be useful in 2 cases:
 
-- Указать дополнительную комиссию при работе со смарт-ассетами и смарт-аккаунтами. Например, минимальная комиссия за `Transfer` транзакция по умолчанию составляет 0.001 Waves и именно это значение укажет библиотека `waves-transactions`, но в случае работы со смарт-ассетами необходимо дополнительно заплатить 0.004. Библиотека не знает, что транзакция отправляется с использованием смарт-ассета, поэтому разработчику необходимо самому предусматривать дополнительную комиссию. Конечно, можно использовать поле `fee`, чтобы указать всю комиссию целиком, но использование `additionalFee` удобнее, ведь не надо самому помнить минимальные комиссии за каждый тип транзакции.
-- Отправлять транзация с повышенной комиссией для быстрого попадания в блок. Загрузка сети Waves сейчас сильно меньше пропускной способности, поэтому необходимость указывать повышенную комиссию встает крайне редко, но такая возможность существует. В следующей главе мы поговорим про сортировку транзакций в UTX (листе ожидания для попадания в блок) и вы поймете как размер комиссии влияет на скорость попадания в блок.
+- Specify an additional commission when working with smart assets and smart accounts. For example, the default minimum commission for a `Transfer` transaction is 0.001 Waves and this value will be indicated by the` waves-transactions` library, but in the case of working with smart assets, you need to pay an additional 0.004. The library does not know that the transaction is being sent using a smart asset, so the developer must provide an additional fee himself. Of course, you can use the `fee` field to indicate the entire fee, but using` additionalFee` is more convenient, because you don't have to remember the minimum fees for each type of transaction yourself.
+- Send a transaction with an increased commission to quickly get into the block. The download of the Waves network is now much less than the bandwidth, so the need to indicate an increased commission is extremely rare, but such a possibility exists. In the next chapter we will talk about sorting transactions in UTX (waiting list for hitting a block) and you will understand how the size of the commission affects the speed of hitting a block.
 
-В таблице ниже представлены минимальные комиссии за транзакции разных типов (при отправке с обычного аккаунта и без взаимодействия со смарт-ассетами):
+The table below shows the minimum fees for different types of transactions (when sending from a regular account and without interacting with smart assets):
 
 ![Min transaction fees](../../assets/5-2-1-transaction-min-fees.png "Min transaction fees")
 
 ### chainId
 
-В примерах транзакций выше вы могли замечать поле `chainId`, которое чаще всего было указано как `W`. Каждая транзакция в сети `Waves` содержит в себе байт сети либо в прямом виде, либо опосредованно (когда в транзакциях задействован адрес получателя). Байт сети мы рассматривали, когда говорили про адреса в [разделе 3](../../sections/3-Accounts/3-1-keys.md).
+In the transaction examples above, you may have noticed the `chainId` field, which was most often specified as` W`. Each transaction in the `Waves` network contains a byte of the network either directly or indirectly (when the recipient's address is involved in transactions). We considered the network byte when we talked about addresses in [section 3](../../sections/3-Accounts/3-1-keys.md).
 
-Байт сети - уникальный идентификатор сети, который позволяет отличать адреса и транзакции в разных сетях (mainnet, testnet, stagenet). Байты сети для перечисленных выше сетей - `W`, `T`, `S` соответственно. Благодаря байту сети невозможно ошибиться и отправить токены на адрес, которого не может существовать в этой сети, в которой отправляется транзакция. Если бы не было байта сети, то была бы возможна атака на пользователей, которые используют одну пару приватного и публичного ключей в нескольких сетях (stagenet и mainnet, например). Злоумышленник мог бы скопировать транзакцию из сети stagenet от пользователя и отправить ее в сеть mainnet, произведя действие, которое пользователь не хотел делать в mainnet. Благодаря байту сети такое невозможно.
+Network byte is a unique network identifier that allows you to distinguish addresses and transactions on different networks (mainnet, testnet, stagenet). The network bytes for the networks listed above are `W`,` T`, `S`, respectively. Thanks to the network byte, it is impossible to make a mistake and send tokens to an address that cannot exist on this network on which the transaction is sent. If there were no network byte, it would be possible to attack users who use one pair of private and public keys in several networks (stagenet and mainnet, for example). An attacker could copy the transaction from the stagenet from the user and send it to the mainnet, performing an action that the user did not want to do in the mainnet. Thanks to the network byte, this is impossible.
 
 ### timestamp
 
-У каждой транзакции есть время его создания, которое прописывается в транзакции и подписывается отправителем наряду с другими полями. `waves-transactions` по умолчанию поставит время, которое задано в оперциаонной системе, где запускается код. В протоколе Waves ноды синхронизируют время друг с другом с помощью протокола NTP, поэтому отличие между ними составляет не больше 1 секунды. Можно сказать, что сеть Waves знает актуальное время, и актуальное время прописывается в теле блока в момент его создания нодой. Если какой-либо генератор попытается сделать блок "из прошлого" или "из будущего", то остальные генераторы и валидаторы такой блок не примут.
+Each transaction has its creation time, which is recorded in the transaction and signed by the sender along with other fields. `waves-transactions` will default to the time that is set in the operating system where the code is run. In the Waves protocol, the nodes synchronize time with each other using the NTP protocol, so the difference between them is no more than 1 second. We can say that the Waves network knows the current time, and the current time is written in the body of the block at the time of its creation by the node. If any generator tries to make a block "from the past" or "from the future", then other generators and validators will not accept such a block.
 
-Что же касается времени транзакции, то оно может отличаться от времени блока не более, чем на 90 минут в прошлом и 120 минут в будущем. Вы можете отправить транзакцию, в которой `timestamp` будет из будущего на 120 минут и генераторы попробуют добавить ее в блок, но если отправить со временем, которое больше времени на нодах на 121 минуту, то транзакция уже будет отвергнута.
+As for the transaction time, it may differ from the block time by no more than 90 minutes in the past and 120 minutes in the future. You can send a transaction in which the `timestamp` will be from the future for 120 minutes and the generators will try to add it to the block, but if you send it with a time that is 121 minutes longer on the nodes, the transaction will already be rejected.
 
-Параметр `timestamp` может использоваться для регулирования сколько максимально времени транзакция может находиться в списке ожидания на попадание в блок. Если сеть загружена, транзакции попадают в блок очень медленно и нам не хочется платить большую комиссию, но мы готовы подождать, то можно поставить `timestamp`, который на 120 минут больше времени на нодах. Такая транзакция будет валидной в течение 210 минут (3 с половиной часа) и только если она не попала в блок в течение этого времени, она будет отвергнута. Может быть и обратная ситуация, когда нам важно, чтобы транзакция могла только быстро попасть в блок или не попасть вовсе. В таком случае, установка `timestamp` на 85 минут меньше, чем актуальное время, гарантирует, что она будет валидной только 5 минут, и если в течение этих 5 минут не попала в блок, то будет вычищена из UTX и уже никогда не попадет в блок.
+The `timestamp` parameter can be used to regulate how long a transaction can be in the waiting list to hit a block. If the network is loaded, transactions enter the block very slowly and we do not want to pay a large commission, but we are ready to wait, then we can put a `timestamp`, which is 120 minutes longer on the nodes. Such a transaction will be valid for 210 minutes (3 and a half hours) and only if it does not hit the block during this time, it will be rejected. There may be a reverse situation, when it is important for us that a transaction can only quickly get into a block or not get it at all. In this case, setting a timestamp 85 minutes less than the current time ensures that it is only valid for 5 minutes, and if it does not hit the block during these 5 minutes, it will be cleared from UTX and never hit block.
 
-При использовании поля `timestamp` транзакций в коде смарт-контрактов необходимо помнить, что оно может отличаться от настоящего на [-90; +120] минут. В разделе 7 мы поговорим о том, как правильно использовать время, если оно вам все-таки надо в коде контракта.
+When using the field `timestamp` of transactions in the code of smart contracts, remember that it may differ from the present by [-90; +120] minutes. In section 7 we will talk about how to use time correctly, if you still need it in the contract code.
 
 ### proofs
 
-Поле `proofs` является массивом, который предназначен для подписей транзакции. Подписей может быть до 8. На самом деле, в этом поле можно хранить не только подписи, но и использовать для передачи в качестве аргументов в смарт-аккауты или децентрализованные приложения. Это особенно может быть полезно при работе со смарт-аккаунтами, которые не могут принимать аргументы как функции.
+The `proofs` field is an array for transaction signatures. There can be up to 8 signatures. In fact, not only signatures can be stored in this field, but also used to pass them as arguments to smart accounts or decentralized applications. This can be especially useful when working with smart accounts that cannot accept arguments as functions.
 
 ### id
 
-Каждая транзакция в сети имеет уникальный ID, который является хэшом на основе полей транзакции. В сети не может быть 2 одинаковых транзакций с двумя одинаковыми ID. ID транзакции вычисляется `waves-transactions` автоматически и оно может быть использовано для работы с API - для ожидания попададания в блок или проверки статуса.
+Every transaction on the network has a unique ID, which is a hash based on the fields of the transaction. There cannot be 2 identical transactions with two identical IDs in the network. The transaction ID is calculated by `waves-transactions` automatically and it can be used to work with the API - to wait for a block hit or check the status.
 
 ### version
 
-В сети Waves есть не только много разных типов транзакций, но могут быть несколько разных версий для каждого типа. Например, для типов вроде `Transfer` или `Issue` существуют 3 версии. Важно учитывать, что JSON представление транзакций при работе с API может отличаться для разных версий одного и того же типа.
+Not only are there many different types of transactions on the Waves network, but there may be several different versions for each type. For example, there are 3 versions for types like `Transfer` or` Issue`. It is important to keep in mind that the JSON representation of transactions when working with an API may differ for different versions of the same type.
 
 ## Signature of transactions
 
-У каждой транзакции последних версий может быть не одна подпись, а до 8. В примерах выше мы всегда использовали сид фразу, из которой библиотека `waves-transactions` сама получала публичный ключ `senderPublicKey` и подпись в массив `proofs`. Бывают ситуации, когда отправить необходимо транзакцию с одного аккаунта, а подписать ключом другого. В таком случае, формировать транзакцию нужно с явным указанием `senderPublicKey` отправителя следующим образом:
+Each transaction of the latest versions may have not one signature, but up to 8. In the examples above, we always used a seed phrase, from which the `waves-transactions` library itself received the public key` senderPublicKey` and the signature in the `proofs` array. There are situations when you need to send a transaction from one account, and sign with the key of another. In this case, you need to form a transaction with an explicit indication of the senderPublicKey of the sender as follows:
 
-`` `js
-const { setScript } = require('@waves/waves-transactions')
+``` js
+const {setScript} = require ('@ waves / waves-transactions')
 const seed = 'example seed phrase'
 const params = {
-  script: 'AQa3b8tH', // TRUE в base64 представлении
+  script: 'AQa3b8tH', // TRUE in base64 representation
   senderPublicKey: '4VStEwhXhsv6wQ6PBR5CfEYD8m91zYg2pcF7v17QGSbJ',
 }
 
-const signedSetScriptTx = setScript(params, seed)
-``
+const signedSetScriptTx = setScript (params, seed)
+```
 
-Если же необходимо подписать несколькими ключами, то существует 2 варианта это сделать:
+If you need to sign with several keys, then there are 2 options to do this:
 
-- использовать функцию `addProof(tx: ITransaction, seed: string)`, которая принимает тело сформированной транзакции и добавляет подпись от сида, передаваемого вторым аргументом
-- при формировании транзакции передавать массив сид фраз
+- use the `addProof (tx: ITransaction, seed: string)` function, which accepts the body of the generated transaction and adds the signature from the seed passed as the second argument
+- when forming a transaction, send an array of seed phrases
 
-`` `js
-const { setScript } = require('@waves/waves-transactions')
+``` js
+const {setScript} = require ('@ waves / waves-transactions')
 const seeds = ['0 - example seed phrase', '1 - example seed phrase', null, '3 - example seed phrase']
 const params = {
-  script: 'AQa3b8tH', // TRUE в base64 представлении
+  script: 'AQa3b8tH', // TRUE in base64 representation
   senderPublicKey: '4VStEwhXhsv6wQ6PBR5CfEYD8m91zYg2pcF7v17QGSbJ',
 }
 
-const signedSetScriptTx = setScript(params, seeds)
-``
+const signedSetScriptTx = setScript (params, seeds)
+```
 
-В таком случае, созданная транзакция будет содержать 3 подписи в массиве `proofs` под индексами 0, 1 и 3, а под индексом 2 будет `null`:
+In this case, the created transaction will contain 3 signatures in the `proofs` array under indexes 0, 1 and 3, and under index 2 there will be` null`:
 
-`` 'json
+``` 'json
 {
   "type": 13,
   "version": 1,
@@ -848,6 +848,6 @@ const signedSetScriptTx = setScript(params, seeds)
     "2d6yyeTzjF5J8frSyuyBf3B2qKyoKuHEJq4X22joghjyeW7nZJBWdQhLVfxaUYQ6GnAhjXA7Mz7FXXkhRz7n5Zh9"
   ],
   "id": "8btD3NufMo8VApFi4opTPPdfa2ej6w2SFTojCaMcaqQq",
-  "script": "base64:..."
+  "script": "base64: ..."
 }
-``
+```
