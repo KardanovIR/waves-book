@@ -1,36 +1,36 @@
 # Gravity
 
-В конце 2019 в Берлине Александр Иванов, основатель протокола Waves анонсировал создание Gravity, нового продукта команды, которая призвана решить сразу несколько проблем.
+At the end of 2019 in Berlin, Alexander Ivanov, the founder of the Waves protocol, announced the creation of Gravity, a new product of the team, which is designed to solve several problems at once.
 
-Мы сейчас наблюдаем бурное развитие развитие многообразия блокчейн-протоколов, платформ и экспериментальных разработок, почти такой же бурный рост Интернета мы наблюдали 20 лет назад. Разнообразие технологий порождает прогресс, в то же самое время оно приводит к ослаблению принятия технологий массами (mass adoption). Разработчики продуктов и организации сейчас вынуждены выбирать конкретную технологию или протокол, на базе которого они будут строить свои приложения. В свою очередь, пользователи и аудитория других протоколов теряют доступ к таким приложениям. Все это делает экосистему в целом очень разобщенной, фрагментированной и экономически неэффективной.
+We are now seeing a rapid development in the development of a variety of blockchain protocols, platforms and experimental developments, almost the same rapid growth of the Internet we saw 20 years ago. The diversity of technologies generates progress, at the same time it leads to a weakening of the adoption of technology by the masses (mass adoption). Product developers and organizations are now forced to choose a specific technology or protocol on which to build their applications. In turn, users and audiences of other protocols lose access to such applications. All this makes the ecosystem as a whole very fragmented, fragmented and economically ineffective.
 
-Каждая децентрализованная система с внутренней экономикой токена является замкнутой с точки зрения обмена информацией как с другими сетями, так и с внешним миром. Для передачи данных из внешнего мира в блокчейн сеть, а также коммуникации между различными блокчейн сетями, необходимо доверять так называемым оракулам. Возникает парадокс необходимости доверия отдельным элементам в системах, предназначенных убрать элементы доверия. Поиск и разработка решений, создающих условия повышенной надежности и безопасности использования блокчейн сетей с оракулами, а также коммуникации между сетями является ключевой задачей в индустрии на данный момент.
+Each decentralized system with an internal token economy is closed in terms of the exchange of information both with other networks and with the outside world. To transfer data from the outside world to the blockchain network, as well as communication between different blockchain networks, it is necessary to trust the so-called oracles. The paradox of the need to trust individual elements in systems designed to remove elements of trust arises. The search and development of solutions that create conditions for increased reliability and security of the use of blockchain networks with oracles, as well as communication between networks, is a key task in the industry at the moment.
 
-Наконец, эффективное решение задачи кросс-блокчейн коммуникации и оракулов данных открывает возможности для горизонтального масштабирования продуктов, которые построены над блокчейн протоколами, через механизм так называемых сайдчейнов.
+Finally, an effective solution to the problem of cross-blockchain communication and data oracles opens up opportunities for horizontal scaling of products that are built on blockchain protocols through the mechanism of so-called sidechains.
 
-На сегодняшний день уже существуют проекты, решающие описанные выше проблемы: Chainlink, CosmosHub, Polkadot и другие. Однако, большинство существующих решений обладают тремя общими недостатками:
+To date, there are already projects that solve the problems described above: Chainlink, CosmosHub, Polkadot and others. However, most of the existing solutions have three common disadvantages:
 
-- Ориентированы на развитие своего собственного, дополнительного блокчейна, вместо того, чтобы действительно быть блокчейн-агностик решением.
-- Вносят в систему новый уровень сложности в виде токена, с особыми экономическими свойствами и плавающим, сильно волатильным курсом.
-- Не являются в реальности комплексной блокчейн-агностик системой оракулов, поддерживающей коммуникацию блокчейн сетей с внешним миром, кросс-блокчейн коммуникацию и переводы средств, а также сайдчейны в рамках одной целостной структуры.
+- Focused on developing their own, complementary blockchain, instead of really being a blockchain agnostic solution.
+- Introduce a new level of complexity into the system in the form of a token with special economic properties and a floating, highly volatile exchange rate.
+- In reality, they are not a complex blockchain-agnostic system of oracles that supports communication of blockchain networks with the outside world, cross-blockchain communication and funds transfers, as well as sidechains within one coherent structure.
 
-[Gravity](https://gravity.tech/) призван решить обозначенные проблемы и представляет собой решение следующих задач, отсортированных в порядке приоритета:
+[Gravity](https://gravity.tech/) is designed to solve the indicated problems and is a solution to the following problems, sorted in order of priority:
 
-- Блокчейн агностик децентрализованная кросс-блокчейн коммуникация: децентрализованные приложения в разных блокчейнах должны иметь возможность обмениваться данными или ценностями. Например владелец аккаунта на Waves должен иметь возможность работать с приложением Uniswap в сети Ethereum, без необходимости создания аккаунта в Ethereum и покупки токенов Eth. Или любой владелец аккаунта в сети Ethereum должен быть в состоянии использовать Neutrino dApp и заниматься стейкингом без необходимости создания аккаунта в Waves и покупки Waves на биржах. Все это будет автоматически обеспечиваться системой Gravity
-- Экономическая мотивация агентов предоставлять данные из реального мира и других блокчейнов: Gravity предоставляет провайдерам данных возможность монетизировать свои услуги, выражаемые в нативных токенах поддерживаемых Gravity блокчейн платформ
-- Наличие возможности получать данные из реального мира и из других блокчейнов без необходимости доверия централизованной сущности открывает возможности для масштабирования сетей с использованием сайдчейнов
-- Предоставление разработчикам технического разнообрания, чтобы они могли выбирать наиболее подходящие инструменты: виртуальные машины или не Тьюринг-полные языки программирования; фиксированные или изменяющиеся комиссии; алгоритмы консенсуса (Proof of Work, Proof of Stake, Leased Proof Of Stake, BFT и т.д.).
+- Blockchain agnostic decentralized cross-blockchain communication: Decentralized applications across different blockchains must be able to exchange data or values. For example, a Waves account holder should be able to work with the Uniswap app on the Ethereum network, without having to create an Ethereum account and buy Eth tokens. Or any Ethereum account holder should be able to use the Neutrino dApp and stake without having to create a Waves account and buy Waves on exchanges. All this will be automatically provided by the Gravity system.
+- Economic motivation of agents to provide data from the real world and other blockchains: Gravity provides data providers with the opportunity to monetize their services, expressed in native tokens of Gravity-supported blockchain platforms
+- Having the ability to receive data from the real world and from other blockchains without the need to trust a centralized entity opens up opportunities for scaling networks using sidechains
+- Providing developers with a technical variety so that they can choose the most suitable tools: virtual machines or non-Turing-complete programming languages; fixed or variable fees; consensus algorithms (Proof of Work, Proof of Stake, Leased Proof Of Stake, BFT, etc.).
 
-> Проще говоря, Gravity решает 2 проблемы:
-> 1. проблему оракулов - через их децентрализацию (мы рассматривали проблемы в главе 7 на примере Oraculus)
-> 2. проблему несовместимости протоколов блокчейнов - через возможность пересылать данные и средства из одного блокчейна в другой
+> Simply put, Gravity solves 2 problems:
+> 1.problem of oracles - through their decentralization (we looked at problems in chapter 7 on the example of Oraculus)
+> 2. the problem of incompatibility of blockchain protocols - through the ability to transfer data and funds from one blockchain to another
 
-**В отличие от других похожих платформ, Gravity не использует свой токен, чем выгодно отличается от конкурентов.**
+**Unlike other similar platforms, Gravity does not use its own token, which compares favorably with competitors.**
 
-Схема работы Gravity представлена на схеме ниже:
+The scheme of work of Gravity is shown in the diagram below:
 
 ![Gravity](../../assets/9-1-0.png "Gravity")
 
-Разработка Gravity сейчас находится в активной фазе, ведется исследовательская работа и идут обсуждения лучшей архитектуры решения, поэтому, если вам интересно принять участие, вы можете это сделать в [Github Gravity](https://github.com/orgs/Gravity-Tech).
+Development of Gravity is currently in active phase, research work is underway and discussions on the best solution architecture are underway, so if you are interested in participating, you can do it in [Github Gravity](https://github.com/orgs/Gravity-Tech) ...
 
-Полное техническое описание и принципы, на которых строится Gravity, вы можете найти в [White Paper](https://gravity.tech/docs/whitepaper.pdf).
+The full technical description and principles on which Gravity is built can be found in the [White Paper](https://gravity.tech/docs/whitepaper.pdf).

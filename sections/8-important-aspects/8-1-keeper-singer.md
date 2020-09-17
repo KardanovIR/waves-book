@@ -1,96 +1,96 @@
-# Взаимодействия с пользователем
+# User interactions
 
-Во всех примерах до этого мы рассматривали либо статичные сид фразы прямо в коде, либо генерировали сид фразы для пользователей, однако в реальной разработке Web3 приложений нам чаще необходимо взаимодействовать с пользователем для получения подписи. При этом, запрашивать у него сид фразу или приватный ключ мы не можем, так как это совершенно не безопасно. Имея приватный ключ или сид фразу пользователя, можно делать любые действия с его аккаунтом, поэтому децентрализованные приложения запрашивают подпись для каждого конкретного действия.
+In all the examples before, we considered either static seed phrases right in the code, or generated seed phrases for users, but in real Web3 application development we often need to interact with the user to get a signature. At the same time, we cannot request a seed phrase or a private key from him, since this is completely unsafe. Having a private key or a user's seed phrase, you can do any action with his account, so decentralized applications request a signature for each specific action.
 
-Давайте сравним логику работы обычного приложения и Web3 приложения, чтобы нагляднее понять разницу в логике. Начнем с обычного веб-приложения, логика работы которого сводится к следующим шагам:
+Let's compare the logic of a regular application and a Web3 application to better understand the difference in logic. Let's start with a regular web application, the logic of which boils down to the following steps:
 
-1. Веб браузер запрашивает некий URL
-2. Веб сервер передает в виде ответа HTML, CSS, JavaScript и данные
-3. Пользователь видит отрисованную страницу с данными
-4. Пользователь совершает какие-либо действия (нажатия на кнопки, отправка форм), после которых логика приложения (JavaScript) делает XHR (AJAX) запросы на сервер
-5. Веб сервер отвечает новой порцией HTML, CSS, JavaScript и данных
+1. The web browser requests a certain URL
+2. The web server sends HTML, CSS, JavaScript and data as a response
+3. The user sees the rendered page with data
+4. The user takes any action (clicks on buttons, submitting forms), after which the application logic (JavaScript) makes XHR (AJAX) requests to the server
+5. The web server responds with a new batch of HTML, CSS, JavaScript and data
 
 ![Web2 app](../../assets/8-1-0-web2-app.png "Web2 app")
 
-Логика работы Web3 приложения другая:
+The logic of the Web3 application is different:
 
-1. Веб браузер запрашивает некий URL
-2. Веб сервер передает в виде ответа HTML, CSS, JavaScript и данные
-3. JavaScript код запрашивает дополнительные данные у блокчейн ноды
-4. Пользователь видит отрисованную страницу с данными
-5. Пользователь совершает какие-либо действия для чтения (нажатия на кнопки, отправка форм), после которых логика приложения (JavaScript) делает XHR (AJAX) запросы на сервер **и/или к ноде блокчейна**
-6. Веб сервер отвечает новой порцией HTML, CSS, JavaScript и данных
-7. Для случаев **записи и обновления данных**, перед отправкой запроса к ноде блокчейна, клиентский код на JavaScript **запрашивает подпись пользователя**
+1. The web browser requests a certain URL
+2. The web server sends HTML, CSS, JavaScript and data as a response
+3. JavaScript code requests additional data from the blockchain node
+4. The user sees the rendered page with data
+5. The user takes any read actions (clicks on buttons, submitting forms), after which the application logic (JavaScript) makes XHR (AJAX) requests to the server ** and / or to the blockchain node **
+6. The web server responds with a new batch of HTML, CSS, JavaScript and data
+7. For cases ** recording and updating data **, before sending a request to a blockchain node, the client code in JavaScript ** requests a user signature **
 
 ![Web3 app](../../assets/8-1-0-web3-app.png "Web3 app")
 
-Существует несколько способов работы с ключами пользователей, и самым распространенным является использование браузерных расширений. В экосистеме Waves принято использование расширения Waves Keeper, которое хранит сид-фразы и позволяет подписывать действия пользователя.
+There are several ways to work with user keys, and the most common is using browser extensions. The Waves ecosystem has adopted the Waves Keeper extension, which stores seed phrases and allows signing user actions.
 
 ## Waves Keeper
 
-Waves Keeper позволяет пользователям управлять своими аккаунтами:
+Waves Keeper allows users to manage their accounts:
 
-1. Создавать новые аккаунты со случайной сид фразой или добавлять уже созданные
-2. Отображать балансы токена Waves на каждом аккаунте
-3. Подписывать транзакции и другие данные
-4. Работать с разными сетями (mainnet, stagenet, testnet или приватная).
+1. Create new accounts with a random seed phrase or add already created ones
+2. Display the balances of the Waves token on each account
+3. Sign transactions and other data
+4. Work with different networks (mainnet, stagenet, testnet or private).
 
-Waves Keeper доступен для пользователей Google Chrome, Firefox, Edge, Opera, Brave. Ссылки на скачивание вы можете найти [на странице продукта на сайте протокола](https://wavesprotocol.org/protocol/keeper).
+Waves Keeper is available for Google Chrome, Firefox, Edge, Opera, Brave users. You can find download links [on the product page on the protocol website](https://wavesprotocol.org/protocol/keeper).
 
-В отличие от расширений для других протоколов, например, Metamask для Ethereum, Waves Keeper не является полноценным кошельком, так как не позволяет смотреть историю транзакций или создать транзакцию (только подписать ее).
+Unlike extensions for other protocols, for example, Metamask for Ethereum, Waves Keeper is not a full-fledged wallet, since it does not allow you to view transaction history or create a transaction (only sign it).
 
-<div style="text-align: center">
+<div style = "text-align: center">
 
-<img src="../../assets/8-1-0-keeper.png" style="max-width: 60%; max-height: 400px">
+<img src = "../../assets/8-1-0-keeper.png" style = "max-width: 60%; max-height: 400px">
 </div>
 
-> Waves Keeper - безопасный способ управления ключами и взаимодействия с децентрализованными приложениями
+> Waves Keeper - a secure way to manage keys and interact with decentralized apps
 
-Сид фразы в Waves Keeper хранятся в локальном хранилище расширения в зашифрованном с помощью пароля виде и не доступны для веб сайтов. Им доступен объект `WavesKeeper` в глобальной области видимости, который предоставляет API для работы с ключами. Давайте рассмотрим основные методы, которые могут быть полезны при интеграции Waves Keeper в ваш пользовательский интерфейс.
+Seed phrases in Waves Keeper are stored in the local storage of the extension, encrypted with a password, and are not available for websites. They have access to the `WavesKeeper` object in the global scope, which provides an API for working with keys. Let's take a look at the basic techniques that can be helpful when integrating Waves Keeper into your user interface.
 
-Объект `WavesKeeper` содержит следующие методы:
+The WavesKeeper object contains the following methods:
 
-```js
+``` js
 WavesKeeper = {
-  auth: function (){},
-  publicState: function (){},
-  signAndPublishCancelOrder: function (){},
-  signAndPublishOrder: function (){},
-  signAndPublishTransaction: function (){},
-  signCancelOrder: function (){},
-  signOrder: function (){},
-  signTransaction: function (){},
-  signRequest: function (){},
-  signTransactionPackage: function (){},
-  signCustomData: function (){},
-  verifyCustomData: function (){},
-  notification: function (){},
-  encryptMessage: function (){},
-  decryptMessage: function (){},
-  resourceIsApproved: function (){},
-  resourceIsBlocked: function (){},
-  on: function (){}
+  auth: function () {},
+  publicState: function () {},
+  signAndPublishCancelOrder: function () {},
+  signAndPublishOrder: function () {},
+  signAndPublishTransaction: function () {},
+  signCancelOrder: function () {},
+  signOrder: function () {},
+  signTransaction: function () {},
+  signRequest: function () {},
+  signTransactionPackage: function () {},
+  signCustomData: function () {},
+  verifyCustomData: function () {},
+  notification: function () {},
+  encryptMessage: function () {},
+  decryptMessage: function () {},
+  resourceIsApproved: function () {},
+  resourceIsBlocked: function () {},
+  on: function () {}
 }
 ```
 
-Большинство методов являются асинхронными и возвращают `Promise`. Примеры использования некоторых методов доступны на демо-странице [в моем Github репозитории](https://kardanovir.github.io/WavesKeeper/).
+Most of the methods are asynchronous and return `Promise`. Examples of using some of the methods are available on the demo page [in my Github repository](https://kardanovir.github.io/WavesKeeper/).
 
-Метод `auth` является одним из наиболее часто используемых и позволяет запросить у пользователя информацию о его аккаунте, активном в момент вызова. В функцию `auth` необходимо передать информацию о приложении и данные для подписи. Waves Keeper вернет нам не только информацию об аккаунте, но и подписанные данные из поля `data`, что позволит в коде нашего приложения валидировать подпись и убедиться, что у пользователя есть ключ от аккаунта с указанным публичным ключом и адресом, и он не пытается сломать нашу логику, например, заменяя глобальный объект `WavesKeeper`.
+The auth method is one of the most commonly used and allows you to ask the user for information about his account, which is active at the time of the call. The `auth` function needs to be passed information about the application and data for signing. Waves Keeper will return us not only account information, but also signed data from the `data` field, which will allow us to validate the signature in our application code and make sure that the user has an account key with the specified public key and address, and he does not try to break our logic, for example, replacing the global `WavesKeeper` object.
 
-```js
-WavesKeeper.auth({name: 'MyApp', data: 'Custom data to Sign', icon: 'https://docs.wavesplatform.com/_theme/brand-logo/waves-docs-logo.png'})
-  .then(function (res) {
-    // res будет содержать информацию об аккаунте
+``` js
+WavesKeeper.auth ({name: 'MyApp', data: 'Custom data to Sign', icon: 'https://docs.wavesplatform.com/_theme/brand-logo/waves-docs-logo.png'})
+  .then (function (res) {
+    // res will contain information about the account
   })
-  .catch(function(err){console.log(err)});
+  .catch (function (err) {console.log (err)});
 
 ```
 
-После вызова метода будет возвращен `Promise`, который успешно разрешится, если пользователь даст разрешение на предоставление доступа, или завершится ошибкой, если отказал в доступе.
+After calling the method, a `Promise` will be returned, which will resolve successfully if the user gives permission to grant access, or will fail if access is denied.
 
-В переменной `res` будет содержаться объект:
+The `res` variable will contain an object:
 
-```json
+``` json
 {
     "data": "Custom data to Sign",
     "prefix": "WavesWalletAuthentication",
@@ -104,31 +104,31 @@ WavesKeeper.auth({name: 'MyApp', data: 'Custom data to Sign', icon: 'https://doc
 }
 ```
 
-Вместе с адресом аккаунта Keeper возвращает публичный ключ аккаунта, префикс и подпись. Чтобы окончательно убедиться, что у пользователя есть этот аккаунт, необходимо проверить подпись от `префикс + данные` для этого публичного ключа и убедиться, что этот публичный ключ преобразуется именно в такой адрес.
+Keeper returns the public account key, prefix and signature along with the account address. To finally make sure that the user has this account, it is necessary to check the signature from the `prefix + data` for this public key and make sure that this public key is converted to such an address.
 
-```js
+``` js
 
-import { address, stringToBytes, verifySignature } from  '@waves/ts-lib-crypto'
+import {address, stringToBytes, verifySignature} from '@ waves / ts-lib-crypto'
 
 const res = {
-    "data":"Custom data to Sign",
-    "prefix":"WavesWalletAuthentication",
+    "data": "Custom data to Sign",
+    "prefix": "WavesWalletAuthentication",
     ...,
-    "address":"3PKqkMWvjjwjqbVSu8eL48dNfzWc3ifaaWi",
-    "publicKey":"4WLcUznGiQXCoy2TnCohGKzDR8c14LFUGezvLNu7CVPA",
-    "signature":"4s2nz8RxT29UwbJoNjPWxYwjsXYeoaMWK4dDM5eQN5gRmeZWGrN1HbpsirhTzWMJFAGtzzw4U78RNRKeEtwficwR"
+    "address": "3PKqkMWvjjwjqbVSu8eL48dNfzWc3ifaaWi",
+    "publicKey": "4WLcUznGiQXCoy2TnCohGKzDR8c14LFUGezvLNu7CVPA",
+    "signature": "4s2nz8RxT29UwbJoNjPWxYwjsXYeoaMWK4dDM5eQN5gRmeZWGrN1HbpsirhTzWMJFAGtzzw4U78RNRKeEtwficwR"
 }
 
-const signedBytes = stringToBytes(res.prefix + res.data)
+const signedBytes = stringToBytes (res.prefix + res.data)
 
-verifySignature(res.publicKey, signedBytes, res.signature) && address({public: res.publicKey}) === res.address
+verifySignature (res.publicKey, signedBytes, res.signature) && address ({public: res.publicKey}) === res.address
 
 ```
 
-Waves Keeper может так же подписывать транзакции, ордера для матчера, запросы для матчера (и сразу отправлять их в сеть, если необходимо) и случайный набор байт. Для подписания транзакции без отправки используется функция `sign`:
+Waves Keeper can also sign transactions, orders for a matcher, requests for a matcher (and send them directly to the network if necessary) and a random set of bytes. To sign a transaction without sending, use the `sign` function:
 
-```js
-WavesKeeper.sign({
+``` js
+WavesKeeper.sign ({
   type: 4, // 4 - transfer transaction
   data: {
     amount: {
@@ -142,107 +142,107 @@ WavesKeeper.sign({
     recipient: '3P9E5QeGSF4As6kNtBi8j476gsM8mqnX12f'
   }
 })
-.then(function(res){
-  // в переменной res будет содерджаться:
-  //{
-  //  "type" : 4,
-  //  "id" : "2p8zC1riEZpC19PHuqndyaBnr9ndS6jGvFKyTbX2Qpyq",
-  //  "sender" : "3PGiGn5K5zRgU7o3EfvqFeTR91shNAPyFaa",
-  //  "senderPublicKey" : "DoQ87i3F9yAX21LrMijEszqMKAHuR867ZFfeXN7UCLe3",
-  //  "fee" : 100000,
-  //  "timestamp" : 1543228114324,
-  //  "proofs" : [ "58U8fr9hUKir9WJkJtHV3eUNV7giCnFX42uDHwtdWW6Rq34P9BMXWEWuVLct1qgp1jhwvAJnvmPqGYZYknSQfW1o" ],
-  //  "version" : 2,
-  //  "recipient" : "3P9E5QeGSF4As6kNtBi8j476gsM8mqnX12f",
-  //  "assetId" : null,
-  //  "feeAssetId" : null,
-  //  "feeAsset" : null,
-  //  "amount" : 100000,
-  //  "attachment" : ""
+.then (function (res) {
+  // res variable will contain:
+  // {
+  // "type": 4,
+  // "id": "2p8zC1riEZpC19PHuqndyaBnr9ndS6jGvFKyTbX2Qpyq",
+  // "sender": "3PGiGn5K5zRgU7o3EfvqFeTR91shNAPyFaa",
+  // "senderPublicKey": "DoQ87i3F9yAX21LrMijEszqMKAHuR867ZFfeXN7UCLe3",
+  // "fee": 100000,
+  // "timestamp": 1543228114324,
+  // "proofs": ["58U8fr9hUKir9WJkJtHV3eUNV7giCnFX42uDHwtdWW6Rq34P9BMXWEWuVLct1qgp1jhwvAJnvmPqGYZYknSQfW1o"],
+  // "version": 2,
+  // "recipient": "3P9E5QeGSF4As6kNtBi8j476gsM8mqnX12f",
+  // "assetId": null,
+  // "feeAssetId": null,
+  // "feeAsset": null,
+  // "amount": 100000,
+  // "attachment": ""
   //}
 })
-.catch(function(err){
-    console.log(err);
+.catch (function (err) {
+    console.log (err);
 });
 
 ```
 
-Обратите внимание, что Waves Keeper принимает не такой же объект, как `waves-transactions`. Подробнее информацию об API Waves Keeper можете найти в документации на странице [Github репозитория проекта](https://github.com/wavesplatform/waveskeeper).
+Please note that Waves Keeper accepts a different object than `waves-transactions`. More information about the Waves Keeper API can be found in the documentation on the [Github project repository](https://github.com/wavesplatform/waveskeeper) page.
 
 ## Waves Signer
 
-Пользовательский опыт - одна из самых сложных частей разработки децентрализованных приложений. На мой взгляд, одной из ключевых причин отсутствия массовой популярности технологии является довольно большое количество барьеров для пользователей. Порой очень сложно начать использовать блокчейн. Waves Keeper хоть и является крайне безопасным инструментом, но так же является барьером, который требует скачивания расширения. Waves Signer призван решить эту проблему.
+The user experience is one of the hardest parts of developing a decentralized application. In my opinion, one of the key reasons for the lack of mass popularity of the technology is the rather large number of barriers for users. It is sometimes very difficult to start using blockchain. Waves Keeper, although it is an extremely safe tool, is also a barrier that requires downloading the extension. Waves Signer aims to solve this problem.
 
-Waves Signer является оберткой над разными провайдерами, которые непосредственно хранят ключи и подписывают транзакции. Сейчас доступен один провайдер для Waves Signer - провайдер Waves.Exchange, но в будущем будут доступны провайдеры для Waves Keeper, криптокошелька Ledger и десктопного клиента Waves.Exchange.
+Waves Signer is a wrapper over various providers that directly store keys and sign transactions. One provider for Waves Signer is currently available - Waves.Exchange provider, but in the future providers for Waves Keeper, Ledger crypto wallet and Waves.Exchange desktop client will be available.
 
 ![Waves Signer scheme](../../assets/8-1-1-signer.png "Waves Signer scheme")
 
-Существующий провайдер от Waves.Exchange предлагает совершенно новый пользовательский опыт. В отличие от Waves Keeper, где ключи хранятся в расширении, провайдер Waves.Exchange хранит зашифрованные ключи в `localStorage` сайта `https://waves.exchange` и предоставляет пользователю интерфейс в виде `ifаme` окна, где он может согласиться подписать транзакцию или отклонить ее.
+The existing provider from Waves.Exchange offers a completely new user experience. Unlike Waves Keeper, where the keys are stored in an extension, the Waves.Exchange provider stores encrypted keys in the `localStorage` of the site` https: // waves.exchange` and provides the user with an interface in the form of an `ifаme` window where he can agree to sign the transaction or reject it.
 
 ![Waves Signer example](../../assets/8-1-2-signer-example.png "Waves Signer example")
 
-Такой вариант подписи является менее безопасным, так как:
+This signature option is less secure because:
 
-- Пользователь доверяет свои ключи странице `https://waves.exchange`. Важно понимать, что страница никуда ее не отправляет и хранит локально на устройстве пользователя, но в теории, в любой момент в будущем может начать отправлять на сервер
-- В момент подтвеждения подписи транзакции, другие вредоносные скрипты могут перекрыть окно провайдера и дать пользователю подписать другие данные, не те, которые он видит на экране
+- The user trusts his keys to the page `https://waves.exchange`. It is important to understand that the page does not send it anywhere and stores it locally on the user's device, but in theory, at any time in the future it may start sending it to the server
+- At the moment of confirmation of the transaction signature, other malicious scripts can block the provider's window and allow the user to sign other data, not the one he sees on the screen
 
-Но данные риски являются компромиссными, чтобы не заставлять пользователей скачивать браузерное расширение.
+But these risks are trade-offs in order not to force users to download the browser extension.
 
-Давайте рассмотрим, как интегрировать Waves Signer с провайдером от Waves.Exchange на вашу страницу. Для начала создадим кнопки, в которым мы привяжем действия пользователя и подключим скрипт, где будем описывать логику:
+Let's take a look at how to integrate Waves Signer with Waves.Exchange provider into your page. First, we will create buttons in which we will bind user actions and include a script where we will describe the logic:
 
-```js
+``` js
 <main>
-    <button class="js-login">Authorization</button><br><br>
-    <button class="js-invoke">Invoke Script</button><br>
+    <button class = "js-login"> Authorization </button> <br> <br>
+    <button class = "js-invoke"> Invoke Script </button> <br>
 </main>
-<script src="../dist/example.js"></script>
+<script src = "../ dist / example.js"> </script>
 ```
 
-В файле `example.js` подключим сам Signer и провайдер для Waves.exchange:
+In the file `example.js`, connect the Signer itself and the provider for Waves.exchange:
 
-```js
-import Waves from "@waves/signer";
-import Provider from "@waves.exchange/provider-web";
+``` js
+import Waves from "@ waves / signer";
+import Provider from "@ waves.exchange / provider-web";
 
-// настройки для testnet
-const waves = new Waves({NODE_URL: 'https://pool.testnet.wavesnodes.com'});
-// Настройки для провайдера Waves.exchange
-const provider = new Provider('https://testnet.waves.exchange/signer/');
-waves.setProvider(provider);
+// settings for testnet
+const waves = new Waves ({NODE_URL: 'https://pool.testnet.wavesnodes.com'});
+// Settings for the Waves.exchange provider
+const provider = new Provider ('https://testnet.waves.exchange/signer/');
+waves.setProvider (provider);
 
 ```
 
-Для того, чтобы в момент нажатия на кнопку появлялось окно Waves Signer, привяжем callback на событие нажатия:
+In order for the Waves Signer window to appear at the moment of pressing the button, we will bind the callback to the click event:
 
-```js
-document.querySelector(".js-login").addEventListener("click", async function(event) {
+``` js
+document.querySelector (". js-login"). addEventListener ("click", async function (event) {
     try {
-        const userData = await waves.login();  // Вызываем Waves Signer 
-        event.target.classList.add("clicked");
+        const userData = await waves.login (); // Call Waves Signer
+        event.target.classList.add ("clicked");
         event.target.innerHTML = `
             authorized as <br>
-            ${userData.address}`;              // Получаем адрес пользователя
+            $ {userData.address} `; // Get the user's address
     } catch (e) {
-        console.error('login rejected')        // пользователь отклонил запрос авторизации
+        console.error ('login rejected') // user rejected the authorization request
     }
 });
 ```
 
-После нажатия кнопки и разрешения авторизации, адрес пользователя появится на самой кнопке.
+After pressing the button and allowing authorization, the user's address will appear on the button itself.
 
-Давайте рассмотрим пример создания и отправки транзакции по нажатию на кнопку:
+Let's look at an example of creating and sending a transaction by clicking on a button:
 
-```js
-document.querySelector(".js-invoke").addEventListener("click", function() {
-    waves.invoke({
+``` js
+document.querySelector (". js-invoke"). addEventListener ("click", function () {
+    waves.invoke ({
         dApp: "3MuN7D8r19zdvSpAd1L91Gs88bcgwUFy2mn",
         call: {
             function: "faucet"
         }
-    }).broadcast().then(console.log)
+    }). broadcast (). then (console.log)
 });
 ```
 
-API для формирования транзакций совпадает с тем, что передается в `waves-transaction`, что может быть крайне удобно во время разработки.
+The API for generating transactions is the same as what is passed in `waves-transaction`, which can be extremely convenient during development.
 
-Более подробную информацию о Waves Signer и пример интеграции вы сможете найти в статье [Владимира Журавлева на medium](https://medium.com/@izhur27/getting-started-with-waves-signer-893017c9b7ae).
+More information about Waves Signer and an example of integration can be found in the article [by Vladimir Zhuravlev on medium](https://medium.com/@izhur27/getting-started-with-waves-signer-893017c9b7ae).

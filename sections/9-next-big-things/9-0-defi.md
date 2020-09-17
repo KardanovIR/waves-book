@@ -1,48 +1,48 @@
-# Глава 9. Смотрим в будущее
+# Chapter 9. Looking to the future
 
-Протокол Waves постоянно развивается, регулярно появляются новые проекты, новые пользователи и способы применения блокчейна. Давайте поговорим о том, что сейчас находится "на волне хайпа" и чего ожидать в будущем.
+The Waves protocol is constantly evolving, with new projects, new users, and blockchain applications emerging regularly. Let's talk about what is "on the wave of the hype" now and what to expect in the future.
 
-Кроме этого, стоит ответить на вопрос "когда нужен" блокчейн, и не абстрактно и в теории, а максимально конкретно с примерами. Блокчейн является всего лишь технологией, которая требует применения, и без применения и пользователей ничего не стоит.
+In addition, it is worth answering the question "when is blockchain needed", and not abstractly and in theory, but as concrete as possible with examples. Blockchain is just a technology that needs application, and without application and users, it costs nothing.
 
-## Когда нужен блокчейн?
+## When is blockchain needed?
 
-Существует 3 основных принципа, которые необходимо иметь в виду при попытке использовать блокчейн:
+There are 3 main principles to keep in mind when trying to use blockchain:
 
-- **Блокчейн - решение для общих проблем.** Блокчейн подходит лучше всего в ситуациях, когда существуют несколько сторон, разделяющих одну проблему, не объязательно сталкивающихся с проблемой в одинаковой форме.
-- **Блокчейн является технологией для создания экосистем.** Открытые или замкнутные экосистемы идеально подходят для блокчейна. В случае с открытыми экосистемами, возможность быстро присоединиться к общему протоколу обмена данными и совершения операций является ключевой характеристикой, тогда как в случае с закрытыми важнее всего отсутствие необходимости передачи контроля одной стороне.
-- **Токены являются способом организации и упорядочивания отношений.** Если токены создают новые виды взаимоотношений или приводят в больший порядок существующие коммуникации, то применение токена имеет смысл.
+- **Blockchain is a solution to common problems.** Blockchain is best suited in situations where there are multiple parties sharing the same problem, not necessarily facing the same problem.
+- **Blockchain is a technology for creating ecosystems.** Open or closed ecosystems are ideal for blockchain. In the case of open ecosystems, the ability to quickly join a common protocol for exchanging data and performing transactions is a key characteristic, while in the case of closed ecosystems, the most important thing is not having to transfer control to one side.
+- **Tokens are a way of organizing and ordering relationships.** If tokens create new kinds of relationships or put existing communications in order, then using a token makes sense.
 
-В данный момент существует 2 направления, в которых новые Web3 децентрализованные приложения имеют максимальные перспективы - децентрализованные финансы и корпоративные приложения.
+At the moment, there are 2 areas in which the new Web3 decentralized applications have maximum prospects - decentralized finance and corporate applications.
 
-## Децентрализованные финансы
+## Decentralized finance
 
-Блокчейн и финансовые сервисы неотделимы друг от друга, но если раньше блокчейн выполнял функцию сохранения богатств или был спекулятивным активом, то сейчас активно развивается в сторону построения полноценной финансовой системы на токенах. Рынок децентрализованных финансовых сервисов чаще всего называют DeFi.
+Blockchain and financial services are inseparable from each other, but if earlier blockchain performed the function of preserving wealth or was a speculative asset, now it is actively developing towards building a full-fledged financial system based on tokens. The decentralized financial services market is most often referred to as DeFi.
 
-Децентрализованные платформы и приложения предлагают в данный момент сервисы торговли и обмена токенами, сервисы кредитования, алгоритмические стейблкоины, деривативы, платежные системы и опционы. Практически все сервисы основаны на принципе залогового обеспечения криптовалютами, и в данный момент объем залогов на смарт-контрактах в основных блокчейнах (Ethereum, Waves, Bitcoin и т.д.) составляет более $1.5 млрд. по данным [https://defipulse.com](https://defipulse.com/).
+Decentralized platforms and applications currently offer token trading and exchange services, lending services, algorithmic stablecoins, derivatives, payment systems and options. Almost all services are based on the principle of cryptocurrency collateral, and at the moment the volume of collateral on smart contracts in the main blockchains (Ethereum, Waves, Bitcoin, etc.) is more than $ 1.5 billion according to [https://defipulse.com ](https://defipulse.com/).
 
 ![DeFi pulse](../../assets/9-0-1.png "Billy dashboard")
 
-В экосистеме Waves давно существует децентрализованная биржа waves.exchange, которая была и является пионером децентрализованных финансовых сервисов на блокчейне. Сейчас waves.exchange предоставляет доступ к следующим финансовым инструментам:
+Waves ecosystem has long existed the waves.exchange decentralized exchange, which was and is the pioneer of decentralized financial services on the blockchain. Now waves.exchange provides access to the following financial instruments:
 
-1. https://waves.exchange - гибридная биржа, в сердце которого работает matcher. Объем сделок на бирже составляет порядка $500 тыс. в день.
-2. https://lombardini.io - крипто-ломбард, который может выдавать токены Waves в обмен на Bitcoin в залог (и обратно). За пользование токенами сервис возьмет небольшой процент.
-3. https://waveflow.xyz - децентрализованное приложение с константной ликвидностью. Приложение хранит различные токены, выпущенные на Waves, и позволяет обмениваться ими. Цена вычисляется в зависимости от количества того или иного токена на балансе приложения. Чем меньше токенов осталось на аккаунте, тем дороже они будут и наоборот.
-4. https://neutrino.at - алгоритмический стейблкоин, привызянный к доллару США. Каждый токен Neutrino равен $1, так как в обеспечении токена лежит соответствующее количество токенов Waves. Код Neutrino учитывает рыночную цену токена Waves на централизованных биржах и балансирует обеспечение с помощью бондов. Схема работы Neutrino описана в [white paper](https://neutrino.at/whitepaper), а исходные коды [выложены на Github](https://github.com/ventuary-lab/neutrino-contract).
+1. https: //waves.exchange is a hybrid exchange with matcher at its heart. The volume of transactions on the exchange is about $ 500 thousand per day.
+2. https: //lombardini.io is a crypto pawnshop that can issue Waves tokens in exchange for Bitcoin as collateral (and vice versa). The service will charge a small percentage for using tokens.
+3. https://waveflow.xyz is a decentralized application with constant liquidity. The app stores various tokens issued on Waves and allows you to exchange them. The price is calculated depending on the amount of a particular token on the balance of the application. The fewer tokens left on the account, the more expensive they will be and vice versa.
+4. https://neutrino.at - algorithmic stablecoin, accustomed to the US dollar. Each Neutrino token is equal to $ 1, since the corresponding number of Waves tokens is in the backing of the token. Neutrino code takes into account the market price of Waves token on centralized exchanges and balances collateral with bonds. How Neutrino works is described in the [white paper](https://neutrino.at/whitepaper), and the source code is [posted on Github](https://github.com/ventuary-lab/neutrino-contract).
 
-Neutrino является наиболее успешным DeFi приложением в экосистеме Waves, так как на контракте заблокировано более 8,1 млн. Waves и выпущено более $13 млн.
+Neutrino is the most successful DeFi app in the Waves ecosystem, with over 8.1M Waves locked and over $ 13M issued on the contract.
 
-Особенностью DeFi приложений является *композируемость*. Под ней понимается возможность связывать приложения друг с другом, использовать возможности одного приложения в другом. Например, вы можете сделать DeFi приложение, которое использует токены Neutrino или данные из контракта Neutrino и WaveFlow одновременно. Для этого не нужны специальные API или разрешения, так как протоколом является блокчейн, в котором все данные и параметры функций открыты, а ваше децентрализованное приложение может читать данные из хранилища любого другого DeFi приложение.
+A feature of DeFi applications is *composability*. It means the ability to link applications to each other, to use the capabilities of one application in another. For example, you can make a DeFi application that uses Neutrino tokens or data from the Neutrino contract and WaveFlow at the same time. This does not require special APIs or permissions, since the protocol is a blockchain in which all data and function parameters are open, and your decentralized application can read data from the storage of any other DeFi application.
 
-## Корпоративные приложения
+## Enterprise applications
 
-Все преимущества блокчейна раскрываются в условиях, когда существует несколько сторон, которые друг другу не доверяют или не хотят доверять. Такие условия часто встречаются в корпоративной среде, когда несколько компаний или подразделений в одной организации хотят обмениваться данными, но не готовы отдавать контроль над ними кому-либо из участников процесса.
+All the advantages of the blockchain are revealed in an environment where there are several parties that do not trust each other or do not want to trust. Such conditions are often encountered in a corporate environment, when several companies or divisions in one organization want to exchange data, but are not ready to give control over it to any of the participants in the process.
 
-Примером удачного применения блокчейна в корпоративной среде является проект [Billy](https://iambilly.app), который решает общую проблему сотрудников компании и руководства, используя токены как способ организации процесса поощрения сотрудников. Например, компания A использует Billy для более справедливого распределения льгот и персонализации преимуществ.
+An example of a successful application of blockchain in a corporate environment is the [Billy](https://iambilly.app) project, which solves a common problem for company employees and management, using tokens as a way to organize the employee reward process. For example, Company A uses Billy to distribute benefits more equitably and personalize benefits.
 
-В компании выделяется ежегодный бюджет на поощрения сотрудников с помощью путевок, дополнительных отпусков и услуг (расширенные программы медицинского страхования, сувенирная продукция и т.д.). Используя токен Billy, компания А выбирает наиболее ценных сотрудников. Благодаря открытости блокчейна все сотрудники видят свою результативность и могут оценить объективность выбора людей для поощрения. Такая прозрачность дополнительно мотивирует персонал.
+The company allocates an annual budget to reward employees with vouchers, additional vacations and services (extended health insurance programs, souvenirs, etc.). Using the Billy token, Company A selects the most valuable employees. Thanks to the openness of the blockchain, all employees see their performance and can evaluate the objectivity of the choice of people for reward. This transparency further motivates staff.
 
-Токены создают целую экосистему, когда сотрудники могут мотивировать своих коллег помогать им в обмен на токены.
+Tokens create an entire ecosystem where employees can motivate their colleagues to help them in exchange for tokens.
 
 ![Billy dashboard](../../assets/9-0-0.png "Billy dashboard")
 
-Для руководства компании появляется дополнительная возможность для анализа эффективности сотрудников не только качественно (регулярные прозрачные процессы оценки коллегами, с которыми больше всего взаимодейтсвий), но и количественно (составление общего рейтинга сотрудников и подразделений).
+An additional opportunity appears for the company's management to analyze the effectiveness of employees, not only qualitatively (regular transparent assessment processes by colleagues with whom they interact most), but also quantitatively (drawing up an overall rating of employees and departments).
