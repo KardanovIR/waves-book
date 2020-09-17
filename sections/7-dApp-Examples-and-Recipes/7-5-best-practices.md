@@ -1,106 +1,106 @@
-# Лучшие практики разработки
+# Development best practices
 
-Как вы могли уже заметить, разработка децентрализованных Web3 приложений может быть местами нетривиальным занятием, которое отличается от обычной разработки приложений во многих аспектах:
+As you may have already noticed, developing decentralized Web3 applications can be sometimes non-trivial, which differs from regular application development in many respects:
 
-- **Цена ошибки**. Ошибка в децентрализованных приложениях часто может приводить к потере средств, иногда потере средств пользователей
-- **Открытость кода**. Даже если вы не хотите, чтобы ваш код был доступен другим пользователям и разработчикам, он будет лежать в блокчейне и всегда остается возможность его декомпилировать (в Waves, например, это делается крайне просто даже в обозревателе блокчейна)
-- **Большое количество взаимосвязанных элементов**. Одни децентрализованные приложения могут опираться на логику других
-- **Возможные обновления протокола**. Например, обновление протокола Waves до 1.2 и активация feature 14 (в случае его принятия в mainnet), полностью меняют логику работы с транзакциями вызовов скриптов. Фактически, у приложения может меняться окружение. Сложно такое представить в обычной разработке.
+- **Error cost**. A bug in decentralized applications can often lead to loss of funds, sometimes loss of user funds
+- **Open source**. Even if you do not want your code to be available to other users and developers, it will lie in the blockchain and there is always an opportunity to decompile it (in Waves, for example, this is done very simply even in the blockchain explorer)
+- **A large number of interconnected elements**. Some decentralized applications can rely on the logic of others
+- **Possible protocol updates**. For example, updating the Waves protocol to 1.2 and activating feature 14 (if adopted in the mainnet) completely change the logic of working with script call transactions. In fact, the environment of the application can change. It's hard to imagine this in a typical development.
 
-Давайте разберемся, какие ошибки чаще всего допускают разработчики и что надо делать, чтобы их избежать.
+Let's see what mistakes developers make most often and what needs to be done to avoid them.
 
-## Всегда проверяйте подпись
+## Always check the signature
 
-Одна из самых распространенных ошибок разработчиков - использовать в скриптах смарт-аккаунтов или функции `@Verifier` децентрализованных приложений конструкцию проверки `case _ => true`. Например, можно подумать, что следующий скрипт запрещает только `Transfer` транзакции и разрешает все остальные:
+One of the most common mistakes developers make is to use the `case _ => true` check construct in smart account scripts or the` @ Verifier` functions of decentralized applications. For example, you might think that the following script only forbids `Transfer` transactions and allows all others:
 
-```scala
-{-# STDLIB_VERSION 3 #-}
-{-# CONTENT_TYPE EXPRESSION #-}
-{-# SCRIPT_TYPE ACCOUNT #-}
+``` scala
+{- # STDLIB_VERSION 3 # -}
+{- # CONTENT_TYPE EXPRESSION # -}
+{- # SCRIPT_TYPE ACCOUNT # -}
 
 match (tx) {
-    case t:TransferTransaction => false
+    case t: TransferTransaction => false
     case _ => true
 }
 ```
 
-Но дьявол кроется в деталях. Такой скрипт полностью запрещает делать с аккаунта `Transfer` транзакции и резраешает все остальные виды транзакций **любому пользователю**. Любой человек или даже просто скрипт сможет сделать транзакцию с этого аккаунта, указав в поле `senderPublicKey` транзакции публичный ключ аккаунта и **не указав ни одной подписи.**
+But the devil is in the details. Such a script completely prohibits making transactions from the `Transfer` account and allows all other types of transactions ** to any user **. Any person or even just a script can make a transaction from this account by specifying the public account key in the `senderPublicKey` field of the transaction and ** without specifying a single signature. **
 
-**Всегда проверяйте** наличие подписи и ее корректность:
+**Always check** for signature and correctness:
 
-```scala
-{-# STDLIB_VERSION 3 #-}
-{-# CONTENT_TYPE EXPRESSION #-}
-{-# SCRIPT_TYPE ACCOUNT #-}
+``` scala
+{- # STDLIB_VERSION 3 # -}
+{- # CONTENT_TYPE EXPRESSION # -}
+{- # SCRIPT_TYPE ACCOUNT # -}
 
 match (tx) {
-    case t:TransferTransaction => false
-    case _ => sigVerify(tx.bodyBytes, tx.proofs[0], tx.senderPublikey)
+    case t: TransferTransaction => false
+    case _ => sigVerify (tx.bodyBytes, tx.proofs [0], tx.senderPublikey)
 }
 ```
 
-Быть внимательным надо не только в mainnet, но и в testnet, потому что и там и там есть есть скрипты, которые смотрят все транзакции в блокчейне и если находят аккаунты с такой уязвимостью, выводят все токены с аккаунта.
+You need to be careful not only in mainnet, but also in testnet, because both there and there there are scripts that watch all transactions in the blockchain and if they find accounts with such a vulnerability, withdraw all tokens from the account.
 
-## Понимайте разницу между @Verifier и @Callable
+## Understand the difference between @Verifier and @Callable
 
-Некоторые разработчики децентрализованных приложений допускают ошибку при проектировании своего dApp, ошибочно погалая, что `@Verifier` проверяет **входящие** транзакции на адрес dApp. Например, встречаются такие скрипты:
+Some decentralized application developers make a mistake when designing their dApp by mistakenly saying that `@ Verifier` checks **incoming** transactions against the dApp's address. For example, there are such scripts:
 
-```scala
-@Callable(i)
-func foo() = {
-    [StringEntry("foo", "bar")]
+``` scala
+@Callable (i)
+func foo () = {
+    [StringEntry ("foo", "bar")]
 }
 
-@Verifier(tx)
+@Verifier (tx)
 func verify = {
-    match (tx){
+    match (tx) {
         case i: InvokeScriptTransaction => true
         case _ => false
     }
 }
 ```
 
-Но такой скрипт занимается не тем, что разрешает вызывать методы данного dApp, а **разрешает вызывать с аккаунта этого децентрализованного приложения вызывать другие dApp даже без предоставления подписи.** То есть, любой пользователь сможет вызвать другой аккаунт и передать туда все токены с аккаунта этого приложения. Не надо забывать, что аккаунт децентрализованного приложения остается аккаунтом, который тоже может делать какие-то действия и отправлять транзакции и эти действия контролируются функцией `@Verifier`.
+But such a script is not engaged in the fact that it allows you to call the methods of this dApp, but **allows you to call other dApps from the account of this decentralized application even without providing a signature.** That is, any user can call another account and transfer all tokens from the account of this application. Do not forget that the account of the decentralized application remains an account that can also do some actions and send transactions, and these actions are controlled by the `@ Verifier` function.
 
-## Проверяйте транзакции перед отправкой
+## Verify transactions before submitting
 
-Транзакции вызовов скрипта могут завершаться ошибкой, но раньше такие транзакции просто не попадали в блокчейн, с выходом Waves 1.2 (на момент написания этих строк пока только в stagenet) эта ситуация изменилась. Теперь `InvokeScript` транзакции и транзакции, связанные с использованием смарт-ассетов, попадают в блокчейн даже если возвращают ошибку, и пользователь платит за них комиссию.
+Script call transactions can end with an error, but earlier such transactions simply did not get into the blockchain, with the release of Waves 1.2 (at the time of this writing, only in stagenet) this situation has changed. Now `InvokeScript` transactions and transactions related to the use of smart assets get into the blockchain even if they return an error, and the user pays a commission for them.
 
-Убедиться на 146%, что транзакция успешно выполнится полностью и попадет в блокчейн невозможно, так как состояние блокчейна меняется достаточно быстро, новые транзакции появляются в UTX, попадают в блоки и могут менять ветку, по которой пойдет скрипт. Максимизировать вероятность, что транзакция успешно выполнится можно с помощью предварительной валидации. В REST API ноды есть метод [`debug/validate`](https://nodes.wavesplatform.com/api-docs/index.html#/debug/validate), который принимает транзакцию и валидирует ее. Метод возвращает какой был бы результат выполнения скрипта транзакции, если бы она добавлялась в блок прямо сейчас.
+It is impossible to make sure by 146% that the transaction will be fully completed and get into the blockchain, since the state of the blockchain changes quickly enough, new transactions appear in UTX, get into blocks and can change the branch that the script will follow. You can maximize the likelihood that a transaction will succeed using pre-validation. The REST API of the node has a method [`debug / validate`](https://nodes.wavesplatform.com/api-docs/index.html#/debug/validate), which accepts a transaction and validates it. The method returns what the result of the transaction script would be if it was added to the block right now.
 
-Используйте этот метод для предварительной валидации, прежде чем отправить транзакцию с помощью метода `broadcast`.
+Use this method for pre-validation before sending the transaction using the `broadcast` method.
 
-> Важно: данный метод API требует ключ, который невозможно получить для публичных нод, поэтому используйте ноду, чей API Key вы знаете.
+> Important: this API method requires a key that cannot be obtained for public nodes, so use a node whose API Key you know.
 
-## Будьте внимательны с ключами
+## Be careful with keys
 
-В разработке децентрализованных приложений много операций совершается с key-value хранилищем аккаунта. Ключи в хранилище часто являются композитными, например, `voting_12_vote_3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa`, который может хранить голос аккаунта `3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa` в голосовании с `id=12`. Формирование ключа для такой записи в хранилище может быть реализовано в Ride следующим образом:
+In the development of decentralized applications, many operations are performed with the account's key-value storage. Keys in the vault are often composite, for example, `voting_12_vote_3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa`, which can store the vote of the account` 3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa 'in voting with id. Formation of a key for such a record in the storage can be implemented in Ride as follows:
 
-```scala
-func keyVoteByAddress(votingId: Int, address: String) = "voting_" + votingId + "_vote_" + address
+``` scala
+func keyVoteByAddress (votingId: Int, address: String) = "voting_" + votingId + "_vote_" + address
 ```
 
-Часто встречается ошибка, что в формировании ключа допускают ошибку: записывают в один ключ, а пытаются читать из другого ключа. Например, забаывают символ `_` в одном из мест. Чтобы избежать такой ошибки, всегда используйте отдельные функции для формирования ключа, вместо любимого нами разработчиками поведения "копировать&вставить". Ну и, конечно, пишите тесты для ваших приложений.
+A common mistake is that they make a mistake in forming a key: they write to one key, and try to read from another key. For example, forget the `_` character in one of the places. To avoid this mistake, always use separate key generation functions instead of our favorite copy & paste behavior. And of course, write tests for your applications.
 
-## Используйте значения по умолчанию
+## Use default values
 
-Другой распространенной ошибкой, связанной в том числе с ключами в хранилще, является попытка чтения значений из переменных с типом `Union(T|Unit)` с помощью `value()` или `extract()` в тех местах, где можно было бы использовать значения по умолчанию. Например, если функция пытается прочитать голос пользователя из хранилища, но может быть ситуация, что голоса пока нет, используйте функцию `valueOrElse` или pattern matching:
+Another common mistake, including with keys in storage, is trying to read values ​​from variables of type `Union (T | Unit)` using `value ()` or `extract ()` in places where one could use default values. For example, if a function tries to read the user's voice from the storage, but there may be a situation that there is no voice yet, use the `valueOrElse` function or pattern matching:
 
-```scala
+``` scala
 
 let NONE = "NONE"
 
-func keyVoteByAddress(votingId: Int, address: String) = "voting_" + votingId + "_vote_" + address
+func keyVoteByAddress (votingId: Int, address: String) = "voting_" + votingId + "_vote_" + address
 
 
-@Callable(i)
-func vote(id: Int) => {
-    let voteKey = keyVoteByAddress(id, i.caller.toBase58String())
-    let vote = getString(this, voteKey).valueOrElse(NONE)
+@Callable (i)
+func vote (id: Int) => {
+    let voteKey = keyVoteByAddress (id, i.caller.toBase58String ())
+    let vote = getString (this, voteKey) .valueOrElse (NONE)
 
-    # альтернативный вариант
+    # Alternative option
 
-    let vote = match getString(this, voteKey){
+    let vote = match getString (this, voteKey) {
         case s: String => s
         case _ => NONE
     }
@@ -110,12 +110,12 @@ func vote(id: Int) => {
 }
 ```
 
-Стоит так же учитывать, что функции вашего приложения могут вызываться не только из вашего пользовательского интерфейса, но кем угодно и как угодно, поэтому значения по умолчанию могут помочь и им.
+It is also worth considering that the functions of your application can be called not only from your user interface, but by anyone and in any way, so the default values ​​can help them too.
 
-## Держите под контролем ваши транзакции
+## Control your transactions
 
-В работе реальных децентрализованных приложений относительно часто встречаются случаи, когда необходимо выполнять несколько зависимых транзакций последовательно. Например, если вы используете схему [коммит-раскрытие](https://en.wikipedia.org/wiki/Commitment_scheme), то фаза раскрытия может быть только после фазы коммита. Если вы отправите транзакцию раскрытия до того, как транзакция коммита попадет в блокчейн, то ваш скрипт вернет ошибку, пользователь заплатит комиссию и не получит ожидаемый результат.
+In the work of real decentralized applications, there are relatively often cases when it is necessary to execute several dependent transactions sequentially. For example, if you use the [commit-disclosure](https://en.wikipedia.org/wiki/Commitment_scheme) scheme, then the disclosure phase can only be after the commit phase. If you send a disclosure transaction before the commit transaction hits the blockchain, then your script will return an error, the user will pay a fee and not get the expected result.
 
-В блокчейне Waves могут быть редкие ситуации, когда происходит форк в блокчейне и последний блок или микроблок откатывается, что может вести к нарушению последовательности зависимых транзакций. Например, если отправить транзакцию для фазы коммита, дождаться пока она попадет в последний (жидкий) блок и сразу же отправить транзакцию раскрытия, то может быть ситуация, когда последний блок или микроблок откатится, транзакция коммита "выпадет" из блокчейна. Это приведет к тому, что транзакция для фазы раскрытия станет невалидной.
+In the Waves blockchain, there may be rare situations when a fork occurs in the blockchain and the last block or microblock is rolled back, which can lead to disruption of the sequence of dependent transactions. For example, if you send a transaction for the commit phase, wait until it gets into the last (liquid) block and immediately send the disclosure transaction, then there may be a situation when the last block or microblock rolls back, the commit transaction "falls out" of the blockchain. This will make the transaction invalid for the disclosure phase.
 
-Если вы используете функцию `waitForTx` из библиотеки `waves-transactions`, то она ожидает только попадания в последний жидкий блок, что может приводить к проблемам. Если у вас есть зависимые транзакции, то более безопасным способом использование функции `waitForTxWithNConfirmations` с ожиданием 1-2 подтверждений после попадания первой транзакции в блок.
+If you use the `waitForTx` function from the` waves-transactions` library, then it waits only to hit the last fluid block, which can lead to problems. If you have dependent transactions, it is safer to use the `waitForTxWithNConfirmations` function, waiting for 1-2 confirmations after the first transaction hits the block.

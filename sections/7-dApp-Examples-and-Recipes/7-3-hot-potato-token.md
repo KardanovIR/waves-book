@@ -1,116 +1,116 @@
-# Смарт ассеты и причем тут горячая картошка
+# Smart assets and where does the hot potato come in?
 
-Смарт-ассеты являются крайне мощным инструментом, которые при правильном использовании могут позволить быстро и просто реализовать ограничения по работе с токеном. Давайте разработаем токен-игру, которая называется "горячая картошка".
+Smart assets are extremely powerful tools that, if used correctly, can allow you to quickly and easily implement restrictions on working with a token. Let's develop a token game called hot potato.
 
-## Что за картошка и почему горячая?
+## What are potatoes and why are they hot?
 
-Возможно, вы слышали про игру [горячая картошка](https://en.wikipedia.org/wiki/Hot_potato), которая возникла аж в 1888 году, но если вдруг не слышали, коротко объясню правила. Участники игры собираются в небольшой круг и бросают друг другу маленький предмет, параллельно с этим играет какая-либо музыка. В какой-то момент музыка прекращает играть и игрок, держащий предмет в этот момент, выбывает из игры. В следующем раунде все начинается заново, пока не останется только 1 игрок.
+You may have heard about the game [hot potato](https://en.wikipedia.org/wiki/Hot_potato), which appeared already in 1888, but if suddenly you haven't heard, I will briefly explain the rules. The participants of the game gather in a small circle and throw a small object to each other, in parallel with this some kind of music is played. At some point, the music stops playing and the player holding the item at that moment is out of the game. In the next round, everything starts over until there is only 1 player left.
 
 ## HotPotatoToken
 
-Давайте реализуем токен с похожей механикой:
+Let's implement a token with similar mechanics:
 
-- Когда пользователь получает токен, у него есть 5000 минут, чтобы передать его кому-то еще. По истечении этого периода, токен все еще может быть отправлен кому-то, но только если комиссия за транзакцию будет больше 1 Waves. Или токен может быть сожжен, но в виде комиссии придется заплатить уже 5 Waves.
-- Так как генерация нового аккаунта не стоит ничего, то давайте добавим условие, что отправить "горячую картошку" можно только на аккаунт, у которого больше 10 Waves на балансе
-- У пользователя одновременно может быть только одна горячая картошка
-- Все перечисленные выше ограничения не касаются аккаунта, который выпустил токен
+- When a user receives a token, they have 5000 minutes to transfer it to someone else. After this period, the token can still be sent to someone, but only if the transaction fee is greater than 1 Waves. Or the token can be burned, but 5 Waves will have to be paid in the form of a commission.
+- Since the generation of a new account does not cost anything, let's add a condition that you can send a "hot potato" only to an account that has more than 10 Waves on its balance
+- User can only have one hot potato at a time
+- All of the above restrictions do not apply to the account that issued the token
 
-Давайте объявим основные переменные нашего скрипта. В отличие от смарт-аккаунта, который можно реализовать с помощью функции `@Verifier`, у смарт-ассета код должен быть в виде `EXPRESSION`:
+Let's declare the main variables for our script. Unlike a smart account, which can be implemented using the `@ Verifier` function, a smart asset must have an` EXPRESSION` code:
 
-```scala
+``` scala
 
-{-# STDLIB_VERSION 4 #-}
-{-# CONTENT_TYPE EXPRESSION #-}
-{-# SCRIPT_TYPE ASSET #-}
+{- # STDLIB_VERSION 4 # -}
+{- # CONTENT_TYPE EXPRESSION # -}
+{- # SCRIPT_TYPE ASSET # -}
 
-# на аккаунте, получающем горячую картошку, не может быть меньше этой суммы
+# on the account receiving hot potatoes cannot be less than this amount
 let minimumWavesBalance = 10_00_000_000
 
-# Количество миллисекунд, в течение которых минимальная комиссия будет стандартной (0.005 Waves с обычного аккаунта)
+# The number of milliseconds during which the minimum commission will be standard (0.005 Waves from a regular account)
 let moveTimeInMs = 5000 * 60 * 1000
 
-# Комиссия для отправки по истечению moveTimeInMs
+# Commission for sending after the expiration of moveTimeInMs
 let minimalFeeToMove = 1_00_000_000
 
-# Комиссия для сожжения токена
+# Commission for burning token
 let minimalFeeToBurn = 5_00_000_000
 ```
 
-Возможно, вы обратили внимание на знак нижнего подчеркивания в числах `_`, который поддерживается в Ride для упрощения чтения. Восемь нолей отделены от остальных цифр, так как Waves имеет 8 знаков после запятой и так легче сразу увидеть количество целых токенов Waves.
+You may have noticed the underscore in the numbers `_`, which is supported in Ride to make it easier to read. Eight zeros are separated from the rest of the digits, since Waves has 8 decimal places and it is easier to see the number of whole Waves tokens this way.
 
-В глобальной области видимости доступна переменная `tx`, которая хранит информацию о текущей обрабатываемой транзакции. Так как `tx` является `Union` от всех возможных типов транзакций, то нам в коде необходимо использовать pattern matching. У нас будут разные условия для `Tranfer`, `Burn` и всех остальных типов транзакций.
+In the global scope, the variable `tx` is available, which stores information about the current transaction being processed. Since `tx` is` Union` from all possible transaction types, we need to use pattern matching in our code. We will have different conditions for `Tranfer`,` Burn` and all other types of transactions.
 
-```scala
+``` scala
 match (tx) {
-    # временно оставим проверку Tranfer транзакций в таком виде
-    case t:TransferTransaction => {
+    # temporarily leave the check of Tranfer transactions in this form
+    case t: TransferTransaction => {
         false
     }
-    # Мы позволяем сжигать только если комиссия больше 5 Waves
-    # или отправителем является аккаунт, выпустивший токен
+    # We only allow burning if the commission is more than 5 Waves
+    # or the sender is the account that issued the token
     case b: BurnTransaction => {
-        if (b.fee >= minimalFeeToBurn || tx.senderPublicKey == this.issuerPublicKey) then true
+        if (b.fee> = minimalFeeToBurn || tx.senderPublicKey == this.issuerPublicKey) then true
         else {
-            throw("You have to pay 5 WAVES to burn this token")
+            throw ("You have to pay 5 WAVES to burn this token")
         }
     }
-    # все другие типы транзаций разрешены для создателя токены и запрещены для всех остальных
-    case _ => if tx.senderPublicKey == this.issuerPublicKey then true else throw("You only can transfer this token")
+    # all other types of transactions are allowed for the creator tokens and prohibited for all others
+    case _ => if tx.senderPublicKey == this.issuerPublicKey then true else throw ("You only can transfer this token")
   }
 ```
 
-В коде выше мы реализовали проверку, что если транзакцией, выполняемой с токеном, явлется `Burn`, то должно выполняться одно из условий - отправителем является аккаунт, выпустиший этот токен или комиссия больше минимального значения для сжигания (в нашем случае 5 Waves). Мы использовали ключевое слово `this`, которое в контексте смарт-ассета обозначает тип `Asset` и содержит информацию о текущем токене.
+In the code above, we have implemented a check that if the transaction performed with the token is `Burn`, then one of the conditions must be met - the sender is the account that issued this token or the commission is greater than the minimum value for burning (in our case, 5 Waves). We used the keyword `this`, which in the context of a smart asset denotes the type` Asset` and contains information about the current token.
 
-> Обратите внимание, при проверке отправителя транзакции мы проверяем только совпадение публичных ключей и не проверяем, что предоставлена правильная подпись от заданного публичного ключа, так как **массив `proofs` недоступен в скрипте смарт-ассета**. Проверка подписей является прерогативой аккаунта, а не ассета.
+> Please note that when verifying the sender of a transaction, we only check if the public keys match and do not verify that the correct signature from the given public key is provided, since ** the `proofs` array is not available in the smart asset script **. Signature verification is the responsibility of the account, not the asset.
 
-В скрипте выше мы запретили все `Transfer` транзации, но логика "горячей картошки" подразумевает, что мы должны их разрешать, если токен был получен менее 5000 минут назад или комиссия выше 1 Waves.
+In the script above, we have prohibited all `Transfer` transactions, but the logic of the" hot potato "implies that we should allow them if the token was received less than 5000 minutes ago or the commission is higher than 1 Waves.
 
-Прежде чем мы начнем писать код, необходимо понять как мы будем проверять факт получения токена менее 5000 минут назад. К сожалению, в Ride нет функции, которая позволила бы нам найти момент получения токена. Более того, в Ride практически нет никаких функций, которые позволяют смотреть в историю транзакций. Мы могли бы требовать предоставлять в массиве `proofs` id транзакции получения картошки, ведь как вы помните, в `proofs` можно передавать до 8 аргументов, но `proofs` недоступен в коде смарт-ассета.
+Before we start writing the code, we need to understand how we will verify the fact that the token was received less than 5000 minutes ago. Unfortunately, there is no function in Ride that would allow us to find the moment of receiving the token. Moreover, there are practically no functions in Ride that allow you to look at the transaction history. We could require to provide the id of the transaction for receiving the potatoes in the `proofs` array, because as you remember, up to 8 arguments can be passed in` proofs`, but `proofs` is not available in the smart asset code.
 
-Решением будет требовать предоставлять id транзакции получения картошки в качестве `attachment` к `Tranfer` транзакции.
+The solution would be to require the id of the potato receipt transaction as an attachment to the Tranfer transaction.
 
-```scala
+``` scala
 match (tx) {
-    case t:TransferTransaction => {
+    case t: TransferTransaction => {
 
-        # Если отправителем токена является аккаунт, выпустивший его, то проверки не нужны
+        # If the sender of the token is the account that issued it, then no checks are needed
         if (this.issuerPublicKey == t.senderPublicKey) then true
         else {
-            # для вычисления сколько времени прошло с момента получения токена
-            # в attachment должен быть указан id транзакции получения
+            # to calculate how much time has passed since the token was received
+            # attachment must contain the id of the receive transaction
             let txId = t.attachment
 
-            # получаем баланс по токену HotPotato, чтобы проверить, что у получателя уже нет "горячей картошки"
-            let currentRecipientHasPotato = assetBalance(t.recipient, t.assetId) > 0
+            # get the balance for the HotPotato token to check that the recipient no longer has a hot potato
+            let currentRecipientHasPotato = assetBalance (t.recipient, t.assetId)> 0
 
-            # получаем баланс токенов Waves, чтобы убедиться, что на аккаунте получателя не меньше 10 Waves
-            let currentRecipientWavesBalance = wavesBalance(t.recipient)
+            # get the balance of Waves tokens to make sure that the recipient's account has at least 10 Waves
+            let currentRecipientWavesBalance = wavesBalance (t.recipient)
 
-            # Если у получателя уже есть горячая картошка, то выкидываем исключение
-            if (currentRecipientHasPotato) then throw("The recipient already has a hot potator")
-            # Если у пользователя меньше 10 Waves, то выкидываем исключение
-            else if (currentRecipientWavesBalance < minimumWavesBalance) then throw("Recipient is too poor") else {
+            # If the recipient already has a hot potato, then throw an exception
+            if (currentRecipientHasPotato) then throw ("The recipient already has a hot potator")
+            # If the user has less than 10 Waves, then throw an exception
+            else if (currentRecipientWavesBalance <minimumWavesBalance) then throw ("Recipient is too poor") else {
 
-                # Получаем информацию о транзакции, с которой текущий отправитель получил свою картошку
-                let transaction = transferTransactionById(t.assetId.value()).valueOrErrorMessage("Can't find incoming transaction")
+                # Get information about the transaction from which the current sender received his potato
+                let transaction = transferTransactionById (t.assetId.value ()). valueOrErrorMessage ("Can't find incoming transaction")
 
-                # Получаем номер блока, в котором текущий отправитель получил свою картошку
-                let receivedBlockNumber = transactionHeightById(transaction.id).valueOrErrorMessage("Can't find incoming tx block number")
+                # Get the block number in which the current sender received his potato
+                let receivedBlockNumber = transactionHeightById (transaction.id) .valueOrErrorMessage ("Can't find incoming tx block number")
 
-                # Получаем всю информацию о блоке, в которой текущий отправитель получил свою картошку
-                let receivedBlockTimestamp = blockInfoByHeight(receivedBlockNumber).value().timestamp
+                # We get all the information about the block in which the current sender received his potato
+                let receivedBlockTimestamp = blockInfoByHeight (receivedBlockNumber) .value (). timestamp
 
-                # Проверяем, что пользователь получил свою горячую картошку меньше, чем 5000 минут назад
+                # Verify that the user received their hot potatoes less than 5000 minutes ago
                 let receivedAssetInLastNMs = (lastBlock.timestamp - receivedBlockTimestamp) <= moveTimeInMs && t.assetId == transaction.assetId
 
-                # Проверяем, является ли комиссия больше 1 Waves
-                let feeMore1Waves = t.fee >= minimalFeeToMove
+                # Check if the commission is more than 1 Waves
+                let feeMore1Waves = t.fee> = minimalFeeToMove
 
-                # Если транзакция получена больше 5000 блоков назад И комиссия меньше 1 Waves
-                # Бросаем исключение
-                # Иначе разрешаем транзакцию
-                if (!receivedAssetInLastNMs && !feeMore1Waves) then {
-                    throw("You got potato long time ago, now you have to pay 1 WAVES fee")
+                # If the transaction is received more than 5000 blocks ago AND the commission is less than 1 Waves
+                # Throw an exception
+                # Otherwise, allow the transaction
+                if (! receivedAssetInLastNMs &&! feeMore1Waves) then {
+                    throw ("You got potato long time ago, now you have to pay 1 WAVES fee")
                 } else {
                     true
                 }
@@ -121,12 +121,12 @@ match (tx) {
   }
 ```
 
-Мы реализовали весь необходимый функционал, используя несколько функций и переменные стандартной библиотеки:
+We have implemented all the necessary functionality using several functions and variables of the standard library:
 
-- `transferTransactionById(txId: ByteVector)` позволяет получить информацию о `Transfer` транзакции по ее Id. Предвосхищая вопросы сразу скажу, что такой же функции для других типов транзакций не существует.
-- `blockInfoByHeight(n: Int)` позволяет получить информацию о блоке по ее номеру
-- `lastBlock` - содержит всю информацию о текущем (последнем) блоке
+- `transferTransactionById (txId: ByteVector)` allows you to get information about the `Transfer` transaction by its Id. Anticipating questions, I must say right away that the same function does not exist for other types of transactions.
+- `blockInfoByHeight (n: Int)` allows you to get information about the block by its number
+- `lastBlock` - contains all information about the current (last) block
 
-Смарт-ассеты могут иметь и гораздо более интересные и витиеватые механики и условия использования, однако пример горячей картошки в достаточной степени описывает какие могут быть типы ограничений и как можно использовать токены в своем приложении.
+Smart assets can have much more interesting and florid mechanics and terms of use, but the hot potato example sufficiently describes what types of restrictions can be and how tokens can be used in your application.
 
-Одним из таких приложений, использующих мощь смарт-ассетов, является проект [Tokenomica](https://tokenomica.com/), который позволяет выпускать токенизированные ценные бумаги и инвестировать в них.
+One such application that harnesses the power of smart assets is the [Tokenomica](https://tokenomica.com/) project, which allows the issuance and investment of tokenized securities.

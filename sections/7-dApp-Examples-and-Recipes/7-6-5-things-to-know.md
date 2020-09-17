@@ -1,65 +1,65 @@
-# 5 вещей, которые я хотел бы знать до того, как начал разрабатывать децентрализованные приложения
+# 5 things I would like to know before I started developing decentralized apps
 
-В заключение главы про децентрализованные приложения мне бы хотелось поделиться своим опытом разработки и рассказать 5 вещей, которые хотел бы знать много лет назад, когда только начинал делать продукты с использованием блокчейна.
+In conclusion of the chapter on decentralized applications, I would like to share my development experience and tell 5 things that I would like to know many years ago, when I just started making products using blockchain.
 
-## 1. Блокчейн - пока еще как Spectrum
+## 1. Blockchain - still as Spectrum
 
-Многие разработчики слышали о проблемах масштабируемости блокчейнов, о том, что блокчейн – вообще не про высокую нагрузку (под высокой имею в виду десятки и сотни тысяч запросов). Но когда я только увлекся блокчейном, я до конца не осознавал, что меня ожидает. Саша Иванов однажды написал в статье ["You can't calculate on the blockchain"](https://medium.com/wavesprotocol/you-cant-calculate-on-the-blockchain-906f9b110829), что нынешний уровень блокчейна - это 8-битные компьютеры Sinclair ZX Spectrum.
+Many developers have heard about the problems of blockchain scalability, that blockchain is not about high load at all (by high I mean tens and hundreds of thousands of requests). But when I first got carried away with blockchain, I did not fully realize what awaited me. Sasha Ivanov once wrote in the article ["You can't calculate on the blockchain"](https://medium.com/wavesprotocol/you-cant-calculate-on-the-blockchain-906f9b110829) that the current level of the blockchain is Sinclair ZX Spectrum 8-bit computers.
 
-Эти компьютеры сыграли очень важную роль в развитии технологий, но, по сравнению с современными персональными компьютерами и смартфонами, они кажутся не более чем программируемым калькулятором. По уровню вычислительных мощностей для каждого отдельного приложения блокчейн напоминает ZX Spectrum. Но в этом нет ничего страшного: блокчейн - не для скорости вычислений, а для удаления посредников.
-Ограничения блокчейна влияют не только на сложность программ (например, существует очень мало децентрализованных приложений – dApp - с сотнями тысяч строк кода), но и на то, как думают разработчики. Эта картинка хорошо иллюстрирует проблемы сегодняшних блокчейн-разработчиков, очень похожие на те, что были у разработчиков игр в 1996 году.
+These computers have played a very important role in the advancement of technology, but compared to modern personal computers and smartphones, they seem to be nothing more than a programmable calculator. In terms of the level of computing power for each individual application, the blockchain resembles the ZX Spectrum. But there is nothing to worry about: blockchain is not for computing speed, but for removing intermediaries.
+The limitations of blockchain affect not only the complexity of programs (for example, there are very few decentralized applications - dApps - with hundreds of thousands of lines of code), but also how developers think. This picture illustrates well the problems of today's blockchain developers, very similar to those of game developers in 1996.
 
 ![Developers](../../assets/7-6-5-1-devs.png "Developers")
 
-Разработчики обычных приложений могут не думать о многих проблемах, с которыми сталкиваются разработчики dApp:
+Common application developers may not think about many of the problems dApp developers face:
 
-- Необходимость бороться за каждый байт и за каждую вычислительную операцию
-- Невозможность легко обновить свое приложение и доставить обновление клиентам (в этом плане блокчейн Waves выгодно отличается от конкурентов, так как предоставляет такую возможность)
-- Высокая цена ошибки.
+- The need to fight for every byte and for every computing operation
+- The inability to easily update your application and deliver the update to customers (in this regard, the Waves blockchain compares favorably with competitors, as it provides such an opportunity)
+- The high cost of a mistake.
 
-Конечно, у всех этих ограничений есть и плюсы. Например, невозможность писать в коде все, что захочется, уменьшает проблемы с безопасностью. О некоторых других преимуществах я говорил на конференции [San Francisco Blockchain Week 2019](https://www.youtube.com/watch?v=gMcif_ADWak).
+Of course, there are advantages to all of these restrictions. For example, not being able to write whatever you want in code reduces security concerns. I talked about some other benefits at the [San Francisco Blockchain Week 2019] conference (https://www.youtube.com/watch?v=gMcif_ADWak).
 
-## Иной пользовательский опыт
+## Different user experience
 
-В далеком 2014-м году, начиная интересоваться разработкой приложений для блокчейна, я не осознавал, что вместе с изменением принципов описания бизнес-логики приложений меняется и пользовательский опыт.
+Back in 2014, when I started to be interested in the development of applications for the blockchain, I did not realize that along with the change in the principles of describing the business logic of applications, the user experience was changing.
 
-Например, пользователь привык к авторизации в приложении с помощью логина и пароля, а для совершения операции с dApp нужна подпись приватным ключом.
+For example, a user is accustomed to authorization in the application using a username and password, and to perform an operation with a dApp, a signature with a private key is required.
 
-Приватный ключ чаще всего хранится в браузерном расширении (см. Waves Keeper), что становится дополнительным барьером для пользователей ПК и большой головной болью на мобильных устройствах.
+The private key is most often stored in a browser extension (see Waves Keeper), which becomes an additional barrier for PC users and a big headache on mobile devices.
 
-Также для каждого нового действия пользователя - добавляется дополнительный шаг, что может полностью "убить" пользовательский опыт и создать большие проблемы для бизнеса.
+Also, for each new user action - an additional step is added, which can completely "kill" the user experience and create big problems for the business.
 
-В последнее время появились продукты, в которых пользователям предлагаются привычные алгоритмы, но при этом не приносятся в жертву децентрализация и безопасность, например, Waves Signer. Но этот сегмент - пока еще на очень ранней стадии развития.
+Recently, products have appeared in which users are offered familiar algorithms, but at the same time decentralization and security are not sacrificed, for example, Waves Signer. But this segment is still at a very early stage of development.
 
-В таких условиях крайне важно донести до пользователя, зачем нужен блокчейн в конкретном приложении, какие он дает преимущества и почему стоит мириться с возможным ухудшением пользовательского опыта.
+In such conditions, it is extremely important to convey to the user why blockchain is needed in a particular application, what advantages it provides, and why it is worth putting up with a possible deterioration in user experience.
 
-## Децентрализация - не ценность по умолчанию
+## Decentralization is not the default value
 
-В начале своего пути многие разработчики dApp думают, что любой продукт можно сделать лучше, просто добавив туда блокчейн и децентрализацию. На самом деле это не так, потому что блокчейн, кроме децентрализации, ведет и к изменению пользовательского опыта, и, чаще всего, в худшую сторону.
+At the beginning of their journey, many dApp developers think that any product can be made better simply by adding blockchain and decentralization. In fact, this is not the case, because the blockchain, in addition to decentralization, leads to a change in user experience, and, most often, for the worse.
 
-Понимание, зачем вам нужен блокчейн, поможет сэкономить месяцы и годы разработки продукта, который с блокчейном станет лишь хуже. Как пишет известный инвестор и бизнесмен Питер Тиль, чтобы завоевать клиентов и рынок, ваш продукт должен быть в 10 раз лучше конкурентов. И блокчейн-продукты - не исключение.
+Understanding why you need blockchain will save you months and years of developing a product that will only get worse with blockchain. According to the famous investor and businessman Peter Thiel, in order to win customers and the market, your product must be 10 times better than competitors. And blockchain products are no exception.
 
-Децентрализация - это очень круто, но ее добавление в какой-либо процесс должно повышать его ценность в глазах пользователя как минимум в несколько раз. Вы же не говорите: "Наш продукт сделан на СУБД Postgres, поэтому он лучше конкурентов". Это касается и блокчейна.
+Decentralization is very cool, but adding it to a process should increase its value in the eyes of the user at least several times. You don't say, "Our product is built on Postgres, so it is better than the competition." This also applies to blockchain.
 
-Универсальной формулы, чтобы определить ценность блокчейна в конкретном решении, не существует. Но стоит начать с вопроса: "Какие стороны участвуют в процессе, который я пытаюсь улучшить, и почему они друг другу не доверяют?". Если участвует только одна сторона, или проблемы доверия не существует, велика вероятность, что блокчейн вам не нужен.
+There is no universal formula for determining the value of a blockchain in a specific solution. But it's worth starting with the question: "Which parties are involved in the process that I am trying to improve, and why do they not trust each other?" If only one party is involved, or there is no trust issue, chances are good that you don't need blockchain.
 
-## Мощь в композиции (композабилити)
+## Power in composition (composability)
 
-Для многих стартапов и компаний типичен синдром [NIH (Not invented here)](https://en.wikipedia.org/wiki/Not_invented_here#:~:text=Not%20invented%20here%20(NIH)%20is,and%20costs%2C%20such%20as%20royalties.). Жажда "сделать все самим" в сфере блокчейна может привести к очень нежелательным последствиям.
+Typical for many startups and companies is the [NIH](https://en.wikipedia.org/wiki/Not_invented_here#:~:text=Not%20invented%20here%20(NIH)%20is,and%20costs%2C%20such%20as%20royalties.)  [Not invented here](https://en.wikipedia.org/wiki/Not_invented_here#:~:text=Not%20invented%20here%20(NIH)%20is,and%20costs%2C%20such%20as%20royalties.) syndrome. The desire to "do it all" in the blockchain space can lead to very undesirable consequences.
 
-Важная ценность блокчейна - в том, что это унифицированный интерфейс для общения разных децентрализованных приложений. Если вам знакомо понятие ["шина данных"](https://en.wikipedia.org/wiki/Enterprise_service_bus), то можно провести параллель с блокчейном. Представьте себе, что прямо в вашей среде выполнения кода есть доступ к данным большого количества других приложений.
+An important value of the blockchain is that it is a unified interface for communication between different decentralized applications. If you are familiar with the concept of ["data bus"](https://en.wikipedia.org/wiki/Enterprise_service_bus), then you can draw a parallel with the blockchain. Imagine having access to data from a large number of other applications right in your code runtime.
 
-Другая аналогия, которая поможет понять, что такое композиция - кубики Lego, из которых можно собрать что-то уникальное.
+Another analogy that will help you understand what composition is - Lego bricks, from which you can assemble something unique.
 
-Например, в протоколе Waves используется алгоритм консенсуса LPoS, который позволяет получать доход от лизинга (стейкинга). Протокол Neutrino от команды Ventuary Lab использует этот алгоритм в своем стейбкоине, чтобы пользователь мог отдавать свои токены в стейкинг. А любое другое приложение может принимать стейблкоины Neutrino как средство платежа. Это и есть композиция: одни приложения опираются на другие, используя и дополняя их.
+For example, the Waves protocol uses the LPoS consensus algorithm, which allows you to receive income from leasing (staking). The Neutrino Protocol from the Ventuary Lab team uses this algorithm in their stablecoin to enable the user to stake their tokens. Any other application can accept Neutrino stablecoins as a means of payment. This is composition: some applications build on others, using and complementing them.
 
-Многие сервисы Web 2.0 имеют API, которые тоже позволяют интегрироваться с ними. Но есть несколько важных отличий:
+Many Web 2.0 services have APIs that also allow you to integrate with them. But there are several important differences:
 
-- В приложениях Web 2.0 пользователям часто требуется регистрироваться и получать специальные API-ключи, которые дают доступ к данным и могут быть в любой момент отозваны провайдерами. Чтобы получать данные или вызывать методы децентрализованных приложений, не нужны ключи доступа, так как все приложения выполняются в общем пространстве
-- Для классических приложений Web 2.0 существует огромное количество различных протоколов работы API (авторизация, кодировка данных и т. д.). Для dApp этой проблемы не существует. Вам достаточно лишь знать, какие аргументы принимают какие функции. Даже если у приложения нет документации, вы сами можете это увидеть в блокчейне.
+- In Web 2.0 applications, users are often required to register and obtain special API keys that give access to data and can be revoked by providers at any time. Access keys are not required to receive data or call methods of decentralized applications, since all applications run in a common space
+- For classic Web 2.0 applications, there are a huge number of different API protocols (authorization, data encoding, etc.). This problem does not exist for dApps. You just need to know what arguments what functions take. Even if the application has no documentation, you can see it yourself on the blockchain.
 
-## Все только начинается
+## It's only the beginning
 
-Биткойну уже больше 10 лет, и может показаться, что все приложения уже созданы, все свежие идеи реализованы и эра интересных стартапов в мире блокчейна закончилась. Это далеко не так. Каждые несколько лет в блокчейне появляются новые тренды, возможности, технологии. Можно сказать, что каждые несколько лет или даже чаще рынок предоставляет шансы новым игрокам. Самые интересные проекты ждут нас впереди!
+Bitcoin is more than 10 years old, and it may seem that all applications have already been created, all fresh ideas have been implemented and the era of interesting startups in the blockchain world is over. This is far from the case. Every few years new trends, opportunities, technologies appear in the blockchain. We can say that every few years, or even more often, the market offers new players a chance. The most interesting projects are ahead of us!
 
-О том, что блокчейн развивается крайне быстро, я рассказывал в своих [итогах 2019 года](https://medium.com/@ikardanov/2019-in-the-blockchain-world-through-the-eyes-of-developer-advocate-e329aee5aa1), с которыми рекомендую ознакомиться, если еще не сделали этого. Новые продукты, такие как Gravity, открывают возможности для большого количества инноваций. Например, с появлением Gravity станет возможным делать децентрализованные приложения, которые работают сразу в нескольких сетях. Кто сможет первым воспользоваться этими возможностями и в одном приложении будет сочетать, например, лучшие стороны Bitcoin, Waves, Ethereum, точно сможет сделать что-то инновационное.
+I talked about the fact that the blockchain is developing extremely quickly in my [2019 Results](https://medium.com/@ikardanov/2019-in-the-blockchain-world-through-the-eyes-of-developer-advocate-e329aee5aa1), which I recommend you read if you haven't already. New products like Gravity open up opportunities for a lot of innovation. For example, with the advent of Gravity, it will be possible to create decentralized applications that work in several networks at once. Whoever will be the first to take advantage of these opportunities and in one application will combine, for example, the best aspects of Bitcoin, Waves, Ethereum, will definitely be able to do something innovative.
