@@ -9,7 +9,7 @@ The public and private keys are 32 byte values ​​that correspond to each oth
 - the private key does not contain the public key (for example, in Ethereum, the private key contains the public one, therefore it has a size of 64 bytes, in Waves the public key is calculated each time for the private key)
 - the signature using EdDSA is non-deterministic, that is, the same data can be signed with the same key and receive different signatures, since random values ​​are also used
 
-## Key Travel
+## Key travels
 
 Most users still come across keys not in the form of an array of bytes, but in the form of a seed phrase, often also called a mnemonic phrase. Any combination of bytes can be a seed, but Waves clients typically use 15 English words. Based on the seed phrase, the private key is calculated as follows:
 

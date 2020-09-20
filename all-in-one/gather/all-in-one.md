@@ -32,59 +32,59 @@
 \pagebreak
 </div>
 
-# Оглавление
+# Table of Contents
 
-[Введение](../../sections/0-intro.md)
+[Introdution](../../sections/0-intro.md)
 
-[Глава 1. Краткая история веба и протокола Waves](../../sections/1-Waves-Introduction/1-0-intro-web3.md)
+[Chapter 1. A Brief History of the Web, or Web 1.0 to Web 3.0](../../sections/1-Waves-Introduction/1-0-intro-web3.md)
 
-- [1.1 Что такое Waves?](../../sections/1-Waves-Introduction/1-1-history-of-waves.md)
-- [1.2 Подходы к разработке протокола Waves](../../sections/1-Waves-Introduction/1-2-development-principles.md)
-- [1.3 Отличительные особенности блокчейна Waves](../../sections/1-Waves-Introduction/1-2-development-principles.md)
+- [1.1 What is Waves?](../../sections/1-Waves-Introduction/1-1-history-of-waves.md)
+- [1.2 Development principles of the Waves protocol](../../sections/1-Waves-Introduction/1-2-development-principles.md)
+- [1.3 Distinctive features of the Waves blockchain](../../sections/1-Waves-Introduction/1-3-features-and-USPs.md)
 
-[Глава 2. Нода Waves и как она работает, ее конфигурация](../../sections/2-Network-Features/2-1-node-configuration.md)
+[Chapter 2. Waves node and how it works, its configuration](../../sections/2-Network-Features/2-1-node-configuration.md)
 
-- [2.1 Процесс майнинга и Waves NG](../../sections/2-Network-Features/2-2-mining-and-waves-ng.md)
-- [2.2 Обновления протокола и другие голосования](../../sections/2-Network-Features/2-3-upgrades-and-other-votings.md)
+- [2.1 Mining process and Waves NG](../../sections/2-Network-Features/2-2-mining-and-waves-ng.md)
+- [2.2 Protocol updates and other polls](../../sections/2-Network-Features/2-3-upgrades-and-other-votings.md)
 
-[Глава 3. Аккаунты и ключи](../../sections/3-Accounts/3-1-keys.md)
+[Chapter 3. Accounts and Keys](../../sections/3-Accounts/3-1-keys.md)
 
-- [3.1 Обычные аккаунты vs. смарт аккаунты](../../sections/3-Accounts/3-2-accounts-vs-smart-accounts.md)
+- [3.1 Regular accounts vs. Smart accounts](../../sections/3-Accounts/3-2-accounts-vs-smart-accounts.md)
 
-[Глава 4. Токены](../../sections/4-Tokens/4-1-tokens-and-how-to-work.md)
+[Chapter 4. Tokens](../../sections/4-Tokens/4-1-tokens-and-how-to-work.md)
 
-- [4.1 Спонсирование транзакций](../../sections/4-Tokens/4-2-sponsorship.md)
-- [4.2 Смарт ассеты](../../sections/4-Tokens/4-2-sponsorship.md)
-- [4.3 Торговля ассетами и DEX](../../sections/4-Tokens/4-3-smart-assets.md)
+- [4.1 Sponsoring transactions](../../sections/4-Tokens/4-2-sponsorship.md)
+- [4.2 Smart assets](../../sections/4-Tokens/4-2-sponsorship.md)
+- [4.3 Asset and DEX trading](../../sections/4-Tokens/4-3-smart-assets.md)
 
-[Глава 5. Транзакции](../../sections/5-Transactions/5-1-transactions-intro.md)
+[Chapter 5. Transactions](../../sections/5-Transactions/5-1-transactions-intro.md)
 
-- [5.1 Типы транзакций](../../sections/5-Transactions/5-2-transaction-types.md)
-- [5.2 Особенности обработки UTX](../../sections/5-Transactions/5-3-utx.md)
+- [5.1 Transaction types](../../sections/5-Transactions/5-2-transaction-types.md)
+- [5.2 UTX processing features](../../sections/5-Transactions/5-3-utx.md)
 
-[Глава 6. Язык программирования Ride](../../sections/6-Ride/6-1-introduction.md)
+[Chapter 6. The Ride Programming Language](../../sections/6-Ride/6-1-introduction.md)
 
-- [6.1 Рантайм языка](../../sections/6-Ride/6-2-runtime-details.md)
-- [6.2 Стандартная библиотека](../../sections/6-Ride/6-3-main-functions.md)
-- [6.3 Инструменты для разработки децентрализованных приложений](../../sections/6-Ride/6-4-tooling.md)
+- [6.1 Language runtime](../../sections/6-Ride/6-2-runtime-details.md)
+- [6.2 Standard library](../../sections/6-Ride/6-3-main-functions.md)
+- [6.3 Tools for developing decentralized applications](../../sections/6-Ride/6-4-tooling.md)
 
-[Глава 7. Практикум: пишем Web3 приложения](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
+[Chapter 7. Workshop: Writing Web3 Applications](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
 
 - [7.1 Oraculus](../../sections/7-dApp-Examples-and-Recipes/7-1-Oraculus.md)
 - [7.2 Billy](../../sections/7-dApp-Examples-and-Recipes/7-2-Billy.md)
-- [7.3 Смарт ассеты и причем тут горячая картошка](../../sections/7-dApp-Examples-and-Recipes/7-3-hot-potato-token.md)
-- [7.4 Лучшие практики разработки](../../sections/7-dApp-Examples-and-Recipes/7-5-best-practices.md)
-- [7.6 5 вещей, которые надо знать](../../sections/7-dApp-Examples-and-Recipes/7-6-5-things-to-know.md)
+- [7.3 Smart assets and where does the hot potato come in?](../../sections/7-dApp-Examples-and-Recipes/7-3-hot-potato-token.md)
+- [7.4 Development best practices](../../sections/7-dApp-Examples-and-Recipes/7-5-best-practices.md)
+- [7.6 5 things I would like to know before I started developing decentralized apps](../../sections/7-dApp-Examples-and-Recipes/7-6-5-things-to-know.md)
 
-[Глава 8. Лучшие друзья разработчика](../../sections/8-important-aspects/8-0-important-aspects.md)
+[Chapter 8. Developer's best friends](../../sections/8-important-aspects/8-0-important-aspects.md)
 
-- [8.1 Взаимодействия с пользователем](../../sections/8-important-aspects/8-1-keeper-singer.md)
+- [8.1 User interactions](../../sections/8-important-aspects/8-1-keeper-singer.md)
 
-[Глава 9. Смотрим в будущее](../../sections/9-next-big-things/9-0-gravity-hub.md)
+[Chapter 9. Looking to the future](../../sections/9-next-big-things/9-0-defi.md)
 
 - [9.1 Gravity](../../sections/9-next-big-things/9-1-gravity-hub.md)
 
-[Заключение](../../sections/10-outro.md)
+[Final words](../../sections/10-outro.md)
 
 <div style="page-break-after: always; visibility: hidden">
 \pagebreak

@@ -1,4 +1,4 @@
-# Mining process and Waves NG
+# The mining process and Waves NG
 
 The mining process is key for a node, after all, its main task is to produce blocks with transactions. To do this effectively, a node must also receive information about blocks from other nodes and send them its blocks. Let's take a look at a simplified Waves mining model. For more information on the mining process, including formulas, see the article [Fair Proof of Stake](https://forum.wavesplatform.com/uploads/default/original/1X/b9f220c13f73c3a41dff7f4523c6c4a1fc03ebf6.pdf).
 
@@ -76,7 +76,7 @@ There are no transactions in the block, as can be seen from the `transactionCoun
 
 ```json
 {
-  // неизмененные параметры опущены
+  // unchanged parameters were omitted
   "blocksize": 51385,
   "signature": "4xMaGjQxMX2Zd4jMUUUs5cmemkVwT8Jc5sqx6wzMUokVqWg5jvWSDF6SBF1P7x4UNQjYsgsCs4csa2qtRmG8j3g4",
   "totalFee": 65400000,

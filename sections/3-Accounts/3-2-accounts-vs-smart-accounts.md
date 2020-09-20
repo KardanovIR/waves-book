@@ -8,7 +8,7 @@ The work of regular accounts is as simple and intuitive as possible. Each accoun
 
 But a regular account can be turned into a smart account that behaves differently.
 
-## Smart account
+## Smart accounts
 
 If you put a script on a regular account that sets other validation rules for **outgoing** transactions, then it will become a ** smart account. ** The smart account will also "own" tokens, but in order to do something with them ( translate, burn, exchange, etc.), you must not provide a signature, but satisfy the conditions described in the body of the script. The model is very similar to that in Bitcoin, with one exception - Waves does not use a primitive Bitcoin script, but the much more powerful Ride language. This book will have a separate section devoted to Ride, so now let's talk more about the concept of smart accounts. The code on the Ride is sent to the network using a script install transaction (`SetScript`) and turns a regular account into a smart one.
 

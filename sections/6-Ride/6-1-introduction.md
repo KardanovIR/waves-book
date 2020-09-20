@@ -476,9 +476,9 @@ The resulting array can contain up to 100 data changes in the storage and 10 ope
 throw ("Here is exception text")
 ```
 
-The `throw` function will immediately terminate the script execution with the provided text. Нет никаких способов поймать брошенные исключения.
+The `throw` function will immediately terminate the script execution with the provided text. There are no ways to catch thrown exceptions
 
-Основная идея `throw` заключается в том, чтобы остановить выполнение и отправить пользователю информативную обратную связь.
+The main idea if `throw` function is to stop script execution and send an informative feedback message to a user.
 
 ```scala
 let a = 12

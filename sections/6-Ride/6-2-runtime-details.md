@@ -1,4 +1,4 @@
-# Language runtime Ride
+# Language runtime
 
 Smart contracts and decentralized applications in Waves are different from those in Ethereum and many other blockchains. Let's take a look at the main differences and their reasons.
 

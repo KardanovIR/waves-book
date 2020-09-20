@@ -1,4 +1,4 @@
-# 1.2 Approaches to the development of the Waves protocol
+# 1.2 Development principles of the Waves protocol
 
 The developers of the Waves protocol have always been guided by some basic principles that strongly influence the further development of the protocol. Understanding these principles and the motivation behind them will make it easier to follow the further development of the project, so I will list these features.
 

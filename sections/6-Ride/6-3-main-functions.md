@@ -1,4 +1,4 @@
-# Standard library Ride
+# Standard library
 
 The Ride standard library includes a relatively small set of functions, many of which are related to cryptography (hash functions, signature verification functions, etc.). Let's take a look at the most commonly used and what features these functions have.
 
