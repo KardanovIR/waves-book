@@ -1,67 +1,67 @@
-# Глава 5. Транзакции
+# Chapter 5. Transactions
 
-В отличие от многих других блокчейнов, где есть 1 (Bitcoin) или 2 (Ethereum) типа транзакций, в Waves на момент написания этих строк их насчитывается 17. Ниже представлена схема с условным разделением всех актуальных типов транзакций на категории:
+Unlike many other blockchains where there are 1 (Bitcoin) or 2 (Ethereum) types of transactions, Waves at the time of this writing, there are 17 of them. Below is a diagram with a conditional division of all current types of transactions into categories:
 
 ![Waves transaction types](../../assets/5-1-1-transaction-types.png "Waves Transaction Types")
 
-У вас уже могли возникнуть вопросы: "Почему у транзакций такой хаотичный порядок нумерации? Почему нумерация не идет последовательно хотя бы в рамках одной категории?".
+You may already have questions: "Why do transactions have such a chaotic numbering order? Why does the numbering not go sequentially within at least one category?"
 
-Дело в том, что транзакции получали номера (они же ID) по мере их добавления в протокол. В этой части мы будем рассматривать транзакции в таком же порядке, то есть по мере их появления в блокчейне.
+The fact is that transactions received numbers (aka IDs) as they were added to the protocol. In this part, we will consider transactions in the same order, that is, as they appear on the blockchain.
 
-**Важно: у многих типов транзакций есть несколько версий, в этой книге мы будем рассматривать последние актуальные версии в Mainnet.**
+** Important: Many types of transactions have multiple versions, in this book we will look at the latest current versions on the Mainnet. **
 
-Работа с транзакциями осуществуется с помощью API ноды, который позволяет как получать информацию о транзакциях, так и отправлять их. Для вас, как для разработчиков, транзакция в большинстве случаев будет выглядеть как простой JSON:
+Working with transactions is carried out using the node's API, which allows you to both receive information about transactions and send them. For you as a developer, a transaction in most cases will look like plain JSON:
 
-```json
+``` 'json
 {
-  "senderPublicKey":"CRxqEuxhdZBEHX42MU4FfyJxuHmbDBTaHMhM3Uki7pLw",
-  "amount":1000000000,"signature":"4W9nWkfRm62rTQiuZX6bowWmDnz5n3cKhCZmLcYgivK53mBt3TzH6Z52fV6fXPSZn5bZc97rNo76usnNEoQcTHaq",
-  "fee":100000,
-  "type":4,
-  "version":1,
-  "attachment":"",
-  "sender":"3NBVqYXrapgJP9atQccdBPAgJPwHDKkh6A8",
-  "feeAssetId":null,
-  "proofs":["4W9nWkfRm62rTQiuZX6bowWmDnz5n3cKhCZmLcYgivK53mBt3TzH6Z52fV6fXPSZn5bZc97rNo76usnNEoQcTHaq"],
-  "assetId":null,
-  "recipient":"3N78bNBYhT6pt6nugc6ay1uW1nLEfnRWkJd",
-  "feeAsset":null,
-  "id":"8W9BkioPSWmPfDjcTFGaCy8vLEmcwkzJeSWno1s3Wra7",
-  "timestamp":1485529237072,
-  "height":56
+  "senderPublicKey": "CRxqEuxhdZBEHX42MU4FfyJxuHmbDBTaHMhM3Uki7pLw",
+  "amount": 1000000000, "signature": "4W9nWkfRm62rTQiuZX6bowWmDnz5n3cKhCZmLcYgivK53mBt3TzH6Z52fV6fXPSZn5bZc97rNo76usnNEoQcTHaq",
+  "fee": 100000,
+  "type": 4,
+  "version": 1,
+  "attachment": "",
+  "sender": "3NBVqYXrapgJP9atQccdBPAgJPwHDKkh6A8",
+  "feeAssetId": null,
+  "proofs": ["4W9nWkfRm62rTQiuZX6bowWmDnz5n3cKhCZmLcYgivK53mBt3TzH6Z52fV6fXPSZn5bZc97rNo76usnNEoQcTHaq"],
+  "assetId": null,
+  "recipient": "3N78bNBYhT6pt6nugc6ay1uW1nLEfnRWkJd",
+  "feeAsset": null,
+  "id": "8W9BkioPSWmPfDjcTFGaCy8vLEmcwkzJeSWno1s3Wra7",
+  "timestamp": 1485529237072,
+  "height": 56
 }
 ```
 
-Сама нода хранит транзакции в бинарном представлении, а не в виде JSON, но в момент запроса по API кодирует в JSON и отдает в таком виде. Принимает она ее тоже в виде JSON. В REST API ноды есть следующие полезные эндпоинты:
+The node itself stores transactions in a binary representation, not in the form of JSON, but at the time of an API request it encodes in JSON and sends it in that form. She also accepts it in the form of JSON. REST API nodes have the following useful endpoints:
 
-`GET /transactions/info/{id}` - получить информацию об одной транзакции
+`GET / transactions / info / {id}` - get information about one transaction
 
-`GET /transactions/address/{address}/limit/{limit}` - получить транзакции по адресу
+`GET / transactions / address / {address} / limit / {limit}` - get transactions at
 
-`GET /blocks/at/{height}` - получить список всех транзакций в блоке
+`GET / blocks / at / {height}` - get a list of all transactions in the block
 
-## Подпись транзакций
+## Signature of transactions
 
-У всех транзакций есть важное поле - `senderPublicKey`, которое определяет от имени какого аккаунта совершается действие. Чтобы транзакция ("действие") считалась валидной, необходимо, чтобы подпись транзакции соответствовала этому публичному ключу (случаи со смарт-аккаунтами сейчас не рассматриваем).
+All transactions have an important field - `senderPublicKey`, which defines on behalf of which account the action is performed. For a transaction ("action") to be considered valid, the signature of the transaction must match this public key (we are not considering cases with smart accounts now).
 
-Криптографические функции подписи ничего не знают про транзакции, так как они работают с байтами. В случае Waves, для подписания транзакций необходимо байты транзакции расположить в правильном порядке и передать функции подписи вместе с приватным ключом, в итоге получим подпись.
+Cryptographic signature functions do not know anything about transactions, since they work with bytes. In the case of Waves, to sign transactions, it is necessary to arrange the bytes of the transaction in the correct order and transfer the signature functions along with the private key, as a result, we will receive the signature.
 
-```js
-signature = sign(transactionBytes, privateKey)
+``` js
+signature = sign (transactionBytes, privateKey)
 ```
 
-Правильный порядок байтов для каждой транзакции описан в документации. Криптография выходит за пределы этой книги, но вы можете найти примеры правильного порядка байт для разных типов транзакций в [JS библиотеке Marshall на Github](https://github.com/wavesplatform/marshall).
+The correct byte order for each transaction is described in the documentation. Cryptography is outside the scope of this book, but you can find examples of correct byte ordering for different types of transactions in the [Marshall JS Library on Github](https://github.com/wavesplatform/marshall).
 
-Подписание транзакций делается обычно на стороне клиентского приложения, но сама нода так же умеет подписывать транзакции, отправляемые через API. Надо понимать, что нода такую транзакцию подпишет тем приватным ключом, который задан у нее в конфигурации. **Подписать транзакцию от произвольного отправителя с помощью REST API нельзя.** Многие разработчики думают, что им необходимо получить API key, чтобы подписать свою транзакцию с помощью ноды, но это будет работать только в том случае, есть в конфигурации задан приватный ключ от того аккаунта, который должен совершать действие.
+Signing transactions is usually done on the side of the client application, but the node itself is also able to sign transactions sent via the API. You need to understand that a node will sign such a transaction with the private key that is specified in its configuration. ** You cannot sign a transaction from an arbitrary sender using the REST API. ** Many developers think that they need to get an API key in order to sign their transaction using a node, but this will only work if there is a private key from of the account that should perform the action.
 
-## Жизненный цикл транзакции
+## Transaction lifecycle
 
-Давайте разберем все стадии работы с транзакцией на примере одного действия - отправки токена от одного пользователя другому. У нас возникло желание отправить токены с нашего аккаунта, от которого мы знаем seed фразу (`A` в нашем примере). Отправлять будем на аккаунт с публичным ключом `B`. Первым делом нам необходимо задать параметры транзакции:
+Let's take a look at all the stages of working with a transaction using the example of one action - sending a token from one user to another. We had a desire to send tokens from our account, from which we know the seed phrase (`A` in our example). We will send to an account with a public key `B`. First of all, we need to set the transaction parameters:
 
-```js
+``` js
 const params = {
   amount: 300000000,
-  recipient: address('B'),
+  recipient: address ('B'),
   feeAssetId: null,
   assetId: null,
   attachment: 'TcgsE5ehTSPUftEquDt',
@@ -69,29 +69,29 @@ const params = {
 }
 ```
 
-Поля транзакции мы разберем в следующей части этой главы. Сейчас сконцентрируемся на последовательности действий. Чтобы получить транзакцию вместе с подписью для наших параметров, мы используем библиотеку `waves-transactions`. Функции `transfer` мы передаем обозначенные выше параметры и сид-фразу. В итоге, мы получаем JavaScript объект, который будет содержать все указанные нами поля, а так же подпись в массиве `proofs`, время подписания транзакции (`timestamp`) и публичный ключ отправителя (аккаунта с сид фразой `A`) в поле `senderPublicKey`.
+We'll look at the transaction fields in the next part of this chapter. Now let's focus on the sequence of actions. To get the transaction along with the signature for our parameters, we use the `waves-transactions` library. To the `transfer` function, we pass the above parameters and the seed phrase. As a result, we get a JavaScript object that will contain all the fields we specified, as well as the signature in the `proofs` array, the transaction signing time (` timestamp`) and the sender's public key (account with the seed phrase `A`) in the` senderPublicKey`.
 
-```js
-const signedTransferTx = transfer(params, 'A');
-broadcast(signedTransferTx);
+``` js
+const signedTransferTx = transfer (params, 'A');
+broadcast (signedTransferTx);
 ```
 
-Библиотека от нас скрывает криптографию и подготовительный этап - формирование правильного порядка байт для подписи. Подписанная транзакция в форме JS объекта может быть отправлена в любую ноду, у которой открыт API. Запрос отправляется на `POST /transactions/broadcast` в виде JSON. Нода примет транзацию, если нет никаких проблем - подпись валидная, хватает токенов на балансе нашего аккаунта для совершения транзакции и т.д. Провалидированная транзакция попадет в UTX ноды, куда мы отправляли запрос, а она уже дальше будет рассылать информацию об этой транзакции всем нодам, с которыми она соединена.
+The library hides cryptography from us and the preparatory stage - the formation of the correct byte order for the signature. A signed transaction in the form of a JS object can be sent to any node that has an open API. The request is sent to `POST / transactions / broadcast` as JSON. The node will accept the transaction if there are no problems - the signature is valid, there are enough tokens on our account balance to complete the transaction, etc. A validated transaction will go to the UTX nodes where we sent the request, and it will then send information about this transaction to all the nodes with which it is connected.
 
 ### UTX
 
-UTX - список транзакций, которые находятся в ожидании попадания в блок. То есть, кто-то их отправил и нода приняла транзакцию, но транзакция в блок пока не попала. В Waves есть определенные особенности, связанные с тем, как такие транзакции обрабатываются. Как транзакция может попасть в UTX? Существует всего 2 способа для этого:
+UTX is a list of transactions that are awaiting block hits. That is, someone sent them and the node accepted the transaction, but the transaction has not yet entered the block. Waves has certain quirks related to how these transactions are processed. How can a transaction end up in UTX? There are only 2 ways to do this:
 
-- Кто-то отправит транзакцию на эту ноду (c помощью REST API или gRPC)
-- Нода получит транзакция по бинарному протоколу от другой ноды в сети
+- Someone will send a transaction to this node (using REST API or gRPC)
+- The node will receive a binary protocol transaction from another node in the network
 
-В конечном итоге можно сказать, что почти всегда транзакции в сеть приходят через API, но не объязательно, чтобы это был API данной конкретной ноды.
+Ultimately, we can say that almost always transactions in the network come through the API, but it is not necessary that it was the API of this particular node.
 
-У транзакции, которая попала в UTX, есть 2 варианта дальнейшего развития событий:
+A transaction that got into UTX has 2 options for further development of events:
 
-- В какой-то момент времени она будет добавлена в блок одним из майнеров
-- Транзакция станет невалидной и будет удалена из UTX (и никогда не сможет попасть в блок). Транзакция может стать невалидной по нескольким причинам - изменилось состояние блокчейна (другая транзакция попала в блок и изменила баланс отправителя, скрипт на аккаунте или ассете теперь уже возвращает `false` и т.д.), истекло время жизни транзакции (сейчас в сети Waves `timestamp` транзакции может отличаться на -2 или +1.5 часа от текущего времени блокчейна).
+- At some point in time, it will be added to the block by one of the miners
+- The transaction will become invalid and will be removed from UTX (and can never get into the block). A transaction can become invalid for several reasons - the state of the blockchain has changed (another transaction entered the block and changed the sender's balance, the script on the account or asset now returns `false`, etc.), the transaction lifetime has expired (now in the Waves network the timestamp` of the transaction may differ by -2 or +1.5 hours from the current blockchain time).
 
-Время жизни транзакции может истечь только по причине загрузки сети на все 100%. Ноды в Waves добавляют в блок транзакции поочередно, начиная с самых выгодных для них (с наибольшей комиссией за байт). Если в момент отправки нашей транзакции перевода токенов, в UTX было много транзакций с большей комиссией, то майнеры не будут добавлять в блок нашу, ведь у блока есть лимит на размер (1 МБ) и количество (6000 транзакций). Майнеры будут производить блоки максимального размера с самыми выгодными для них транзакциями. Если такое продолжится на протяжении 90 минут, то наша транзакция станет невалидной. На самом деле сортировка транзакция в UTX майнерами производится не только на основе размера коммиссии, поэтому особенности работы UTX мы рассмотрим в дальнейшем.
+The lifetime of a transaction can only expire because the network is 100% loaded. Nodes in Waves add transactions to the block one by one, starting with the most profitable for them (with the highest commission per byte). If at the time of sending our token transfer transaction, there were many transactions with a higher commission in UTX, then the miners will not add ours to the block, because the block has a size (1 MB) and number (6000 transactions) limit. Miners will produce blocks of maximum size with the most profitable transactions for them. If this continues for 90 minutes, then our transaction will become invalid. In fact, the sorting of a transaction in UTX by miners is done not only on the basis of the size of the commission, so we will consider the features of UTX operation in the future.
 
-**Для многих новичков становится неожиданностью, что в Waves в блоки могут попадать транзакции "из прошлого" и "из будущего", у которых `timestamp` на 120 минут меньше или 90 минут больше настоящего времени.** В некоторых случаях необходимо это учитывать при разработке своих приложений.
+** For many newbies, it comes as a surprise that Waves blocks may contain transactions "from the past" and "from the future", which have `timestamp` 120 minutes less or 90 minutes longer than the present time. ** In some cases, this must be taken into account when developing your applications.

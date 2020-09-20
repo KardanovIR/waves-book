@@ -1,224 +1,224 @@
-# Глава 7. Практикум: пишем Web3 приложения
+# Chapter 7. Workshop: Writing Web3 Applications
 
 ## Oraculus
 
-Лучший способ выучить язык - начать на нем писать. Заставить вас писать я не могу, поэтому предложу вам второй по крутизне вариант - читать как пишется код! Мы разберем несколько примеров контрактов, начнем с относительно простых, и закончим на достаточно сложных и разухабистых.
+The best way to learn a language is to start writing in it. I cannot force you to write, so I will offer you the second coolest option - to read as you write the code! We'll go over a few examples of contracts, starting with the relatively simple ones, and ending up with the rather complex and fluffy ones.
 
-## Блокчейн и данные из реального мира
+## Blockchain and data from the real world
 
-Блокчейн отлично работает с помещенными в него данными, но не имеет никакого представления о том, что происходит в реальном мире. Блокчейн не может, например, обратиться к внешнему API и получить из него данные, потому что нарушится детерменированность операций. Если каждая нода обратится к внешнему API в разное время, все они могут получить разные результаты, и в итоге ноды блокчейна никогда не придут к консенсусу, потому что неясно, какой из них надо довериться.
-Чтобы решить эту проблему, вместо модели “pull” (когда обращаются данными в реальный мир) принято применять модель “push”, при которой поставщики сохраняют данные в блокчейне, а любые децентрализованные приложения могут их использовать.
-Сущности, которые сохраняют данные в блокчейне, называются оракулами. Но проблема оракулов в том, что они - централизованные, то есть мы доверяем одной сущности, поставляющей данные. В общем случае система является настолько централизованной, насколько централизована самая "плохая" ее часть. То есть децентрализованное приложение, которое использует для принятия важных решений данные одного оракула, на самом деле является централизованным. Почему? Логика простая: повлияв на поведение одной сущности - оракула, - можно добиться нужного поведения от всего приложения.
-Идея децентрализованных оракулов лежит на поверхности, но простого решения здесь нет, и поэтому часто говорят о "проблеме оракулов". Давайте рассмотрим, как ее можно решить.
+The blockchain works great with the data placed in it, but has no idea of ​​what is happening in the real world. The blockchain cannot, for example, access an external API and get data from it, because the determinism of operations will be violated. If each node accesses the external API at a different time, they can all get different results, and as a result, the blockchain nodes will never come to a consensus, because it is not clear which one should be trusted.
+To solve this problem, instead of the “pull” model (when data is transferred to the real world), it is customary to use the “push” model, in which suppliers save data on the blockchain, and any decentralized applications can use it.
+The entities that store data on the blockchain are called oracles. But the problem with oracles is that they are centralized, that is, we trust one entity that supplies the data. In general, a system is as centralized as the “worst” part of it is centralized. That is, a decentralized application that uses data from one oracle to make important decisions is in fact centralized. Why? The logic is simple: by influencing the behavior of one entity - the oracle - you can achieve the desired behavior from the entire application.
+The idea of ​​decentralized oracles is on the surface, but there is no easy solution here, and therefore often talk about the "problem of oracles". Let's see how you can solve it.
 
-> Если децентрализованное приложение опирается на данные одного оракула, то такое приложение не является децентрализованным.
+> If a decentralized application relies on the data of one oracle, then such an application is not decentralized.
 
-## Простейший вариант децентрализованных оракулов
+## The simplest version of decentralized oracles
 
-Самым простым решением является мультиподпись: несколько пользователей приходят к консенсусу и подписывают одни и те же данные. Например, мы хотим получать данные о курсе USD/EUR, и у нас есть пять оракулов, которые должны договориться о консенсусном значении (за пределами блокчейна), подписать транзакцию и отправить ее в сеть на специальный аккаунт, который примет ее только при наличии не менее трех подписей из пяти. Простейший контракт в этом случае выглядел бы так:
+The simplest solution is multisignature: several users come to a consensus and sign the same data. For example, we want to receive data on the USD / EUR rate, and we have five oracles that must agree on a consensus value (outside the blockchain), sign the transaction and send it to the network to a special account, which will only accept it if there is at least three signatures out of five. The simplest contract in this case would look like this:
 
-```scala
-{-# STDLIB_VERSION 3 #-}
-{-# CONTENT_TYPE EXPRESSION #-}
-{-# SCRIPT_TYPE ACCOUNT #-}
+``` scala
+{- # STDLIB_VERSION 3 # -}
+{- # CONTENT_TYPE EXPRESSION # -}
+{- # SCRIPT_TYPE ACCOUNT # -}
 
 # array of 5 public keys
-let pks = [base58'', base58'', base58'', base58'', base58'']
+let pks = [base58 '', base58 '', base58 '', base58 '', base58 '']
 
 # inner fold step for each signature
-func signedBy(pk:ByteVector) = {
+func signedBy (pk: ByteVector) = {
    # is signed by the public key or not
-   func f(acc: Boolean, sig: ByteVector)
-      = acc || sigVerify(tx.bodyBytes, sig, pk)
-   FOLD<8>(tx.proofs, false, f)
+   func f (acc: Boolean, sig: ByteVector)
+      = acc || sigVerify (tx.bodyBytes, sig, pk)
+   FOLD <8> (tx.proofs, false, f)
 }
 
 # outer fold step for each public key
-func signedFoldStep(acc:Int, pk:ByteVector)
-   = acc + (if(signedBy(pk)) then 1 else 0)
+func signedFoldStep (acc: Int, pk: ByteVector)
+   = acc + (if (signedBy (pk)) then 1 else 0)
 
 # comparing total number of correct signatures
 # to required number of correct signatures
-FOLD<5>(pks, 0, signedFoldStep) >= 3
+FOLD <5> (pks, 0, signedFoldStep)> = 3
 ```
 
-> Обратите внимание, эта функция является мультиподписью 3 из 5. В предыдущей главе мы рассматривали 2 из 3. В отличие от того примера, скрипт выше не делает допущений какая подпись где находится в массиве `proofs`, а проверяет каждое поле из `proofs` относительно каждого публичного ключа.
+> Note that this function is a multisignature 3 out of 5. In the previous chapter we looked at 2 out of 3. In contrast to the example above, the script above does not make assumptions about which signature is where in the `proofs` array, but checks each field from` proofs` relative to each public key.
 
-Но у такого подхода есть несколько проблем:
+But this approach has several problems:
 
-- При отсутствии у оракулов консенсуса данные просто не поступят в блокчейн
-- У поставщиков данных нет экономической мотивации 
-- Заранее заданный ограниченный список оракулов.
+- In the absence of consensus among the oracles, the data simply will not enter the blockchain
+- Data providers have no economic motivation
+- Predefined limited list of oracles.
 
-Для решения этих проблем можно сделать полноценное децентрализованное приложение, представляющее собой маркетплейс, на котором встречаются две стороны:
+To solve these problems, you can make a full-fledged decentralized application, which is a marketplace where two sides meet:
 
-1. Приложения, которым нужны данные
-2. Оракулы, готовые поставлять эти данные за вознаграждение
+1. Applications that need data
+2. Oracles willing to supply this data for a fee
 
-Давайте сформулируем основные функциональные требования к такому приложению и реализуем его, используя Ride и блокчейн Waves.
+Let's formulate the basic functional requirements for such an application and implement it using Ride and the Waves blockchain.
 
-## Децентрализованный оракул как dApp
+## Decentralized oracle as dApp
 
-Основные принципы работы децентрализованных оракулов будут такими:
+The basic principles of decentralized oracles will be as follows:
 
-- Владелец любого децентрализованного приложения должен иметь возможность запросить данные в определенном формате и с определенным вознаграждением для оракулов
-- Любой желающий должен быть в состоянии зарегистрировать свой оракул и отвечать на запросы, получая за это вознаграждение
-- Все действия оракулов должны быть доступны для аудита.
+- The owner of any decentralized application should be able to request data in a specific format and with a specific reward for oracles
+- Anyone should be able to register their oracle and answer inquiries, receiving a reward for this
+- All actions of oracles must be auditable.
 
-### Запрос данных
+### Request data
 
-Любой аккаунт в блокчейне может отправить вопрос оракулам. При отправке вопроса необходимо приложить награду для оракулов за предоставление корректных данных (в токенах WAVES). В вопросе необходимо указать следующие параметры:
+Any account on the blockchain can send a question to the oracles. When submitting a question, you must attach a reward for oracles for providing correct data (in WAVES tokens). The following parameters must be specified in the question:
 
-- `id` - уникальный идентификатор каждого вопроса, генерируется его отправителем. Требования: отсутствие такого же ключа у dApp, не больше 64 символов.
-- `question` - собственно вопрос. Он формируется в специальном формате для каждого типа данных. В начале вопроса нужно указать тип данных, после разделителя // идут метаданные в формате JSON. Например, для типа данных Temperature вопрос выглядит так: `Temperature//{"lat": "55.7558", "lon": "37.6173", "timestamp": 150000000000, "responseFormat": "NN.NN"}`
-- `consensusType` - правило агрегации данных. Для строковых типов данных контракт предусматривает только консенсус (полное совпадение ответов), а для числовых возможны также `median` и `average`
-- `minOraclesCount` - минимальное число оракулов, которые должны предоставить данные для получения итогового консенсус-результата. Значение не может быть меньше 3
-- `maxOraclesCount` - максимальное число оракулов, которые могут ответить на вопрос. Не больше 6
-- `oraclesWhiteList` - список оракулов (публичные ключи через запятые), которые должны предоставить данные. Если значение параметра равно пустой строке, то на запрос данных может ответить любой оракул
-- `tillHeight` - дедлайн достижения консенсуса. Если до этого времени консенсус между оракулами не был достигнут (не набралось количество ответов > `minOraclesCount`), то отправитель запроса может забрать вознаграждение.
+- `id` - unique identifier of each question, generated by its sender. Requirements: no dApp has the same key, no more than 64 characters.
+- `question` - the actual question. It is generated in a special format for each data type. At the beginning of the question, you need to specify the data type, after the separator // there is metadata in JSON format. For example, for the Temperature data type, the question looks like this: `Temperature // {" lat ":" 55.7558 "," lon ":" 37.6173 "," timestamp ": 150000000000," responseFormat ":" NN.NN "}`
+- `consensusType` - data aggregation rule. For string data types, the contract provides only consensus (complete coincidence of answers), and for numeric data types, `median` and` average` are also possible
+- `minOraclesCount` - the minimum number of oracles that must provide data to obtain the final consensus result. The value cannot be less than 3
+- `maxOraclesCount` - the maximum number of oracles that can answer the question. Not more than 6
+- `oraclesWhiteList` - a list of oracles (public keys separated by commas) that should provide data. If the parameter value is equal to an empty string, then any oracle can answer the data request
+- `tillHeight` - deadline for reaching consensus. If by this time the consensus between the oracles has not been reached (the number of responses> `minOraclesCount` has not been reached), then the requestor can collect the reward.
 
-Формат типа запросов данных оставим на усмотрение отправителей запросов и оракулов, но в качестве примера предлагаю следующие:
+The format of the data request type will be left to the discretion of the request senders and oracles, but as an example I suggest the following:
 
-- `Temperature//{"lat": "55.7558", "lon": "37.6173", "timestamp": 150000000000, "responseFormat": "NN.NN"}`
-- `Pricefeed//{"pair": "WAVES/USDN", "timestamp": 150000000000, "responseFormat": "NN.NNNN"}`
-- `Sports//{"event": "WC2020", "timestamp": 150000000000, "responseFormat": "%s"}`
-- `Random//{"round": 100, "responseFormat": "%s"}`
+- `Temperature // {" lat ":" 55.7558 "," lon ":" 37.6173 "," timestamp ": 150000000000," responseFormat ":" NN.NN "}`
+- `Pricefeed // {" pair ":" WAVES / USDN "," timestamp ": 150000000000," responseFormat ":" NN.NNNN "}`
+- `Sports // {" event ":" WC2020 "," timestamp ": 150000000000," responseFormat ":"% s "}`
+- `Random // {" round ": 100," responseFormat ":"% s "}`
 
-### Сбор ответов оракулов
+### Collecting oracle responses
 
-Любой аккаунт Waves может зарегистрироваться в качестве оракула определенного типа данных. Для этого достаточно вызвать метод децентрализованного приложения и передать в качестве аргумента тип поставляемых данных. Пример вызова может выглядеть так - `registerAsOracle("Temperature")`. В этот момент в стейте dApp будет зафиксировано, в какой момент произошла регистрация оракула в качестве поставщика определенного типа данных, и записано следующее: `{oraclePublicKey}_Temperature={current_height}`.
+Any Waves account can register as an oracle of a certain type of data. To do this, it is enough to call the method of the decentralized application and pass the supplied data type as an argument. An example call might look like this - `registerAsOracle (" Temperature ")`. At this moment, the dApp state will record at what moment the oracle was registered as a provider of a certain data type, and the following will be written: `{oraclePublicKey} _Temperature = {current_height}`.
 
-Оракул отвечает с помощью метода `response(id: String, data: String)` и `responseNumber(id: String, data: Integer)`.
+The oracle responds with the `response (id: String, data: String)` and `responseNumber (id: String, data: Integer)` methods.
 
-### Подсчет результатов
+### Counting Results
 
-Для подсчета результатов необходимо вызвать метод `getResult(id: String)`. Подсчет результатов возможен только в том случае, если ответили больше оракулов, чем указано в minOraclesCount. При выборе правильного ответа используется не простое большинство, а рейтинги оракулов. Рейтинг формируется по следующей логике:
+To count the results, call the `getResult (id: String)` method. Counting of results is possible only if more oracles answered than specified in minOraclesCount. When choosing the correct answer, it is not the simple majority that is used, but the ratings of the oracles. The rating is formed according to the following logic:
 
-- при регистрации каждый оракул имеет рейтинг 100
-- за каждый ответ, который в итоге стал результатом запроса, к рейтингу оракула прибавляется +1 рейтинга, за каждый неверный ответ - -1.
+- upon registration, each oracle has a rating of 100
+- for each answer, which eventually became the result of the request, +1 rating is added to the oracle's rating, for each wrong answer - -1.
 
-Давайте представим, что на запрос `Sports//{"event": "WorldCup2020", "timestamp": 150000000000, "responseFormat": "%s"}` ответили 5 оракулов со следующими рейтингами и ответами:
+Let's imagine that 5 oracles with the following ratings and responses responded to the request `Sports // {" event ":" WorldCup2020 "," timestamp ": 150000000000," responseFormat ":"% s "}`:
 
-1. Oracle0, рейтинг = 102, ответ = "France"
-2. Oracle1, рейтинг = 200, ответ = "Croatia
-3. Oracle2, рейтинг = 63, ответ = "France"
-4. Oracle3, рейтинг = 194, ответ = "France"
-5. Oracle4, рейтинг = 94, ответ = "Croatia"
+1. Oracle0, rating = 102, answer = "France"
+2. Oracle1, rating = 200, answer = "Croatia
+3. Oracle2, rating = 63, answer = "France"
+4. Oracle3, rating = 194, answer = "France"
+5. Oracle4, rating = 94, answer = "Croatia"
 
-Итоговый результат будет `France`, так как суммарный рейтинг оракулов с таким ответом составляет 359, а рейтинг оракулов, ответивших Croatia, равен 294.
+The final result will be `France`, since the total rating of oracles with this answer is 359, and the rating of oracles that answered Croatia is 294.
 
-В результате процедуры подсчета голосов рейтинги оракулов `Oracle0`, `Oracle2` и `Oracle3` будут увеличены на 1, и они смогут забрать вознаграждение, в то время как рейтинги `Oracle1` и `Oracle4` будут уменьшены на единицу, и они не получат вознаграждения.
+As a result of the vote counting procedure, the ratings of the oracles `Oracle0`,` Oracle2` and `Oracle3` will be increased by 1, and they will be able to collect the reward, while the ratings of` Oracle1` and `Oracle4` will be decreased by one, and they will not receive rewards.
 
-## Реализация
+## Implementation
 
-Рассмотрим пошаговую реализацию такого децентрализованного приложения. Логичнее всего начать с метода регистрации оракулов, который будет принимать в качестве аргумента тип предоставляемых оракулом данных. Если один оракул с одним публичным ключом предоставляет несколько типов данных, он должен регистрироваться несколько раз.
+Let's take a step-by-step implementation of such a decentralized application. The most logical place to start is with the oracle registration method, which will take as an argument the type of data provided by the oracle. If a single oracle with one public key provides multiple data types, it must register multiple times.
 
-```scala
+``` scala
 
-@Callable(i)
-func registerAsOracle(dataType: String) = {
-    let neededKey = i.callerPublicKey.toBase58String() + "_" + dataType
-    let ratingKey = i.callerPublicKey.toBase58String() + "_rating"
+@Callable (i)
+func registerAsOracle (dataType: String) = {
+    let neededKey = i.callerPublicKey.toBase58String () + "_" + dataType
+    let ratingKey = i.callerPublicKey.toBase58String () + "_rating"
 
-    let currentRating = match getInteger(this, ratingKey) {
+    let currentRating = match getInteger (this, ratingKey) {
         case v: Int => v
         case _ => 100
     }
-    match (getString(i.caller, neededKey)) {
-        case data:String => throw("This oracle is registered already")
+    match (getString (i.caller, neededKey)) {
+        case data: String => throw ("This oracle is registered already")
         case _ => {
             [
-                StringEntry(neededKey, toString(height)),
-                IntegerEntry(ratingKey, currentRating)
+                StringEntry (neededKey, toString (height)),
+                IntegerEntry (ratingKey, currentRating)
             ]
         }
     }
 }
 ```
 
-Следующим логичным шагом будет реализация функциональности по отправке запросов на предоставление данных. Как описано выше, запрос на предоставление данных должен включать в себя следующие аргументы:
+The next logical step would be to implement functionality for sending requests for data. As described above, a request to submit data must include the following arguments:
 
-- `id` - уникальный идентификатор каждого вопроса
-- `question` - собственно вопрос в заранее оговоренном формате
-- `consensusType` - правило агрерации данных: `consensus`, `median` или `average`.
-- `minOraclesCount` - минимальное количество оракулов.
-- `maxOraclesCount` - максимальное количество оракулов.
-- `oraclesWhiteList` - список оракулов (публичные ключи через запятые или пустая строка)
-- `tillHeight` - дедлайн до достижения консенсуса.
+- `id` - unique identifier of each question
+- `question` - the actual question in a predetermined format
+- `consensusType` - data aggregation rule:` consensus`, `median` or` average`.
+- `minOraclesCount` - the minimum number of oracles.
+- `maxOraclesCount` - the maximum number of oracles.
+- `oraclesWhiteList` - a list of oracles (public keys separated by commas or empty string)
+- `tillHeight` - deadline for reaching consensus.
 
-Функция должна записывать в стейт контракта параметры запроса, сумму вознаграждения, а также публичный ключ отправителя запроса и ключи, по которым в дальнейшем мы будем записывать количество ответов, сами ответы, публичные ключи ответивших оракулов и флаг завершения запроса.
+The function should write the request parameters, the amount of the reward, as well as the public key of the requestor and the keys, by which we will record the number of responses, the responses themselves, the public keys of the responding oracles and the request completion flag, to the contract state.
 
-В момент запроса данных необходимо проверять аргументы на следующие условия:
+At the time of requesting data, it is necessary to check the arguments for the following conditions:
 
-- Если задан “белый список” оракулов, то длина строки с их публичными адресами не должна превышать 1000 символов (функция `checkOraclesWhiteListLengthLt1000`)
-- Уникальный идентификатор запроса не должен превышать 32 символа (функция `checkRequestIdLt32`)
-- Идентификатор запроса не должен быть использован ранее (функция `checkIdIsNotUsed`)
-- У каждого запроса должно быть вознаграждение в токенах WAVES (функция `checkPaymentInWavesGt0`)
-- Минимальное число оракулов - 3, а максимальное - 6 (функция `checkOraclesCountGt3Lt6`)
-- Значение минимального числа должно быть меньше либо равно максимальному (функция `checkOraclesWhiteListCountGtMinCount`).
+- If the "white list" of oracles is specified, then the length of the line with their public addresses should not exceed 1000 characters (function `checkOraclesWhiteListLengthLt1000`)
+- Unique request identifier must not exceed 32 characters (function `checkRequestIdLt32`)
+- Request identifier must not have been used previously (function `checkIdIsNotUsed`)
+- Each request must have a reward in WAVES tokens (function `checkPaymentInWavesGt0`)
+- The minimum number of oracles is 3, and the maximum is 6 (function `checkOraclesCountGt3Lt6`)
+- The value of the minimum number must be less than or equal to the maximum (function `checkOraclesWhiteListCountGtMinCount`).
 
-Все листингb кода ниже включают в себя вызовы вспомогательных функций, которые в этой книге не показываются, однако вы можете найти их в репозитории [Ride examples](https://github.com/wavesplatform/ride-examples)
+All code listingb below includes calls to helper functions that are not shown in this book, but you can find them in the [Ride examples](https://github.com/wavesplatform/ride-examples) repository
 
-```scala
-@Callable(i)
-func request(id: String, question: String, minResponsesCount: Int, maxResponsesCount: Int, oraclesWhiteList: String, tillHeight: Int) = {
-        let whiteList = checkOraclesWhiteListLengthLt1000(oraclesWhiteList)
-        let checkedRequestIdLt64 = checkRequestIdLt32(id)
-        let requestId = checkIdIsNotUsed(checkedRequestIdLt64)
-        let paymentAmount = checkPaymentInWavesGt0(i.payments[0].extract())
-        let minCount = checkOraclesCountGt3Lt6(minResponsesCount, maxResponsesCount)
-        let maxCount = checkOraclesWhiteListCountGtMinCount(oraclesWhiteList, minCount, maxResponsesCount)
-        let callerPubKey = toBase58String(i.callerPublicKey)
+``` scala
+@Callable (i)
+func request (id: String, question: String, minResponsesCount: Int, maxResponsesCount: Int, oraclesWhiteList: String, tillHeight: Int) = {
+        let whiteList = checkOraclesWhiteListLengthLt1000 (oraclesWhiteList)
+        let checkedRequestIdLt64 = checkRequestIdLt32 (id)
+        let requestId = checkIdIsNotUsed (checkedRequestIdLt64)
+        let paymentAmount = checkPaymentInWavesGt0 (i.payments [0] .extract ())
+        let minCount = checkOraclesCountGt3Lt6 (minResponsesCount, maxResponsesCount)
+        let maxCount = checkOraclesWhiteListCountGtMinCount (oraclesWhiteList, minCount, maxResponsesCount)
+        let callerPubKey = toBase58String (i.callerPublicKey)
         [
-            StringEntry(keyQuestion(requestId), question),
-            StringEntry(keyOraclesWhiteList(requestId), whiteList),
-            StringEntry(keyRequesterPk(requestId), callerPubKey),
-            StringEntry(keyResponders(requestId), ""),
-            StringEntry(requestId, question),
-            IntegerEntry(keyMinResponsesCount(requestId), minCount),
-            IntegerEntry(keyMaxResponsesCount(requestId), maxCount),
-            IntegerEntry(keyResponsesCount(requestId), 0),
-            IntegerEntry(keyTillHeight(requestId), tillHeight),
-            IntegerEntry(keyRequestHeight(requestId), height),
-            IntegerEntry(keyPayment(requestId), paymentAmount),
-            BooleanEntry(keyRequestIsDone(id), false)
+            StringEntry (keyQuestion (requestId), question),
+            StringEntry (keyOraclesWhiteList (requestId), whiteList),
+            StringEntry (keyRequesterPk (requestId), callerPubKey),
+            StringEntry (keyResponders (requestId), ""),
+            StringEntry (requestId, question),
+            IntegerEntry (keyMinResponsesCount (requestId), minCount),
+            IntegerEntry (keyMaxResponsesCount (requestId), maxCount),
+            IntegerEntry (keyResponsesCount (requestId), 0),
+            IntegerEntry (keyTillHeight (requestId), tillHeight),
+            IntegerEntry (keyRequestHeight (requestId), height),
+            IntegerEntry (keyPayment (requestId), paymentAmount),
+            BooleanEntry (keyRequestIsDone (id), false)
         ]
 }
 
 ```
 
-Отлично! У нас уже есть функции регистрации оракулов и отправки запросов от пользователей. Теперь давайте реализуем функциональность отправки ответа от одного оракула.
+Fine! We already have functions for registering oracles and sending requests from users. Now let's implement the functionality of sending a response from a single oracle.
 
-### Ответ на запрос данных
+### Response to data request
 
-Каждый оракул может ответить на запрос, если нет ограничений в виде белого списка и запрос не завершен (по числу ответов или длительности). В момент ответа на запрос публичный ключ оракула и его ответ записываются в хранилище децентрализованного приложения, для этого в момент отправки запроса были созданы ключи `{id}_responders` и `{id}_responses`. Данные в этих ключах хранятся в виде строк с разделителем `;`.
+Each oracle can respond to a request if there is no whitelist limit and the request is not completed (by the number of responses or duration). At the moment of response to the request, the public key of the oracle and its response are recorded in the storage of the decentralized application; for this, at the moment of sending the request, the keys `{id} _responders` and` {id} _responses` were created. The data in these keys is stored as strings separated by `;`.
 
-```scala
+``` scala
 
-@Callable(i)
-func response(id: String, data: String) = {
+@Callable (i)
+func response (id: String, data: String) = {
 
-    # Шаг 0 - проверка валидности предоставленных даннх
-    let requestId = checkIdExists(id)
-    let checkedData = checkDataIllegalCharacters(data)
+    # Step 0 - checking the validity of the provided data
+    let requestId = checkIdExists (id)
+    let checkedData = checkDataIllegalCharacters (data)
 
-    # Шаг 1 - проверка состояния запроса (количества ответов уже)
-    let currentResponsesCount = getResponsesCount(id)
-    let newResponsesCount = checkNewResponsesCount(currentResponsesCount, id)
+    # Step 1 - check the status of the request (the number of responses already)
+    let currentResponsesCount = getResponsesCount (id)
+    let newResponsesCount = checkNewResponsesCount (currentResponsesCount, id)
 
-    # Шаг 2 - проверка на вхождение оракула в white list и не ответил ли он уже на запрос
-    let oraclePubKey = i.callerPublicKey.toBase58String()
-    let oracleIsAllowed = checkOracleInWhiteList(oraclePubKey, id) == true || checkOracleResponded(oraclePubKey, id) == false
-    let maxHeight = getIntegerValue(this, keyTillHeight(id))
-    let isDone = getBooleanValue(this, keyRequestIsDone(id)) == true
-    let requestIsActive = maxHeight > height || isDone
+    # Step 2 - checking if the oracle is included in the white list and whether it has already answered the request
+    let oraclePubKey = i.callerPublicKey.toBase58String ()
+    let oracleIsAllowed = checkOracleInWhiteList (oraclePubKey, id) == true || checkOracleResponded (oraclePubKey, id) == false
+    let maxHeight = getIntegerValue (this, keyTillHeight (id))
+    let isDone = getBooleanValue (this, keyRequestIsDone (id)) == true
+    let requestIsActive = maxHeight> height || isDone
 
-    if (oracleIsAllowed == false) then throw("Oracle is not in the white list or already responded") else
-    if (requestIsActive == false) then throw("Request is not active anymore due to max height (" + maxHeight.toString() + "/" + height.toString() + ") or it is just done (" + isDone.toString() + ")")
+    if (oracleIsAllowed == false) then throw ("Oracle is not in the white list or already responded") else
+    if (requestIsActive == false) then throw ("Request is not active anymore due to max height (" + maxHeight.toString () + "/" + height.toString () + ") or it is just done (" + isDone .toString () + ")")
     else {
 
-        let currentResponders = getResponders(id)
-        let currentResponses = getResponses(id)
+        let currentResponders = getResponders (id)
+        let currentResponses = getResponses (id)
 
         let newResponders = if currentResponders == "" then oraclePubKey
             else currentResponders + ";" + oraclePubKey
@@ -226,44 +226,44 @@ func response(id: String, data: String) = {
             else currentResponses + ";" + checkedData
 
 
-        let currentResponsePoints = getCurrentResponsePoints(id, checkedData)
+        let currentResponsePoints = getCurrentResponsePoints (id, checkedData)
 
-        let oracleRating = getOracleRating(oraclePubKey)
+        let oracleRating = getOracleRating (oraclePubKey)
 
-        let newResponsePoint = currentResponsePoints + if oracleRating < 200 then oracleRating / 3 else log(oracleRating, 0, 8, 0, 5, HALFEVEN)
+        let newResponsePoint = currentResponsePoints + if oracleRating <200 then oracleRating / 3 else log (oracleRating, 0, 8, 0, 5, HALFEVEN)
 
 
         [
-            IntegerEntry(keyCurrentResponsePoints(requestId, checkedData), newResponsePoint),
-            IntegerEntry(keyResponsesCount(requestId), newResponsesCount),
-            StringEntry(keyResponseFromOracle(requestId, oraclePubKey), checkedData),
-            StringEntry(keyResponders(requestId), newResponders),
-            StringEntry(keyResponses(requestId), newResponses),
-            BooleanEntry(keyTookPayment(requestId, oraclePubKey), false),
-            # StringEntry(keyOneResponse(requestId, i, checkedData), newResponders),newResponsePoint)
+            IntegerEntry (keyCurrentResponsePoints (requestId, checkedData), newResponsePoint),
+            IntegerEntry (keyResponsesCount (requestId), newResponsesCount),
+            StringEntry (keyResponseFromOracle (requestId, oraclePubKey), checkedData),
+            StringEntry (keyResponders (requestId), newResponders),
+            StringEntry (keyResponses (requestId), newResponses),
+            BooleanEntry (keyTookPayment (requestId, oraclePubKey), false),
+            # StringEntry (keyOneResponse (requestId, i, checkedData), newResponders), newResponsePoint)
         ]
     }
 }
 ```
 
-Также во время ответа мы увеличиваем счетчик числа ответивших на запрос и сумму баллов, набранных данным ответом (баллы равны сумме рейтингов оракулов).
+Also, during the response, we increase the counter of the number of respondents to the request and the amount of points scored by this response (points are equal to the sum of the oracle ratings).
 
-### Сбор результатов
+### Collecting Results
 
-После отправки оракулами данных подводятся итоги в виде результата (консенсусного решения, среднего значения или медианы) и изменения рейтингов оракулов. В этой функции мы также могли бы выплатить сразу часть вознаграждения оракулам, ответившим правильно, но в виду ограничения по сложности контракта в 4000, сделать это в рамках одной функции не получится. Однако мы можем записать в хранилище аккаунта, кто имеет право забрать часть вознаграждения, и позволить самим оракулам вызвать специальную функцию получения вознаграждения. Напомню, что только оракулы, чей ответ совпал с итоговым (или все оракулы с ответом в пределах 10% от результата, если запрашивалось среднее значение или медиана) имеют право забрать часть вознаграждения.
+After the data is sent by the oracles, the results are summed up in the form of a result (consensus, mean or median) and the change in the ratings of the oracles. In this function, we could also pay immediately a part of the remuneration to the oracles who answered correctly, but in view of the limitation on the complexity of the contract at 4000, it will not be possible to do this within the framework of one function. However, we can record in the account storage who has the right to take part of the reward and allow the oracles themselves to call a special function for receiving the reward. Let me remind you that only oracles whose answer coincided with the final one (or all oracles with an answer within 10% of the result, if the average value or median was requested) have the right to take part of the reward.
 
-```scala
-@Callable(i)
-func getResult(id: String) = {
-    if (keyIsDefined(id) == false) then throwIdError(id) else {
-        let responsesCount = getResponsesCount(id)
-        let minResponsesCount = getMinResponsesCount(id)
-        if (responsesCount < minResponsesCount) then throw("Minimum oracles count not reached yet") else {
-            let result = calculateResult(id)
-            let ratingsDiff = getOracleRatingsDiff(id, result)
-            let resultKey = keyResult(id)
-            let resultDataEntry = StringEntry(resultKey, result)
-            let dataToWrite = cons(resultDataEntry, ratingsDiff)
+``` scala
+@Callable (i)
+func getResult (id: String) = {
+    if (keyIsDefined (id) == false) then throwIdError (id) else {
+        let responsesCount = getResponsesCount (id)
+        let minResponsesCount = getMinResponsesCount (id)
+        if (responsesCount <minResponsesCount) then throw ("Minimum oracles count not reached yet") else {
+            let result = calculateResult (id)
+            let ratingsDiff = getOracleRatingsDiff (id, result)
+            let resultKey = keyResult (id)
+            let resultDataEntry = StringEntry (resultKey, result)
+            let dataToWrite = cons (resultDataEntry, ratingsDiff)
 
             dataToWrite
         }
@@ -271,51 +271,51 @@ func getResult(id: String) = {
 }
 ```
 
-### Получение вознаграждения
+### Receiving a reward
 
-Функция получения вознаграждения для оракула должна позволять забрать средства только один раз и после подтверждения, что этот оракул действительно отвечал на запрос и ответ его считается корректным.
+The function of receiving a reward for an oracle should allow withdrawing funds only once and after confirming that this oracle really answered the request and its answer is considered correct.
 
-```scala
-@Callable(i)
-func takeReward(id: String) = {
-    if (keyIsDefined(id) == false) then throwIdError(id) else {
-        let paymentValue = getIntegerValue(this, keyPayment(id))
-        let oraclePubKey = i.callerPublicKey.toBase58String()
-        let oracleResponseKey = keyResponseFromOracle(id, oraclePubKey)
-        let oracleResponse = getStringValue(this, oracleResponseKey)
+``` scala
+@Callable (i)
+func takeReward (id: String) = {
+    if (keyIsDefined (id) == false) then throwIdError (id) else {
+        let paymentValue = getIntegerValue (this, keyPayment (id))
+        let oraclePubKey = i.callerPublicKey.toBase58String ()
+        let oracleResponseKey = keyResponseFromOracle (id, oraclePubKey)
+        let oracleResponse = getStringValue (this, oracleResponseKey)
 
-        let resultKey = keyResult(id)
-        let resultDataEntry = getStringValue(this, resultKey)
+        let resultKey = keyResult (id)
+        let resultDataEntry = getStringValue (this, resultKey)
 
-        let alreadyTookKey = keyTookPayment(id, oraclePubKey)
-        let alreadyTookPayment = getBooleanValue(this, alreadyTookKey)
+        let alreadyTookKey = keyTookPayment (id, oraclePubKey)
+        let alreadyTookPayment = getBooleanValue (this, alreadyTookKey)
 
-        let responsesCount = getResponsesCount(id)
+        let responsesCount = getResponsesCount (id)
 
         if (oracleResponse == resultDataEntry && alreadyTookPayment == false) then {
             let paymentAmount = paymentValue / responsesCount
             [
-              BooleanEntry(alreadyTookKey, true),
-              ScriptTransfer(i.caller, paymentAmount, unit)
+              BooleanEntry (alreadyTookKey, true),
+              ScriptTransfer (i.caller, paymentAmount, unit)
           ]
-        }else {
-            throw("Already took payment or provided data was not valid")
+        } else {
+            throw ("Already took payment or provided data was not valid")
         }
 
     }
 }
 ```
 
-На этом основная функциональность контракта для консенсуса оракулов готова. Примеры того, как работать с таким контрактом, можно найти в виде тестов в репозитории [Ride examples](https://github.com/wavesplatform/ride-examples/branch/refactor)
+This completes the basic functionality of the oracle consensus contract. Examples of how to work with such a contract can be found in the form of tests in the [Ride examples](https://github.com/wavesplatform/ride-examples/branch/refactor) repository
 
-## Возможности для развития
+## Opportunities for development
 
-Реализованная функциональность является простейшим вариантом работы децентрализованных оракулов. Мы решили проблемы, обозначенные в начале статьи:
+The implemented functionality is the simplest way of working for decentralized oracles. We have solved the problems outlined at the beginning of the article:
 
-- В блокчейне всегда будут данные, даже если не все оракулы достигнут консенсуса
-- У участников процесса появляется экономическая и репутационная мотивация участвовать в предоставлении данных
-- Список оракулов может быть максимально широким, но в то же время для своего запроса его можно ограничить, если, например, мы хотим получать данные не от любых оракулов, а только от тех, которым доверяем.
+- There will always be data in the blockchain, even if not all oracles reach consensus
+- Participants in the process have an economic and reputational motivation to participate in the provision of data
+- The list of oracles can be as wide as possible, but at the same time, it can be limited for your request, if, for example, we want to receive data not from any oracles, but only from those we trust.
 
-Благодаря тому, что форматы запросов являются типизированными, предоставление ответов можно автоматизировать, например, в виде браузерного расширения, которое следит за запросами на адресе децентрализованного приложения и отвечает на данные, если тип запрашиваемых данных поддерживается расширением. Возможен и  сценарий, когда пользователи с открытым браузером могут зарабатывать на предоставлении данных, не делая для этого ничего своими руками.
+Due to the fact that the request formats are typed, the provision of responses can be automated, for example, in the form of a browser extension that monitors requests to the address of the decentralized application and responds to data if the type of requested data is supported by the extension. A scenario is also possible when users with an open browser can make money by providing data without doing anything with their own hands.
 
-Во многих случаях данные необходимы не разово, а в виде постоянного потока. В нашем децентрализованном приложении функциональность подписки на данные не реализована, но мы будем рады участию сообщества в доработке этого примера.
+In many cases, the data is not needed one-time, but in the form of a constant stream. In our decentralized application, the data subscription functionality is not implemented, but we would be happy to get the community to contribute to this example.

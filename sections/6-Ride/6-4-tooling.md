@@ -1,103 +1,103 @@
-# Инструменты для разработки децентрализованных приложений
+# Tools for developing decentralized applications
 
-Для удобства разработки децентрализованных приложений на Waves существует большое количество разных инструментов. Начать стоит, в первую очередь, с обозревателя блокчейна, который расположен по адресу [wavesexplorer.com](https://wavesexplorer.com) и позволяет анализировать данные в блоках, все транзакции и UTX как в основной сети, так и в stagenet и testnet.
+For the convenience of developing decentralized applications on Waves, there are a large number of different tools. It is worth starting, first of all, with the blockchain explorer, which is located at [wavesexplorer.com](https://wavesexplorer.com) and allows you to analyze data in blocks, all transactions and UTX both in the main network and in stagenet and testnet.
 
-Однако, если мы говорим про разработку децентрализованных приложений, а не просто использование, то встает несколько основных вопросов:
+However, if we are talking about the development of decentralized applications, and not just use, then several basic questions arise:
 
-1. В какой среде писать код для смарт-аккаунтов, смарт-ассетов и децентрализованных приложений?
-2. Как тестировать написанный код? Какие есть варианты для автоматического и ручного тестирования?
-3. Как отлаживать код?
-4. Как деплоить?
+1. In what environment should I write code for smart accounts, smart assets and decentralized applications?
+2. How to test the written code? What are the options for automatic and manual testing?
+3. How to debug the code?
+4. How to deploy?
 
-Давайте разберем по порядку какие есть инструменты для этого.
+Let's take a look at what tools are available for this.
 
-## Среда разработки
+## Development environment
 
-Самым простым вариантом начать писать код, тестировать и работать с аккаунтами, является использование онлайн IDE, который доступен по адресу [https://waves-ide.com](https://waves-ide.com/). В нем есть подсветка синтаксиса Ride, умные подсказки, вывод типов, компилятор, консоль для работы с библиотекой `waves-transactions` и даже REPL (read-eval-print loop) для Ride, который позволяет выражения на Ride исполнять прямо в браузере. Так же есть примеры кода на Ride, примеры интеграционных тестов на JavaScript, возможность управления аккаунтами и отправки транзакций с помощью веб-интерфейса. Онлайн IDE отлично подходит для тестирования контрактов в stagenet и testnet. Токены Waves для этих сетей можно бесплатно получить с помощью крана в wavesexplorer по адресам `https://wavesexplorer.com/stagenet/faucet` и `https://wavesexplorer.com/testnet/faucet`, но не более 10 Waves каждые 10 минут.
+The easiest way to get started writing code, testing and working with accounts is to use the online IDE, which is available at [https://waves-ide.com](https://waves-ide.com/). It has Ride syntax highlighting, smart hints, type inference, a compiler, a console for working with the `waves-transactions` library, and even a REPL (read-eval-print loop) for Ride, which allows Ride expressions to be executed right in the browser. There are also examples of code on Ride, examples of integration tests in JavaScript, the ability to manage accounts and send transactions using the web interface. The online IDE is great for testing contracts in stagenet and testnet. Waves tokens for these networks can be obtained for free using the faucet in wavesexplorer at the addresses `https: // wavesexplorer.com / stagenet / faucet` and` https: // wavesexplorer.com / testnet / faucet`, but no more than 10 Waves every 10 minutes.
 
-Однако, для более профессиональной разработки контрактов, рекомендую использовать другие инструменты.
+However, for a more professional contract development, I recommend using other tools.
 
-Расширение [Ride для Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=wavesplatform.waves-ride) является первым необходимым инструментом для профессиональной разработки с использованием блокчейна Waves. Установка этого расширения позволяет получить подсветку синтаксиса и подсказки для файлов с расширением `.ride`.
+The [Ride for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=wavesplatform.waves-ride) extension is the first essential tool for professional development using the Waves blockchain. Installing this extension allows you to get syntax highlighting and hints for files with the `.ride` extension.
 
 ![Visual Studio Code Extention for Ride](../../assets/6-4-0-vs-code-ext-in-store.png "Visual Studio Code Extention for Ride")
 
-Кроме подсветски синтаксиса, расширение добавлеяет в VS Сode еще и интерактивную консоль (прямо как в онлайн IDE), которая позволяет запускать функции из `waves-transactions`, `waves-crypto` и еще несколько специализированных.
+In addition to syntax highlighting, the extension adds an interactive console to VS Code (just like in an online IDE), which allows you to run functions from `waves-transactions`,` waves-crypto` and several other specialized ones.
 
 ![Visual Studio Code Extention for Ride](../../assets/6-4-1-vc-code-ext.png "Visual Studio Code Extention for Ride")
 
-## Локальное окружение
+## Local environment
 
-Во время разработки можно взаимодействовать с нодами из stagenet или testnet, которые доступны по адресам `http://nodes-stagenet.wavesnodes.com/` и `https://nodes-testnet.wavesnodes.com/`, однако наиболее удобным вариантом является использование приватного блокчейна из одной единственной ноды.
-Запустить такой блокчейн можно при условии наличия установленного Docker. Запуск осуществляется простой командой:
+During development, you can interact with nodes from stagenet or testnet, which are available at the addresses `http: // nodes-stagenet.wavesnodes.com /` and `https: // nodes-testnet.wavesnodes.com /`, but the most convenient option is the use of a private blockchain from one single node.
+You can run such a blockchain if you have Docker installed. The launch is carried out with a simple command:
 
-```bash
-docker run -d -p 6869:6869 wavesplatform/waves-private-node
+``` bash
+docker run -d -p 6869: 6869 wavesplatform / waves-private-node
 ```
 
-После запуска команды, локальный блокчейн будет запущен в виде Docker контейнера, API ноды будет доступен по адресу `http://localhost:6869/`, а все 100 миллионов токенов будут на балансе аккаунта с сид фразой `waves private node seed with waves tokens`.
+After launching the command, the local blockchain will be launched as a Docker container, the node's API will be available at `http: // localhost: 6869 /`, and all 100 million tokens will be on the account balance with the seed phrase `waves private node seed with waves tokens `.
 
 ![Local node with API](../../assets/6-4-2-local-node.png "Local node with API")
 
-Подробную информацию о Docker образе с этой нодой вы можете найти в [этом репозитории](https://github.com/wavesplatform/private-node-docker-image).
+You can find detailed information about the Docker image with this node in [this repository](https://github.com/wavesplatform/private-node-docker-image).
 
-Преимуществами такого подхода являются:
+The advantages of this approach are:
 
-- Уменьшенное время блока: в testnet и stagenet блоки генерируются раз в минуту, тогда как в вашей приватной сети будут каждые 10 секунд. Это позволяет экономить время во время прогонов интеграционных тестов.
-- Контроль над всеми токенами и отсутствие необходимости запрашивать токены с использованием крана
-- Полный контроль над нодой и работоспособностью API. Команда Waves Protocol старается обеспечить максимальную доступность публичных узлов, однако не всегда это возможно и в некоторых случаях API для stagenet или testnet могут быть недоступны.
-- Ответы API публичных нод кэшируются, что может вызывать неожиданные ошибки.
+- Reduced block time: in testnet and stagenet, blocks are generated once a minute, while in your private network there will be every 10 seconds. This saves time when running integration tests.
+- Control over all tokens and no need to request tokens using a faucet
+- Full control over the node and API performance. The Waves Protocol team tries to ensure maximum availability of public nodes, but this is not always possible and in some cases APIs for stagenet or testnet may not be available.
+- API responses from public nodes are cached, which can cause unexpected errors.
 
-После запуска ноды вы так же можете запустить локальный обозреватель блокчейна, который будет работать с вашей нодой. Делается это так же с помощью разворачивания Docker образа:
+After starting the node, you can also launch a local blockchain explorer that will work with your node. This is done in the same way by deploying a Docker image:
 
-```bash
-docker run -d -e API_NODE_URL=http://localhost:6869 -e NODE_LIST=http://localhost:6869 -p 3000:80 wavesplatform/explorer
+``` bash
+docker run -d -e API_NODE_URL = http: // localhost: 6869 -e NODE_LIST = http: // localhost: 6869 -p 3000: 80 wavesplatform / explorer
 ```
 
-Обратите внимание, что при разворачивании указывается адрес API нашей ноды с приватным блокчейном.
+Please note that when expanding, the API address of our node with a private blockchain is indicated.
 
-После разворачивания образа, обозревательно станет доступен по адресу `http://localhost:3000`:
+After deploying the image, the browser will be available at the address `http: // localhost: 3000`:
 
 ![Local explorer](../../assets/6-4-3-local-explorer.png "Local explorer")
 
-## Тестирование кода
+## Testing the code
 
-На момент написания этих строк существует возможность написания только интеграционных тестов для децентрализованных приложений на Ride. Инструментов для Unit тестов пока нет. Интеграционное тестирование в случае с Ride подразумевает, что написанный код компилируется, разворачивается с помощью `SetScript`, `SetAssetScript` или `Issue` транзакции на ассете или аккаунте и выполняются транзакции, которые проверяют корректность поведения скрипта. Другими словами, идет непосредственно работа с блокчейном (не эмуляцией!) и отправляются настоящие транзакции.
+At the time of this writing, it is possible to write only integration tests for decentralized applications on Ride. There are no tools for Unit tests yet. Integration testing in the case of Ride means that the written code is compiled, deployed using `SetScript`,` SetAssetScript` or `Issue` transactions on an asset or account, and transactions are executed that check the correctness of the script behavior. In other words, there is direct work with the blockchain (not emulation!) And real transactions are sent.
 
-Интеграционные тесты могут быть написаны на Java с использованием библиотеки [Paddle](https://github.com/msmolyakov/paddle) или на [JavaScript] с использованием онлайн IDE или библиотеки `surfboard`.
+Integration tests can be written in Java using the [Paddle](https://github.com/msmolyakov/paddle) library or in [JavaScript] using the online IDE or the `surfboard` library.
 
-Surfboard можно установить из npm (при условии наличия у вас node.js и npm) слдующей командой:
+Surfboard can be installed from npm (provided you have node.js and npm) with the following command:
 
-```bash
-npm install -g @waves/surfboard
+``` bash
+npm install -g @ waves / surfboard
 ```
 
-После этого у вас станет доступна утилита `surfboard` прямо в консоли. Команда `surfboard init` позволит инициализировать новый проект, который будет содержать конфигурационный файл и директории для тестов (`./test`) и скриптов на Ride (`./ride`). Конфигурационный файл позволяет задать настройки для работы с разными типами сетей, параметры аккаунтов и т.д.
+After that, you will have access to the `surfboard` utility right in the console. The `surfboard init` command will initialize a new project, which will contain a configuration file and directories for tests (`. / Test`) and scripts for Ride (`. / Ride`). The configuration file allows you to configure settings for working with different types of networks, account parameters, etc.
 
 ![Surfboard](../../assets/6-4-4-surfboard.png "Surfboard")
 
-В директории `./test` можно создавать любые файлы с расширением `.js` и писать в них интеграционные тесты с использованием тестового фреймворка `Mocha`. Кроме непосредственно самой `Mocha` в тестовом файле доступны функции из `waves-transactions` и несколько дополнительных функций и переменных:
+In the `. / Test` directory, you can create any files with the` .js` extension and write integration tests in them using the `Mocha` test framework. In addition to the `Mocha` itself, functions from` waves-transactions` and several additional functions and variables are available in the test file:
 
-- `setupAccounts({[key: string]: number})` - позволяет в начале скрипта создать новые аккаунты и перечислить на них токеныьс мастер сида
-- `compile(file: File): String` - позволяет скомпилировать содержимое файла
-- `file(path: String): File` - позволяет получить содержимое файла
-- `accounts` - объект, в которой хранятся сиды созданных функцией `setupAccounts` аккаунтов
+- `setupAccounts ({[key: string]: number})` - allows you to create new accounts at the beginning of the script and transfer tokens to them from the master seed
+- `compile (file: File): String` - allows you to compile the contents of the file
+- `file (path: String): File` - allows you to get the contents of a file
+- `accounts` - an object that stores the seeds of accounts created by the` setupAccounts` function
 
-Описание этих и других функций доступно [в документации](https://wavesplatform.github.io/js-test-env/globals.html). Примеры тестов вы можете найти в онлайн IDE или в репозитории [ride-examples](https://github.com/wavesplatform/ride-examples).
+Descriptions of these and other functions are available [in the documentation](https://wavesplatform.github.io/js-test-env/globals.html). You can find test examples in the online IDE or in the [ride-examples](https://github.com/wavesplatform/ride-examples) repository.
 
-Запуск тестов в директории можно осуществить с помощью команды `surfboard test`, если же хочется запустить конкретный файл, а не все файлы в директории `./test`, то можно выполнить `surfboard test my-scenario.js`.
+Running tests in the directory can be done using the command `surfboard test`, but if you want to run a specific file, and not all files in the directory`. / Test`, then you can execute `surfboard test my-scenario.js`.
 
-## Отладка скриптов Ride
+## Debugging Ride Scripts
 
-Для отладки скриптов Ride принято искользовать 2 основных приема.
+For debugging Ride scripts, it is customary to use 2 main techniques.
 
-В онлайн IDE и Surfboard есть REPL, который позволяет ввести код и срзу же получить результат выполнения. REPL позволяет не только выполнять базовые операции, но и объявлять переменные, работать с настоящим блокчейном (например, читать стейт аккаунтов), вызывать функции стандартной библиотеки
+The online IDE and Surfboard have a REPL that allows you to enter the code and immediately get the result of the execution. The REPL allows not only performing basic operations, but also declaring variables, working with a real blockchain (for example, reading the state of accounts), calling functions of the standard library
 
 ![Surfboard REPL](../../assets/6-4-5-surfboard-repl.png "Surfboard REPL")
 
-В более сложных ситуациях, когда у вас уже есть полноценный скрипт, который необходимо отлаживать, на помощь приходит функция `throw()` из стандартной библиотеки Ride, которая позволяет выбросить ошибку и текстовое описание к ней. В тексте ошибки вы так же можете возвращать значениия переменных, однако и нода в момент исключения вернет содержимое стэка, значения переменных в функции и т.д.
+In more complex situations, when you already have a full-fledged script that needs to be debugged, the `throw ()` function from the Ride standard library comes to the rescue, which allows you to throw an error and a text description to it. In the error text, you can also return the values ​​of variables, however, at the moment of exception, the node will return the contents of the stack, the values ​​of variables in the function, etc.
 
-## Ручное тестирование приложений
+## Manual Application Testing
 
-Если вам по душе больше ручное тестирование или вы хотите поиграться с приложениями, уже развернутыми в сети, вы можете воспользоваться веб-сайтом [https://waves-dapp.com](https://waves-dapp.com/). Вы можете просто указать адрес аккаунта нужного децентрализованного приложения и Waves-Dapp покажет все доступные функции, какие параметры они принимают и позволит вызвать любую из них. Инструмент может быть полезен и для тестирования своего приложения, когда у вас нет интерфейса или тестов для некоторых функций, или, вам необходимо поменять настройки вашего приложения.
+If you prefer manual testing or want to play around with applications already deployed on the web, you can use the [https://waves-dapp.com](https://waves-dapp.com/) website. You can simply specify the account address of the desired decentralized application and Waves-Dapp will show all available functions, what parameters they accept and allow you to call any of them. The tool can be useful for testing your application when you do not have an interface or tests for some functions, or you need to change the settings of your application.
 
 ![Waves Dapp](../../assets/6-4-6-waves-dapp.png "Waves dapp")

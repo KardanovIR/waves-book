@@ -1,23 +1,23 @@
-# 1.2 Подходы к разработке протокола Waves
+# 1.2 Approaches to the development of the Waves protocol
 
-Разработчики протокола Waves всегда руководствовались некоторыми базовыми принципами, которые сильно влияют на дальнейшее развитие протокола. Понимание данных принципов и мотивации за ними поможет легче следить за дальнейшим развитием проекта, поэтому перечислю данные особенности.
+The developers of the Waves protocol have always been guided by some basic principles that strongly influence the further development of the protocol. Understanding these principles and the motivation behind them will make it easier to follow the further development of the project, so I will list these features.
 
-## Блокчейн для людей
+## Blockchain for people
 
-Мантрой Waves долгое время было "Blockchain for the people". Она полностью отражала и отражает то, что делает команда. Главное, чего хочет достичь платформа - **популяризировать технологию блокчейн для масс**. В данный момент блокчейн является технологией для очень небольшой группы людей, которые понимают, что это за технология и как ее правильно использовать. Waves хочет изменить такое положение вещей и сделать так, чтобы технология приносила максимальную пользу всем.
+The Waves mantra has long been "Blockchain for the people". It fully reflected and reflects what the team is doing. The main thing the platform wants to achieve is ** popularize blockchain technology for the masses **. At the moment, blockchain is a technology for a very small group of people who understand what this technology is and how to use it correctly. Waves wants to change this state of affairs and ensure that technology brings the maximum benefit to everyone.
 
-Многие люди думают, что технология блокчейн крайне сложная и наукоемкая (во многом так и есть), Waves же пытается скрывать всю сложность за простым слоем абсракции. Блокчейн - это не самая удобная база данных, у которой есть несколько важных свойств: децентрализация, неизменяемость и открытость. Данные особенности не являются ценностями сами по себе, а только в случае правильного применения разработчиками конкретных приложений. Цель Waves состоит в предоставлении таких инструментов разработчикам, которые позволят им быстрее, проще, без излишнего погружения в сложные технические, давать ценность конечным пользователям.
+Many people think that blockchain technology is extremely complex and knowledge-intensive (in many ways it is), while Waves tries to hide all the complexity behind a simple layer of abstraction. Blockchain is not the most user-friendly database, which has several important properties: decentralization, immutability and openness. These features are not values ​​in themselves, but only if applied correctly by developers of specific applications. Waves' goal is to provide the tools to developers that will enable them to deliver value to end users faster, easier, without too much technical immersion.
 
-Можно сказать, что принцип ориентации на реальное применение разбивается на несколько шагов:
+We can say that the principle of orientation towards real application breaks down into several steps:
 
-1. Платформа предоставляет разработчикам приложений легкий инструмент для использования особенностей блокчейна
-2. Разработчики приложений делают продукты, которые решают проблемы пользователей и правильно используют блокчейн
-3. Пользователи получают преимущества блокчейна. При этом не обязательно, чтобы пользователи знали что-то про блокчейн. Главное, чтобы решалась их проблема.
+1. The platform provides application developers with an easy tool to use blockchain features
+2. Application developers make products that solve user problems and use blockchain correctly
+3. Users get the benefits of blockchain. At the same time, it is not necessary that users know anything about the blockchain. The main thing is to solve their problem.
 
-## Ориентация на практическую применимость
+## Focus on practical applicability
 
-Всегда, во время разработки нового функционала или продукта, во главе угла ставится **практическая применимость** и какое количество людей **потенциально** смогут решить свои проблемы с помощью этого. Разработчики протокола пытаются не делать "космические корабли", решать "сферические проблемы в вакууме" или заниматься оверинжинирингом, выбирая применимость "здесь и сейчас". Лучше ведь иметь работающее сейчас, чем идеальное через 10 лет. Конечно, данный принцип не должен вступать в противоречие с безопасностью сети.
+Always, during the development of a new functionality or product, ** practical applicability ** is at the forefront and how many people **potentially** will be able to solve their problems using this. The protocol developers try not to make "spaceships", solve "spherical problems in a vacuum" or over-engineer, choosing the applicability "here and now". It's better to have it working now than perfect in 10 years. Of course, this principle should not conflict with network security.
 
-## Открытость разработки
+## Openness of development
 
-Протокол Waves является полностью открытым и процесс разработки максимально децентрализован. Все исходные коды доступны на [Github](https://github.com/wavesplatform). Кроме непосредственно исходного кода, там же обсуждаются пути развития протокола, различные проблемы и варианты их решения. Обновления протокола, связанные с изменением консенсуса, всегда проходят процедуру обсуждения с помощью [Waves Enhancement Proposals](https://forum.wavesplatform.com/t/wep-0-waves-enhancement-proposal-unified-proposal-system/14781). Но обсуждения это только первый этап, ведь все обновления консенсуса должны еще проходить через процедуру активации с голосованием, о чем мы поговорим с следующем разделе. Теперь вы знаете, что делать, если захотите что-то изменить в протоколе или добавить.
+The Waves protocol is completely open and the development process is as decentralized as possible. All source codes are available on [Github](https://github.com/wavesplatform). In addition to the source code itself, the development of the protocol, various problems and options for their solution are discussed there. Protocol updates related to consensus changes are always discussed with [Waves Enhancement Proposals](https://forum.wavesplatform.com/t/wep-0-waves-enhancement-proposal-unified-proposal-system/14781) ... But the discussion is only the first stage, because all consensus updates must still go through the activation procedure with a vote, which we will talk about in the next section. Now you know what to do if you want to change or add something in the protocol.

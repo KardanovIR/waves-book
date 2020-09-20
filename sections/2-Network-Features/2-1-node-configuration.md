@@ -1,83 +1,83 @@
-# Глава 2. Нода Waves и как она работает, ее конфигурация
+# Chapter 2. Waves node and how it works, its configuration
 
-Непосредственное техническое знакомство с платформой Waves я бы рекомендовал начать с установки и настройки ноды. Не обязательно для основной сети, можно для testnet (полная копия по техническим возможностям) или stagenet (экспериментальная сеть). Почему я рекомендую начать с установки ноды? Во-первых, я сам свое знакомство с блокчейном Waves начинал именно с этого, а во-вторых, установка и настройка заставляют разобраться в том, какие есть настройки у ноды и какие параметры есть у сети.
+I would recommend starting a direct technical acquaintance with the Waves platform with installing and configuring a node. Not necessary for the main network, it is possible for testnet (full copy of technical capabilities) or stagenet (experimental network). Why do I recommend starting by installing a node? Firstly, I myself began my acquaintance with the Waves blockchain with this, and secondly, the installation and configuration make you understand what settings the node has and what parameters the network has.
 
-## Из чего состоит нода Waves
+## What the Waves node consists of
 
-Как и почти во всех блокчейнах, нода - программный продукт, который отвечает за прием транзакций, создание новых блоков, синхронизацию данных между разными узлами и достижение консенсуса между ними. Каждый участник сети запускает свою копию ноды и синхронизируется с остальными. Про правила консенсуса мы поговорим чуть позже, сейчас давайте разберемся, что из себя представляет нода с точки зрения ПО.
+As in almost all blockchains, a node is a software product that is responsible for accepting transactions, creating new blocks, synchronizing data between different nodes and reaching consensus between them. Each member of the network starts its own copy of the node and synchronizes with the rest. We'll talk about the rules of consensus a little later, now let's figure out what a node is from a software point of view.
 
-По большому счету, нода это исполняемый файл (`jar` файл для Sсala версии и бинарный для Go), который в момент запуска читает конфигурационный файл, чтобы на основе этих параметров начать общаться с другими узлами в сети по протоколу поверх TCP. Получаемые и генерируемые данные нода складывает в LevelDB (key-value хранилище). По большому то счету все, но дьявол кроется в деталях. По мере углубления в особенности работы вы поймете, что это далеко не так просто, как может показаться. А пока, давайте поговорим о том, с чего нода начинает свою работу в момент запуска - конфигурационного файла.
+By and large, a node is an executable file (a `jar` file for the Scala version and a binary for Go) that at the time of launch reads the configuration file in order to start communicating with other nodes in the network using the protocol over TCP based on these parameters. The node adds the received and generated data to LevelDB (key-value storage). By and large, that's all, but the devil is in the details. As you delve into the specifics of the work, you will realize that this is not as easy as it might seem. For now, let's talk about where the node starts its work at the time of launch - the configuration file.
 
-## Установка ноды
+## Installing a node
 
-В данной книге мы не будем разбирать процесс установки ноды, так как это много раз описано уже в разных источниках (документация, видео на youtube, посты на форуме). Нам никакой книги не хватит, если мы захотим окунуться в эту тему, потому что существует много способов запуска ноды:
+In this book, we will not analyze the process of installing a node, since this has already been described many times in different sources (documentation, videos on youtube, posts on the forum). No book will be enough for us if we want to plunge into this topic, because there are many ways to launch a node:
 
-1. Запуск `jar` файла
-2. Запуск Docker контейнера
-3. Установка и запуск из `.deb` файла
-4. Установка из `apt-` репозитория
+1. Running the `jar` file
+2. Running a Docker container
+3. Install and run from a `.deb` file
+4. Installing from the `apt-` repository
 
-Лично я предпочитаю запуск Docker контейнера, так как это упрощает и поддержку, и настройку, и конфигурирвание. Другой причиной моей любви к Docker может быть то, что я делал Docker образ, размещенный в Docker Hub и отлично знаю как там что работает. Хотя вряд ли, это просто удобнее! :)
+Personally, I prefer running a Docker container as it makes it easier to maintain, configure, and configure. Another reason for my love for Docker may be that I made a Docker image hosted in the Docker Hub and I know perfectly well how what works there. Although unlikely, it's just more convenient! :)
 
-## Конфигурация ноды
+## Node configuration
 
-Конфигурационный файл ноды Waves описан в формате [HOCON](https://github.com/lightbend/config/blob/master/HOCON.md) (это как JSON, только с комментариями, возможностью композиции нескольких файлов и, что не менее важно, с меньшим количеством кавычек). Полный файл с конфигурацией выглядит громоздко, но я все-таки приведу его здесь, версия на момент написания этих строк (файл постоянно меняется, но актульную версию можно найти в [репозитории Waves на Github](https://github.com/wavesplatform/Waves/blob/master/node/src/main/resources/application.conf)).
+The configuration file of the Waves node is described in the [HOCON](https://github.com/lightbend/config/blob/master/HOCON.md) format  (it's like JSON, only with comments, the ability to compose several files and, no less important , with fewer quotes). The complete configuration file looks cumbersome, but I will still provide it here, the version at the time of this writing (the file is constantly changing, but the current version can be found in the [Waves Github repository](https://github.com/wavesplatform/Waves/blob/master/node/src/main/resources/application.conf).
 
-Файл содержит большое количество комментариев, поясняющих каждый параметр, поэтому подробно разбирать все параметры мы не будем. Поговорим только об основных моментах.
-В конфигурации содержатся следующие разделы:
+The file contains a large number of comments explaining each parameter, so we will not analyze all the parameters in detail. Let's talk only about the main points.
+The configuration contains the following sections:
 
 - waves
 - kamon
 - metrics
 - akka
 
-Последние 3 раздела являются служебными, которые отвечают за параметры логгирования, отправку метрик и фреймворка akka. Нас интересует только первый раздел, который касается непосредственно протокола и содержит на первом уровне следующие подразделы:
+The last 3 sections are service ones, which are responsible for logging parameters, sending metrics and the akka framework. We are only interested in the first section, which relates directly to the protocol and contains the following subsections at the first level:
 
-- **db** - параметры для работы с LevelDB и настройки какие данные сохранять. Например, результаты некоторых транзакций можно сжимать (экономить до 10 ГБ), но это вредит удобству работу с API. Поэтому будьте осторожны с тем, что включать, а что выключать и экономить место на диске.
-- **network** - параметры общения с другими нодами в сети. В этом разделе много важных параметров, которые мы разберем чуть ниже.
-- **wallet** - параметры файла для сохранения ключей. Каждая нода, которая хочет генерировать блоки (чтобы получать за них вознаграждение), должна подписывать свои блоки. Для этого у ноды должен быть доступ к ключу аккаунта. В этой секции задается приватный ключ (а если быть точнее, то seed фраза в кодировке [base58](https://en.wikipedia.org/wiki/Base58)), пароль для того, чтобы эту фразу зашифровать, и путь, по которому хранить файл с этим зашифрованным ключом.
-- **blockchain** - параметры блокчейна, в котором будет работать нода. В данном разделе есть настройка `type`, которая позволяет задать одну из заранее определенных типов блокчейнов (stagenet, testnet или mainnet). При указании значения `custom` можно менять все параметры блокчейна, в том числе первоначальное количество токенов, их распределение, байт сети (уникальный идентификатор каждой сети), поддерживаемую функциональность и т.д.
-- **miner** - параметры генерации новых блоков. По умолчанию, генерация включена (надо понимать, что это будет работать только при наличии генерирующего баланса больше 1000 Waves на аккаунте), но ее можно отключить с помощью параметра `enable`. Может пригодиться, если, например, нужна нода, которая будет только валидировать блоки, но не генерировать их. Другой полезный параметр - `quorum`, который определяет сколько соединений с другими нодами необходимо, чтобы нода пыталась генерировать блоки. Если задать данный параметр, равный 0, то можно запустить блокчейн, состоящий из 1 узла. Зачем вам такой блокчейн, если этот один узел может переписывать всю историю и делать все, что захочет? Для тестирования! Идеальная песочница для игр с блокчейном.
-- **rest-api** - в ноде есть встроенный REST API, который по умолчанию отключен, но после включения (за это отвечает параметр `enable`) позволяет делать HTTP запросы для получения данных из блокчейна или записи в нее новых транзакций. В данном API есть как открытые для всех методы, так и те, которые требуют API ключ, который задается в этой же секции настроек. Параметр `port` задает на каком порту будет слушать нода входящие HTTP запросы, на этом же порту будет доступен Swagger UI с описанием всех методов API. `api-key-hash` позволяет указать хэш от API-ключа, с которым будут доступны приватные методы. То есть в конфигурационном файле мы указываем не сам ключ, а хэш от него. А какой хэш надо взять? SHA-1? SHA-512? Или, прости господи, MD5? Ничто из перечисленного, потому что в Waves используется `secure hash`, который является последовательным вычислением хешей `Blake2b256` и `Keccak256` - `keccak256(blake2b256(data))`. В REST API есть метод [`/utils/hash/secure`](https://docs.wavesprotocol.org/en/waves-node/node-api/utils), который позволяет передать значение и получить готовый хэш.
-- **synchronization** - параметры синхронизации в сети, в том числе максимальная длина форка и параметр `max-rollback`, который задает сколько блоков может быть откачено и по умолчанию равно 100. Фактически можно сказать, что время финализации транзакции, после которого точно можно быть уверенным, что транзакция не пропадет из сети, составляет 100 минут (среднее время блока составляет 1 минуту).
-- **utx** задает параметры пула неподтвержденных транзакций. Каждая нода настраивает эти параметры в зависимости от объема доступной оперативной памяти, мощности и количества CPU. Параметр `max-size`, задающий максимальное количество транзакций в списке ожидания, составляет 100 000 по умолчанию, а `max-bytes-size` имеет значение `52428800`. При достижении любого из этих лимитов, нода перестанет принимать транзакции в свой список ожидания. Про UTX мы поговорим отдельно в главе 5 "Транзакции".
-- **features** - каждый новый функционал и изменения консенсуса (именно правил консенсуса, не изменения API или внутренностей ноды!) должны проходить через процедуру голосования. Принцип работы голосования мы разберем позже в этом разделе. Сейчас просто скажем, что каждая нода голосует используя массив `supported` в этой части конфигурации. Так же нода может автоматически выключиться, если вся сеть приняла какое-то обновление, которое не поддерживается этой версией, используя флаг `auto-shutdown-on-unsupported-feature`.
-- **rewards** позволяет установить размер вознаграждения для майнера блока. Как и в случае с обновлениями протокола, проводится голосование, но голосование за размер вознаграждения работает по другому принципу.
-- **extensions** описывает какие расширения вместе с этой нодой необходимо запускать.
+- **db** - parameters for working with LevelDB and setting what data to save. For example, the results of some transactions can be compressed (save up to 10 GB), but this hurts the usability of the API. Therefore, be careful about what to enable and what to disable and save disk space.
+- **network** - parameters of communication with other nodes in the network. There are many important parameters in this section, which we will discuss below.
+- **wallet** - file parameters for saving keys. Each node that wants to generate blocks (in order to receive rewards for them) must sign their blocks. To do this, the node must have access to the account key. In this section, the private key is set (or, to be more precise, the seed phrase encoded in [base58](https://en.wikipedia.org/wiki/Base58), the password in order to encrypt this phrase, and the path by which to store the file with this encrypted key.
+- **blockchain** - parameters of the blockchain in which the node will operate. In this section, there is a `type` setting that allows you to set one of the predefined blockchain types (stagenet, testnet or mainnet). When specifying the value `custom`, you can change all the parameters of the blockchain, including the initial number of tokens, their distribution, network bytes (unique identifier of each network), supported functionality, etc.
+- **miner** - parameters for generating new blocks. By default, generation is enabled (you need to understand that this will only work if there is a generating balance of more than 1000 Waves on your account), but it can be disabled using the `enable` parameter. It can be useful if, for example, you need a node that will only validate blocks, but not generate them. Another useful parameter is `quorum`, which determines how many connections to other nodes are needed for a node to try to generate blocks. If you set this parameter to 0, then you can start a blockchain consisting of 1 node. Why do you need such a blockchain, if this one node can rewrite the whole history and do whatever it wants? For testing! The perfect sandbox for blockchain games.
+- **rest-api** - the node has a built-in REST API, which is disabled by default, but after enabling (the `enable` parameter is responsible for this) allows you to make HTTP requests to receive data from the blockchain or write new transactions to it. This API has both methods open to all and those that require an API key, which is specified in the same settings section. The `port` parameter specifies on which port the node will listen for incoming HTTP requests, on the same port the Swagger UI will be available with a description of all API methods. `api-key-hash` allows you to specify a hash from the API key with which private methods will be available. That is, in the configuration file we specify not the key itself, but the hash from it. What hash should you take? SHA-1? SHA-512? Or, God forgive me, MD5? None of the above, because Waves uses a `secure hash`, which is a sequential computation of the` Blake2b256` and `Keccak256` -` keccak256 (blake2b256 (data)) `hashes. The REST API has a method [`/utils/hash/secure`](https://docs.wavesprotocol.org/en/waves-node/node-api/utils) that allows you to pass a value and get a ready-made hash.
+- **synchronization** - synchronization parameters in the network, including the maximum fork length and the `max-rollback` parameter, which specifies how many blocks can be rolled back and by default equals 100. In fact, we can say that the transaction finalization time, after which exactly you can be sure that the transaction will not disappear from the network, is 100 minutes (average block time is 1 minute).
+- **utx** specifies the uncommitted transaction pool parameters. Each node configures these parameters depending on the amount of available RAM, power, and the number of CPUs. The `max-size` parameter, which specifies the maximum number of transactions in the pending list, is 100,000 by default, and` max-bytes-size` has the value `52428800`. Upon reaching any of these limits, the node will stop accepting transactions on its waiting list. We'll talk about UTX separately in Chapter 5 "Transactions".
+- **features** - each new functionality and consensus changes (namely the consensus rules, not changes to the API or the internals of the node!) must go through the voting procedure. We'll discuss how voting works later in this section. For now, let's just say that each node votes using the `supported` array in this part of the configuration. Also, a node can automatically shutdown if the entire network has accepted some update that is not supported by this version using the `auto-shutdown-on-unsupported-feature` flag.
+- **rewards** allows you to set the size of the block miner reward As with protocol updates, a vote is taken, but the reward vote works differently.
+- **extensions** describes which extensions should be run with this node.
 
-В разделе `waves` на первом уровне так же лежат некоторые параметры:
+In the section `waves`, at the first level, there are also some parameters:
 
-- `directory` - путь к директории, в которой нода будет сохранять все файлы, которые относятся к ней, к том числе файлы LevelDB с данными
-- `ntp-server` - сервер синхронизации времени
-- `extensions-shutdown-timeout` - это время, которое дается расширенниям, подключенным к ноде, корректно завершиться при выключении самой ноды
+- `directory` - path to the directory in which the node will save all the files that refer to it, including LevelDB files with data
+- `ntp-server` - time synchronization server
+- `extensions-shutdown-timeout` is the time that is given to extensions connected to the node to exit correctly when the node itself is shut down
 
-**В следующим разделах мы будем подробнее разбирать какие параметры влияют на поведение ноды и каким образом.**
+**In the next sections, we will analyze in more detail which parameters affect the behavior of the node and how.**
 
-## Особенности конфигурации
+## Configuration Features
 
-Вы уже увидели, что конфигурация ноды осуществляется с помощью HOCON файлов, которые поддерживают возможность композиции. Другими словами, в файле конфигурации можно использовать инструкции `include filename.conf`, который может загружать разные разделы конфигурации из другого файла. Некоторые разделы могут повторяться в разных файлах, поэтому там так же есть механизм разрешения конфликтов (чем ниже подключен файл, тем больший приоритет он имеет). Если у вас есть опыт работы с CSS, то принцип такой же. В некоторых местах документации Waves приводится нотация вроде `waves.network.port`, как нетрудно догадаться, это обозначает параметр в конфигурации вместе с путем:
+You have already seen that the configuration of a node is done using HOCON files, which support the ability to compose. In other words, you can use the `include filename.conf` statements in the configuration file, which can load different configuration sections from another file. Some sections can be repeated in different files, so there is also a conflict resolution mechanism there (the lower the file is connected, the higher priority it has). If you have experience with CSS, the principle is the same. In some places in the Waves documentation, a notation like `waves.network.port` is given, as you might guess, this means a parameter in the configuration along with the path:
 
-```hocon
+hocon
 waves {
   network {
     port = 6868
   }
 }
-```
+``
 
-### Безопасность
+### Safety
 
-При конфигурировании ноды имеет значение уделить особое внимание тем параметрам, которые напрямую влияют на безопасность - разделам `wallet` и `rest-api`. Хорошей практикой считается указать в конфигурационном файле base58 представление seed фразы и пароль, запустить ноду, а затем удалить фразу из файла (не перезапуская ноду). Таким образом, запущенная нода будет знать приватный ключ и пароль (это есть в оперативной памяти), но в файле конфигурации ничего не останется. Если вдруг кто-то получит доступ к вашей конфигурации или даже `wallet` файлу, он не сможет расшифровать ключ.
+When configuring a node, it is important to pay special attention to those parameters that directly affect security - the `wallet` and` rest-api` sections. It is considered good practice to specify the seed phrase and password in the base58 configuration file, start the node, and then delete the phrase from the file (without restarting the node). Thus, the launched node will know the private key and password (this is in RAM), but nothing will remain in the configuration file. If suddenly someone gets access to your configuration or even the `wallet` file, he will not be able to decrypt the key.
 
-API ключ ноды не менее важен, потому что он позволяет отправить с ноды транзакции, подписанные ключами, хранящимися в ноде. В отличие от данных аккаунта, в конфигурации хранится только хэш, поэтому удалять оттуда после запуска смысла нет, но есть смысл использовать максимально сложный ключ и никак не тот, который стоит по умолчанию (в старых версиях был ключ по-умолчанию, в последних такого уже нет).
+The node's API key is equally important, because it allows you to send transactions from the node, signed by the keys stored in the node. Unlike account data, only the hash is stored in the configuration, so there is no point in deleting from there after launch, but it makes sense to use the most complex key and not the default one (in older versions there was a key by default, in the latter it is already not).
 
-### Оптимальные настройки блокчейна
+### Optimal blockchain settings
 
-Очень часто задаваемый вопрос - какие же настройки оптимальные? В первую очередь зависит от того, о какой сети мы говорим - `stagenet`, `testnet`, `mainnet` или `custom`? Например, для `custom` не существует оптимальных, так как различаются требования к сети. Но надо понимать, что нода Waves не всемогущая, эмпирически показано, что при времени блока меньше 12 секунд (`waves.blockchain.genesis.average-block-delay`), времени микроблока меньше 3 секунд (`waves.miner.micro-block-interval`) и относительно большом количестве узлов в сети (10+), сеть может быстро разделяться на несколько. Такое поведение вызвано задержками в передаче сетевых сообщений.
+A very frequently asked question - what are the optimal settings? First of all depends on what kind of network we are talking about - `stagenet`,` testnet`, `mainnet` or` custom`? For example, there are no optimal ones for `custom` because of the different network requirements. But you need to understand that the Waves node is not omnipotent, it is empirically shown that when the block time is less than 12 seconds (`waves.blockchain.genesis.average-block-delay`), the microblock time is less than 3 seconds (` waves.miner.micro-block -interval`) and a relatively large number of nodes in the network (10+), the network can quickly split into several. This behavior is caused by delays in the transmission of network messages.
 
-Важным параметром, который надо настраивать с учетом особенностей окружения, является максимальное количество транзакций в UTX. 100 000 транзаций является оптимальным для ноды, удовлетворяющей минимальным системным требованиям.
+An important parameter that needs to be adjusted taking into account the peculiarities of the environment is the maximum number of transactions in UTX. 100,000 transactions is optimal for a node that meets the minimum system requirements.
 
-Я описал выше только самые основные параметры, многие другие мы будем рассматривать в следующих разделах, по мере погружения в протокол и его особенности. Сейчас же приведу полный файл конфигурации с комментариями:
+I described above only the most basic parameters, we will consider many others in the following sections, as we dive into the protocol and its features. Now I will give a complete configuration file with comments:
 
 ```hocon
 # Waves node settings in HOCON
@@ -87,11 +87,11 @@ waves {
   directory = ""
 
   db {
-    directory = ${waves.directory}"/data"
+    directory = $ {waves.directory} "/ data"
     store-transactions-by-address = true
     store-invoke-script-results = true
-    # Limits the size of caches which are used during block validation. Lower values slightly decrease memory consummption,
-    # while higher values might increase node performance. Setting ghis value to 0 disables caching alltogether.
+    # Limits the size of caches which are used during block validation. Lower values ​​slightly decrease memory consummption,
+    # while higher values ​​might increase node performance. Setting ghis value to 0 disables caching alltogether.
     max-cache-size = 100000
 
     max-rollback-depth = 2000
@@ -104,13 +104,13 @@ waves {
   # P2P Network settings
   network {
     # Peers and blacklist storage file
-    file = ${waves.directory}"/peers.dat"
+    file = $ {waves.directory} "/ peers.dat"
 
     # String with IP address and port to send as external address during handshake. Could be set automatically if UPnP
     # is enabled.
     #
     # If `declared-address` is set, which is the common scenario for nodes running in the cloud, the node will just
-    # listen to incoming connections on `bind-address:port` and broadcast its `declared-address` to its peers. UPnP
+    # listen to incoming connections on `bind-address: port` and broadcast its` declared-address` to its peers. UPnP
     # is supposed to be disabled in this scenario.
     #
     # If declared address is not set and UPnP is not enabled, the node will not listen to incoming connections at all.
@@ -121,7 +121,7 @@ waves {
     #
     # In some cases, you may both set `decalred-address` and enable UPnP (e.g. when IGD can't reliably determine its
     # external IP address). In such cases the node will attempt to configure an IGD to pass traffic from external port
-    # to `bind-address:port`. Please note, however, that this setup is not recommended.
+    # to `bind-address: port`. Please note, however, that this setup is not recommended.
     # declared-address = "1.2.3.4:6863"
 
     # Network address
@@ -186,7 +186,7 @@ waves {
     received-txs-cache-timeout = 3m
 
     upnp {
-      # Enable UPnP tunnel creation only if you router/gateway supports it. Useful if your node is runnin in home
+      # Enable UPnP tunnel creation only if you router / gateway supports it. Useful if your node is runnin in home
       # network. Completely useless if you node is in cloud.
       enable = no
 
@@ -208,7 +208,7 @@ waves {
   # Wallet settings
   wallet {
     # Path to wallet file
-    file = ${waves.directory}"/wallet/wallet.dat"
+    file = $ {waves.directory} "/ wallet / wallet.dat"
 
     # Password to protect wallet file
     # password = "some string as password"
@@ -225,66 +225,66 @@ waves {
     type = TESTNET
 
     # 'custom' section present only if CUSTOM blockchain type is set. It's impossible to overwrite predefined 'testnet' and 'mainnet' configurations.
-    #    custom {
-    #      # Address feature character. Used to prevent mixing up addresses from different networks.
-    #      address-scheme-character = "C"
+    # custom {
+    # # Address feature character. Used to prevent mixing up addresses from different networks.
+    # address-scheme-character = "C"
     #
-    #      # Timestamps/heights of activation/deactivation of different functions.
-    #      functionality {
+    # # Timestamps / heights of activation / deactivation of different functions.
+    # functionality {
     #
-    #        # Blocks period for feature checking and activation
-    #        feature-check-blocks-period = 10000
+    # # Blocks period for feature checking and activation
+    # feature-check-blocks-period = 10000
     #
-    #        # Blocks required to accept feature
-    #        blocks-for-feature-activation = 9000
+    # # Blocks required to accept feature
+    # blocks-for-feature-activation = 9000
     #
-    #        reset-effective-balances-at-height = 0
-    #        generation-balance-depth-from-50-to-1000-after-height = 0
-    #        block-version-3-after-height = 0
-    #        max-transaction-time-back-offset = 120m
-    #        max-transaction-time-forward-offset = 90m
-    #        pre-activated-features {
-    #          1 = 100
-    #          2 = 200
-    #        }
-    #        lease-expiration = 1000000
-    #      }
-    #      # Block rewards settings
-    #      rewards {
-    #        term = 100000
-    #        initial = 600000000
-    #        min-increment = 50000000
-    #        voting-interval = 10000
-    #      }
-    #      # List of genesis transactions
-    #      genesis {
-    #        # Timestamp of genesis block and transactions in it
-    #        timestamp = 1460678400000
+    # reset-effective-balances-at-height = 0
+    # generation-balance-depth-from-50-to-1000-after-height = 0
+    # block-version-3-after-height = 0
+    # max-transaction-time-back-offset = 120m
+    # max-transaction-time-forward-offset = 90m
+    # pre-activated-features {
+    # 1 = 100
+    # 2 = 200
+    #}
+    # lease-expiration = 1000000
+    #}
+    # # Block rewards settings
+    # rewards {
+    # term = 100000
+    # initial = 600000000
+    # min-increment = 50,000,000
+    # voting-interval = 10000
+    #}
+    # # List of genesis transactions
+    # genesis {
+    # # Timestamp of genesis block and transactions in it
+    # timestamp = 1460678400000
     #
-    #        # Genesis block signature
-    #        signature = "BASE58BLOCKSIGNATURE"
+    # # Genesis block signature
+    # signature = "BASE58BLOCKSIGNATURE"
     #
-    #        # Initial balance in smallest units
-    #        initial-balance = 100000000000000
+    # # Initial balance in smallest units
+    # initial-balance = 100000000000000
     #
-    #        # Initial base target
-    #        initial-base-target =153722867
+    # # Initial base target
+    # initial-base-target = 153722867
     #
-    #        # Average delay between blocks
-    #        average-block-delay = 60s
+    # # Average delay between blocks
+    # average-block-delay = 60s
     #
-    #        # List of genesis transactions
-    #        transactions = [
-    #          {recipient = "BASE58ADDRESS1", amount = 50000000000000},
-    #          {recipient = "BASE58ADDRESS2", amount = 50000000000000}
-    #        ]
-    #      }
-    #    }
+    # # List of genesis transactions
+    # transactions = [
+    # {recipient = "BASE58ADDRESS1", amount = 50000000000000},
+    # {recipient = "BASE58ADDRESS2", amount = 50000000000000}
+    #       ]
+    #   }
+    # }
   }
 
   # New blocks generator settings
   miner {
-    # Enable/disable block generation
+    # Enable / disable block generation
     enable = yes
 
     # Required number of connections (both incoming and outgoing) to attempt block generation. Setting this value to 0
@@ -313,12 +313,12 @@ waves {
     minimal-block-generation-offset = 0
 
     # Max packUnconfirmed time
-    max-pack-time = ${waves.miner.micro-block-interval}
+    max-pack-time = $ {waves.miner.micro-block-interval}
   }
 
   # Node's REST API settings
   rest-api {
-    # Enable/disable REST API
+    # Enable / disable REST API
     enable = yes
 
     # Network address to bind to
@@ -330,14 +330,14 @@ waves {
     # Hash of API key string
     api-key-hash = ""
 
-    # Enable/disable CORS support
+    # Enable / disable CORS support
     cors = yes
 
-    # Enable/disable X-API-Key from different host
+    # Enable / disable X-API-Key from different host
     api-key-different-host = no
 
     # Max number of transactions
-    # returned by /transactions/address/{address}/limit/{limit}
+    # returned by / transactions / address / {address} / limit / {limit}
     transactions-by-address-limit = 1000
     distribution-address-limit = 1000
   }

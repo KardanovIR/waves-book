@@ -1,78 +1,78 @@
-# Рантайм языка Ride
+# Language runtime Ride
 
-Смарт-контракты и децентрализованные приложения в Waves отличаются от таковых в Ethereum и многих других блокчейнах. Давайте рассмотрим основные отличия и их причины.
+Smart contracts and decentralized applications in Waves are different from those in Ethereum and many other blockchains. Let's take a look at the main differences and their reasons.
 
-## Подсчет сложности
+## Calculating difficulty
 
-Все функции и операции в Ride, в том числе операции сложения, вычитания, деления, ветвления, а так же функции стандартной библиотеки имеют сложность. Сложность каждой операции выражается в условных единицах (назовем `complexity`, иначе придется называть `попугаи`). Например, операция сложения имеет complexity равную 1, а функция проверки подписи `sigVerify()` имеет complexity 200.
+All functions and operations in Ride, including operations of addition, subtraction, division, branching, as well as functions of the standard library have complexity. The complexity of each operation is expressed in arbitrary units (let's call it `complexity`, otherwise we will have to call it` parrots`). For example, the addition operation has a complexity of 1, and the signature verification function `sigVerify ()` has a complexity of 200.
 
-Так как в каждом скрипте есть много вариантов исполнения из-за ветвлений, то `complexity` скрипта считается как сложность самой сложной ветки. Если вы используете, например, online IDE, то он будет показывать сложность скрипта в режиме реального времени.
+Since each script has many execution options due to branches, the `complexity` of a script is considered the complexity of the most complex branch. If you use, for example, an online IDE, then it will show the complexity of the script in real time.
 
-В Ride есть ограничение на максимальную сложность скрипта, и она разная для разных типов функций. Для функций `@Verifier`, смарт-аккаунтов и смарт-ассетов максимальная сложность скрипта составляет 3000 единиц, а для функций `@Callable` наиболее сложная ветка может иметь 4000 единиц. В отличие от других языков смарт-контрактов, например Solidity в Ethereum, сложность скрипта в Ride всегда известна заранее, так как отсутствует Тьюринг-полнота. В случае Ethereum, довольно часто бывает, что мы используем цикл в коде, но не знаем сколько итераций будет в этом цикле в момент исполнения (код может читать коллекцию произвольной длины и итерировать по ней). Другой возможный в Ethereum сценарий - использование рекурсии. В Ride и Waves такое невозможно, так как отсутсвуют полноценные циклы - макрос `FOLD` заранее ограничивает максимальное количество исполнений, а рекурсий как таковых просто нет.
+Ride has a limit on the maximum complexity of the script, and it is different for different types of functions. For `@ Verifier` functions, smart accounts and smart assets, the maximum script complexity is 3000 units, and for` @ Callable` functions, the most complex branch can have 4000 units. Unlike other smart contract languages, such as Ethereum's Solidity, the complexity of a script in Ride is always known in advance, since there is no Turing completeness. In the case of Ethereum, it quite often happens that we use a loop in the code, but do not know how many iterations this loop will have at the time of execution (the code can read a collection of arbitrary length and iterate over it). Another possible scenario in Ethereum is the use of recursion. In Ride and Waves, this is impossible, since there are no full-fledged loops - the `FOLD` macro limits the maximum number of executions in advance, and there are simply no recursions as such.
 
-Заранее известная сложность избавляет от такой проблемы в Ethereum как `Out of gas`. Все, кто писал смарт-контракты и делал децентрализованные приложения на Solidity сталкивались с такой ситуацией, когда транзакция стала невалидной из-за того, что "закончился газ". В Waves такая ситуация попросту невозможна.
+The well-known complexity eliminates Ethereum's `Out of gas` problem. Everyone who wrote smart contracts and made decentralized applications on Solidity faced such a situation when the transaction became invalid due to the "out of gas". In Waves, this situation is simply impossible.
 
-Кроме ограничения по максимальной сложности контракта, так же есть ограничение на максимальный размер контракта, на момент написания оно составляет 32 кб. То есть код децентрализованного приложения не может быть больше 32 кб.
+In addition to the limitation on the maximum complexity of the contract, there is also a limitation on the maximum contract size, at the time of writing it is 32 kb. That is, the code of a decentralized application cannot be more than 32 kb.
 
-## Отсутствие Тьюринг полноты
+## Lack of Turing completeness
 
-Ride является *не* Тьюринг полным языком, но не потому, что сделать Тьюринг полноту сложно или долго, а потому что у такого подхода есть свои плюсы. Блокчейн является не самой высокопроизводительной системой, ведь все транзакции выполняется на каждой ноде, а на сетевые коммуникации уходит большое количество ресурсов. Есть различные подходы к масштабированию, например, шардинг, создание сайдчейнов и т.д., но все они являются копромиссами - при увеличении пропускной способности всегда страдает уровень децентрализации или безопасность. Именно это утверждает блокчейн трилемма. Из 3 характеристик блокчейна - децентрализации, скорости и безопасности, полностью обеспечить можно только 2. Или другими словами, необходимо выбирать одну грань у треугольника:
+Ride is * not * Turing complete, not because it is difficult or time-consuming to make Turing complete, but because this approach has its advantages. The blockchain is not the most high-performing system, because all transactions are performed on each node, and a large amount of resources are spent on network communications. There are various approaches to scaling, for example, sharding, creating sidechains, etc., but they are all compromises - when the bandwidth increases, the level of decentralization or security always suffers. This is exactly what the blockchain trilemma claims. Of the 3 characteristics of the blockchain - decentralization, speed and security, only 2 can be fully ensured. Or in other words, you need to choose one side of the triangle:
 
 ![The blockchain trilemma](../../assets/6-2-1-the-blockchain-trilemma.png "The blockchain trilemma")
 
-Как вы возможно помните, в ценностях Waves всегда быть максимально дружелюбной платформой для разработчиков и пользователей, поэтому скорость работы не должна быть узким местом, но в то же время блокчейн Waves не позволит делать десятки тысяч транзакций в секунду, так как блокчейн должен оставаться безопасным и децентрализованным. 
+As you may remember, Waves values ​​always be the most friendly platform for developers and users, so the speed of work should not be a bottleneck, but at the same time, the Waves blockchain will not allow tens of thousands of transactions per second, since the blockchain must remain secure and decentralized.
 
-Отсутствие Тьюринг-полноты позволяет Waves предлагать оптимальное сочетание этих 3 характеристик:
+The lack of Turing completeness allows Waves to offer the optimal combination of these 3 characteristics:
 
-1. Из-за отсутствия сложных скриптов, нода Waves может быть запущена на виртуальной машине за $40 в любом публичном облаке, что способствует децентрализации
-2. Простота скриптов так же позволяет блокчейну иметь достаточную пропускную способность, чтобы даже при среднесуточном количестве транзакций в [100 000](http://dev.pywaves.org/txs/), не было конкуренции за попадание в блок и, соответственно, высоких комиссий.
-3. Отсутствие Тьюринг-полноты делает смарт-контракты безопаснее. Ride является в какой-то мере DSL (domain specific language) или предметно-ориентированным языком, а не языком общего назначения, и именно DSL применяются в сферах, где требуется максимальная безопасность. Подробнее про это я рассказывал на одной из конференций в Сан-Франциско, с записью выступления вы можете ознакомиться [здесь](https://www.youtube.com/watch?v=gMcif_ADWak).
+1. Due to the lack of complex scripts, the Waves node can be run on a virtual machine for $ 40 in any public cloud, which contributes to decentralization
+2. The simplicity of scripts also allows the blockchain to have sufficient bandwidth so that even with an average daily number of transactions of [100,000](http://dev.pywaves.org/txs/), there is no competition for getting into the block and, accordingly, high commissions.
+3. Lack of Turing completeness makes smart contracts safer. Ride is to some extent a DSL (domain specific language) or domain-specific language, not a general-purpose language, and DSLs are used in areas where maximum security is required. I talked about this in more detail at one of the conferences in San Francisco, you can see the recording of the speech [here](https://www.youtube.com/watch?v=gMcif_ADWak).
 
-Таким образом, отсутствие Тьюринг-полноты несет в себе массу преимуществ, однако, это влияет на опыт разработки, давайте рассмотрим каким именно образом.
+Thus, the lack of Turing completeness carries a lot of advantages, however, it affects the development experience, let's look at exactly how.
 
-## Последствия отсутствия Тьюринг полноты
+## Consequences of Lack of Turing Completeness
 
-Отсуствие Тьюринг полноты иногда не позволяет реализовать весь необходимый функционал в рамках одной функции, поэтому часто в Waves приходится разбивать логику децентрализованного приложения на несколько функций и последовательно вызывать их с помощью нескольких `InvokeScript` транзакций. Например, одно из самых сложных приложений в сети Waves - стейблкоин [Neutrino](https://neutrino.at) состоит из 5 контрактов.
+The lack of Turing completeness sometimes does not allow implementing all the necessary functionality within one function, so often in Waves you have to split the logic of a decentralized application into several functions and call them sequentially using several `InvokeScript` transactions. For example, one of the most complex applications on the Waves network - stablecoin [Neutrino](https://neutrino.at) consists of 5 contracts.
 
-Контракты не могут напрямую вызывать друг друга (как в Ethereum), но они могут общаться друг с другом благодаря сохранению данных и промежуточных состояний в key-value хранилища. Любой контракт может читать хранилище любого другого контракта или аккаунта, поэтому логика обработки сложных вычислений часто представляет из себя следующее:
+Contracts cannot call each other directly (as in Ethereum), but they can communicate with each other by storing data and intermediate states in the key-value store. Any contract can read the storage of any other contract or account, so the logic for processing complex computations is often the following:
 
-1. Функция 1 децентрализованного приложения A вызывается с помощью `InvokeScript` транзакции, результат выполнения записывается в хранилище аккаунта A.
-2. Функция 1 децентрализованного приложения B, вызванная с помощью `InvokeScript` транзакции, читает данные, записыванные в хранилище приложения А и использует для вычисления своего результата.
+1. Function 1 of decentralized application A is called using the `InvokeScript` transaction, the result of execution is written to the storage of account A.
+2. Function 1 of decentralized application B, called with the `InvokeScript` transaction, reads the data written to the storage of application A and uses it to calculate its result.
 
-Возможность чтения состояния хранилища другого аккаунта в Waves является мощнейшим инструментом, позволяющим композировать логику, строить приложения, которые опираются на другие, уже существующие.
+The ability to read the storage state of another account in Waves is a powerful tool that allows you to compose logic, build applications that rely on other existing ones.
 
-## Особенности обработки UTX
+## UTX Processing Features
 
-В разделе 5 мы разбирали как именно происходит сортировка транзакций в UTX пуле, однако в тот момент мы опустили некоторые детали. Сейчас, когда вы знакомы с концепцией сложности скрипта, давайте разберемся во всех деталях.
+In Section 5, we discussed how transactions are sorted in the UTX pool, but at that moment we omitted some details. Now that you are familiar with the concept of script complexity, let's go into all the details.
 
-Как мы уже говорили, сортировка транзакций в очереди на попадание в блок происходит по размеру комисси на 1 байт транзакции, однако есть и второй параметр, который необходимо учитывать - сложность исполнения скрипта. Задача майнера в том, чтобы максимизировать прибыль, получаемую с комиссий, поэтому майнеру может быть не выгодно валидировать транзакции со скриптом и тратить на них драгоценное время, когда можно положить в блок много транзакций без скрипта, просто проверив подпись. В данный момент `complexity` никак не учитывается при сортировке транзакций в UTX, однако, в дальнейшем такой параметр обязательно должен появиться.
+As we have already said, the sorting of transactions in the queue for hitting the block occurs according to the size of the commission per 1 byte of the transaction, but there is a second parameter that must be taken into account - the complexity of the script execution. The miner's task is to maximize the profit received from commissions, so it may not be profitable for the miner to validate transactions with a script and waste precious time on them, when you can put many transactions in a block without a script, just by checking the signature. At the moment, `complexity` is not taken into account in any way when sorting transactions in UTX, however, in the future, such a parameter must appear.
 
-В блокчейне Waves есть несколько параметров, которые ограничивают размеры блока, то есть, косвенно ограничивают максимальную пропускную способность:
+There are several parameters in the Waves blockchain that limit block sizes, that is, indirectly limit the maximum bandwidth:
 
-- до 1 мегабайта транзакций в блоке (около 6000 транзакций)
-- ограничение на максимальную суммарную сложность скриптов в блоке равна 1 000 000 (не более 250 транзакций вызова скрипта с максимальной сложностью). При достижении этого лимита в блок будут укладываться только транзакции, не связанные с исполнением скриптов, и ровно до тех пор, пока не будет достигнут лимит по размеру в 1 мегабайт.
+- up to 1 megabyte of transactions in a block (about 6000 transactions)
+- the limitation on the maximum total complexity of scripts in a block is 1,000,000 (no more than 250 script call transactions with maximum complexity). When this limit is reached, only transactions that are not related to the execution of scripts will fit into the block, and exactly until the size limit of 1 megabyte is reached.
 
-Важно понимать, что эти параметры могут быть пересмотрены в будущем, если это будет необходимо для обслуживания всех пользователей. Однако это приведет к возрастанию системных требований к нодам.
+It is important to understand that these parameters may be revised in the future if necessary to serve all users. However, this will lead to an increase in system requirements for nodes.
 
-## Транзакции с ошибками
+## Transactions with errors
 
-Выполнение скриптов при отправке транзакций (смарт-ассета, смарт-аккаунта или децентрализованного приложения), может быть как успешным, так и завершаться ошибкой. В случае завершения скрипта ошибкой или результатом `false` для смарт-аккаунтов и смарт-ассетов возможны сценарии, когда транзакция попадает в блокчейн и комиссия списывается с отправителя, но возможны и обратные ситуации. Давайте разберемся в особенностях транзакций с ошибками.
+Execution of scripts when sending transactions (smart asset, smart account or decentralized application) can be successful or fail. If the script ends with an error or the result is `false` for smart accounts and smart assets, scenarios are possible when the transaction enters the blockchain and the commission is debited from the sender, but the opposite is also possible. Let's take a look at the peculiarities of transactions with errors.
 
-Скрипты децентрализованных приложений и смарт-ассетов не исполняются в момент добавления в UTX, а выполняются только в момент добавления в блок. Поэтому такие скрипты, завершающиеся исключением, попадут в блокчейн, если они успешно попали в UTX. Другими словами, транзакция не будет успешно завершена, но отправитель все равно заплатит комиссию. В API ноды Waves есть специальный метод POST `/debug/validate`, который помогает предварительно помогает проверить транзакции, чтобы минимизировать потенциальные финансовые потери.
+Scripts for decentralized applications and smart assets are not executed when they are added to UTX, but are executed only when they are added to the block. Therefore, such scripts, ending with an exception, will enter the blockchain if they successfully hit UTX. In other words, the transaction will not complete successfully, but the sender will still pay the fee. The Waves node API has a special POST `/ debug / validate` method that helps pre-check transactions to minimize potential financial losses.
 
-Таким образом, добавление транзакции в блокчейн не гарантирует, что она исполнилась до конца и выполнила какие-либо действия. Проверить статус вызова скрипта можно с помощью REST API ноды, который при запросе транзакции по ID возвращает поле `applicationStatus`.
+Thus, adding a transaction to the blockchain does not guarantee that it has completed and performed any actions. You can check the status of the script call using the REST API node, which, when requesting a transaction by ID, returns the `applicationStatus` field.
 
-Скрипты, исполняемые для смарт-аккаунтов и функции `@Verifier` работают по-другому - они валидируются в момент добавления в UTX, и даже если в момент добавления в блок они вернули ошибку, транзакция не попадет в блок и комиссия не будет уплачена отправителем.
+Scripts executed for smart accounts and the `@ Verifier` functions work differently - they are validated at the moment of adding to UTX, and even if they returned an error at the time of adding to the block, the transaction will not fall into the block and the sender will not pay the commission.
 
-## Количество исполняемых скриптов
+## Number of executable scripts
 
-Многие разработчики приложения на Waves не до конца понимают какую нагрузку на блокчейн могут создавать их приложения. Давайте посчитаем, сколько может выполняться скриптов при отправке одной `InvokeScript` транзакции (в том порядке, как это на самом деле происходит):
+Many Waves app developers do not fully understand the load on the blockchain their apps can create. Let's count how many scripts can be executed when sending one `InvokeScript` transaction (in the order in which it actually happens):
 
-- Скрипты ассетов, которые прикреплены как `payment` к вызову - до 2
-- Скрипт самого децентрализованного приложения - 1
-- Скрипт на аккаунте, который вызывает функцию приложения - 1
-- Скрипты ассетов, которые переводятся как результат вызова функции приложения - до 10
+- Asset scripts that are attached as `payment` to the call - up to 2
+- Script of the most decentralized application - 1
+- Script on the account that calls the application function - 1
+- Asset scripts that are translated as a result of calling an application function - up to 10
 
-> Получается, один вызов функции приложения может приводить к исполнению 14 скриптов, у каждой из которых может быть сложность 4000 единиц.
+> It turns out that one call to the application function can lead to the execution of 14 scripts, each of which can have a complexity of 4000 units.
 
-Похожая ситуация и при отправке `Exchange` транзакции, где может исполняться 2 скрипта аккаунтов отправителей ордеров, 2 скрипта ассетов, 2 скрипта ассетов в комиссии, 1 скрипт на аккаунте матчера, итого до 7 скриптов.
+A similar situation occurs when sending an `Exchange` transaction, where 2 scripts of the accounts of order senders, 2 scripts of assets, 2 scripts of assets in the commission, 1 script on the matcher's account can be executed, up to 7 scripts in total.

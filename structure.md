@@ -1,90 +1,87 @@
-# Примерная структура книги
+# Approximate book structure
 
-Структура книги находится в режиме постоянных правок, первичным источником структуры считать директории в [sections](./sections).
+The structure of the book is in the mode of constant edits, the primary source of the structure is the directories in [sections](./sections).
 
-## 1. Введение в блокчейн Waves
+## 1. Introduction to the Waves blockchain
 
-Раздел рассказывает про историю возникновения протокола, описывает основные особенности протокола и чем отличается от других блокчейнов. Базовые принципы работы в разделе не затрагиваются, так как подразумевается, что читатель либо уже знаком с ними, либо может ознакомиться с курсом на Сoursera. Структура раздела:
+The section tells about the history of the protocol, describes the main features of the protocol and how it differs from other blockchains. The basic principles of work in the section are not affected, since it is implied that the reader is either already familiar with them, or can familiarize himself with the course on Сoursera. Section structure:
 
-### [1.1 История создания Waves](./sections/1-Waves-Introduction/1-1-history-of-waves.md)
+### [1.1 History of Waves](./sections/1-Waves-Introduction/1-1-history-of-waves.md)
 
-### [1.2 Подходы к разработке протокола Waves](./sections/1-Waves-Introduction/1-2-development-principles.md)
+### [1.2 Approaches to Waves Protocol Development](./sections/1-Waves-Introduction-2-development-principles.md)
 
-### [1.3 Отличительные особенности блокчейна Waves](./sections/1-Waves-Introduction/1-3-features-and-USPs.md)
-
-_
-
-## 2. Важные особенности сетевого протокола Waves
-
-Основное внимание в разделе уделено тому как работает Waves на уровне сетевого протокола и взаимодействия нод. В разделе делается упор на то, как сетевой протокол Waves может влиять на опыт разработки dApp на платформе.
-
-### [2.1 Нода Waves и как она работает, ее конфигурация](./sections/2-Network-Features/2-1-node-configuration.md)
-
-### [2.2 Процесс майнинга (Waves NG)](./sections/2-Network-Features/2-2-mining-and-waves-ng.md)
-
-### [2.3 Обновления протокола и другие голосования](./sections/2-Network-Features/2-3-upgrades-and-other-votings.md)
+### [1.3 Distinctive features of the Waves blockchain](./sections/1-Waves-Introduction/1-3-features-and-USPs.md)
 
 _
 
-## 3. Аккаунты в Waves
+## 2. Important features of the Waves network protocol
 
-В этом разделе рассказывается о том, как создаются аккаунты в Waves в ноде и вне ее. Раздел НЕ покрывает вопросы, связанные с криптографией.
+This section focuses on how Waves works at the level of the network protocol and node interaction. This section focuses on how the Waves networking protocol can impact the dApp development experience on the platform.
 
-### [3.1 Ключи в блокчейне Waves](./sections/3-Accounts/3-1-keys.md)
+### [2.1 The Waves node and how it works, its configuration](./sections/2-Network-Features/2-1-node-configuration.md)
 
-Что такое seed фраза и как она связана с ключом, почему seed фраза именно такой длины, можно ли подобрать ее. Приватный ключ, публичный ключ и адрес, как они связаны. Как аккаунт появляется в блокчейне.
+### [2.2 Mining Process (Waves NG)](./sections/2-Network-Features/2-2-mining-and-waves-ng.md)
 
-### [3.2 Обычные аккаунты vs. смарт аккаунты](./sections/3-Accounts/3-2-accounts-vs-smart-accounts.md)
+### [2.3 Protocol updates and other polls](./sections/2-Network-Features/2-3-upgrades-and-other-votings.md)
 
 _
 
-## 4. Токены в Waves
+## 3. Waves Accounts
 
-В этом разделе рассказывается о том, что токены являются first-class citizens и что с ними можно делать. Так же рассказываются про мотивацию таких решений и чем это поможет нам в дальнейшем.
+This section explains how to create Waves accounts in and out of a node. This section does NOT cover cryptography related issues.
 
-### 4.1 Выпуск, перевыпуск, сжигание и изменение информации об ассете
+### [3.1 Keys in the Waves blockchain](./sections/3-Accounts/3-1-keys.md)
 
-### 4.2 Спонсирование транзакций
+What is a seed phrase and how is it related to a key, why is a seed phrase of exactly this length, is it possible to pick it up. The private key, public key, and address, as they are related. How an account appears on the blockchain.
 
-Потенциальные проблемы при спонсировании транзакций. Максимальная стоимость транзакции в Waves и почему-то кто-то столько заплатил.
+### [3.2 Regular accounts vs. smart accounts](./sections/3-Accounts/3-2-accounts-vs-smart-accounts.md)
+
+_
+
+## 4. Tokens in Waves
+
+This section explains what tokens are first-class citizens and what you can do with them. They also talk about the motivation for such decisions and how it will help us in the future.
+
+### 4.1 Releasing, Releasing, Burning, and Changing Asset Information
+
+### 4.2 Sponsoring Transactions
+
+Potential problems when sponsoring transactions. The maximum transaction cost in Waves and for some reason someone paid that much.
 
 ### 4.3 Smart Assets
 
-### 4.4 Торговля ассетами и DEX
-
+### 4.4 Asset and DEX trading
 _
 
-## 5. Транзакции в Waves
+## 5. Transactions in Waves
 
-Разбор всех типов транзакций, в том числе deprecated. Объяснение версионирования транзакций, их сериализации и процесса подписания. Обзор особенностей работы UTX - как транзакции попадают в блок, в каком порядке, что такое микрофорки и почему валидная транзакция может не попасть в блокчейн.
+Analysis of all types of transactions, including deprecated. Explains transaction versioning, serialization, and signing process. An overview of how UTX works - how transactions enter the block, in what order, what microforks are, and why a valid transaction may not enter the blockchain.
 
-### 5.1 Разбор всех типов транзакций
+### 5.1 Parsing all types of transactions
 
-### 5.2 Подписание транзакций
+### 5.2 Signing transactions
 
-### 5.3 Особенности работы UTX
-
+### 5.3 Features of UTX Operation
 _
 
 ## 6. Ride
 
-Описание языка Ride, основных его особенностей, синтаксиса и разбор небольших примеров (ride-introduction). Обзор нововведений в Ridev4.
+Description of the Ride language, its main features, syntax and analysis of small examples (ride-introduction). Overview of innovations in Ridev4.
 
-### 6.1 Синтаксис языка
+### 6.1 Language syntax
 
-### 6.2 Ограничения языка
+### 6.2 Language restrictions
 
-### 6.3 Особенности runtime
+### 6.3 Runtime features
 
 ### 6.4 Tooling
 
 Surfboard, IDE, VS Code, Docker images, Tests Framework
-
 _
 
-## 7. Примеры реализации децентрализованных приложений
+## 7. Examples of implementation of decentralized applications
 
-Разбор примеров step-by-step с объяснением требований и постепенной реализацией в виде контрактов.
+Analysis of step-by-step examples with explanation of requirements and gradual implementation in the form of contracts.
 
 ### 7.1 Oraculus
 
@@ -93,22 +90,21 @@ _
 ### 7.3 HotPotatoToken
 
 ### 7.4 Ride best practices
+_
+
+## 8. Other important aspects for development
+
+### 8.1 API nodes and data services
+
+### 8.2 Waves Keeper and Waves Signer
+
+### 8.3 Libraries for different programming languages
+
+### 8.4 Node extensions - gRPC and Matcher
 
 _
 
-## 8. Другие важные для разработки аспекты
-
-### 8.1 API ноды и дата-сервисы
-
-### 8.2 Waves Keeper и Waves Signer
-
-### 8.3 Библиотеки для разных языков программирования
-
-### 8.4 Расширения к ноде - gRPC и Matcher
-
-_
-
-## 9. Приоритеты развития платформы
+## 9. Platform development priorities
 
 ### 9.1 Gravity hub
 
@@ -116,4 +112,4 @@ _
 
 _
 
-## 10. Заключение
+## 10. Conclusion
