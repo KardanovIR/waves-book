@@ -8,7 +8,7 @@ The main difference between smart assets and smart accounts is that if a token i
 
 Another reason for the impossibility of adding a script to assets released without this is that the functionality of smart assets appeared in the third year of the life of the Waves blockchain, and to give simple tokens, which have been living on the network for several years, the ability to change the rules of the game on the go without considering opinions users, it would not be entirely correct.
 
-But what if we want to issue a token, but have not yet written its script? It is enough to put `true` in the form of a script (or rather a compiled version of such a script in base64 format -` AwZd0cYf`) as a script. Such a script will not prohibit any operations with the token, but will allow you to update the script in the future and set the rules you need.
+But what if we want to issue a token, but have not yet written its script? It is enough to put `true` in the form of a script (or rather a compiled version of such a script in base64 format - `AwZd0cYf`) as a script. Such a script will not prohibit any operations with the token, but will allow you to update the script in the future and set the rules you need.
 
 In Sections 5 (Transactions) and 6 (Ride), we will take a closer look at the specifics of setting a script for assets and the distinctive features of Ride for tokens.
 

@@ -16,7 +16,7 @@ In Waves, all tokens are "first-class citizens", they are right in the core of t
 
 **This is also possible by creating smart assets, which we will look at later in this chapter.**
 
-A lot of new developers are asking how a **asset** differs from a ** token **. In the code of the Waves node, you will more often come across the word `asset` than` token`, but for convenience, for the sake of this book, I suggest that these two concepts be considered interchangeable. Yes, in real life, `asset` is more of an asset, and` token` is more like something close to a token / coin, but in the world of blockchain the border between the concepts has become blurred.
+A lot of new developers are asking how a **asset** differs from a **token**. In the code of the Waves node, you will more often come across the word `asset` than `token`, but for convenience, for the sake of this book, I suggest that these two concepts be considered interchangeable. Yes, in real life, `asset` is more of an asset, and `token` is more like something close to a token / coin, but in the world of blockchain the border between the concepts has become blurred.
 
 Waves has only one token that is not an asset - the Waves token itself, which is paid as a commission to miners. We can say that all tokens in Waves are equal in capabilities, but the Waves token is a little "more equal" and its behavior differs from other assets.
 
@@ -80,11 +80,11 @@ Let's take a look at the main parameters:
 - **script** - compiled Ride script that describes the logic of the token. In our example, the value is `null`, since we don't want to set any rules for token circulation.
 - **fee** - commission for issuing a token. At Waves, the minimum transaction for issuing a regular token (not NFT) is 1 Waves. Why, then, is 100,000,000 indicated in the transaction, where there are already 8 zeros? It's simple, the Waves token has 8 decimals, and the commission is indicated in the smallest units, in the case of Waves, the minimum units are sometimes called ***waveslet***.
 
-By sending such a signed transaction, you can create a new token called `Euro`. Of course, there is no value in such a token, but value is the next question. The newly created token will receive a unique identifier `assetId` equal to the ID of the transaction that generated it, in our case` CZw4KCpPUv5t1Uym3rLc9yEaQyDsP3VVPspdpmWKvVPE`.
+By sending such a signed transaction, you can create a new token called `Euro`. Of course, there is no value in such a token, but value is the next question. The newly created token will receive a unique identifier `assetId` equal to the ID of the transaction that generated it, in our case `CZw4KCpPUv5t1Uym3rLc9yEaQyDsP3VVPspdpmWKvVPE`.
 
-This rule can be extremely useful, so I propose to remember - the `assetId` of the token is equal to the` ID` issue of the transaction that created it. In the future, when working with this token, in the overwhelming majority of cases, you will have to use its assetId, and not its name.
+This rule can be extremely useful, so I propose to remember - the `assetId` of the token is equal to the `ID` issue of the transaction that created it. In the future, when working with this token, in the overwhelming majority of cases, you will have to use its assetId, and not its name.
 
-Another important parameter to remember is that the Waves token (native / system for paying transaction fees) does not have an `assetId`, so in places where a long string is inserted for other tokens, you need to set` null` for Waves.
+Another important parameter to remember is that the Waves token (native / system for paying transaction fees) does not have an `assetId`, so in places where a long string is inserted for other tokens, you need to set `null` for Waves.
 
 ## Issue NFT token
 
@@ -96,7 +96,7 @@ In Waves, the issuance of Non-fungible tokens is carried out in the same way as 
 
 - `quantity` must be equal to one
 - `decimals` must always be 0
-- `reissuable` must be set to` false`
+- `reissuable` must be set to `false`
 
 If the conditions above are met, it is already possible to issue a token with a commission not in 1 Waves, but a thousand times less - 0.001 Waves. For convenient work with NFT tokens, there is a JavaScript library `@ waves / waves-games`, which simplifies the creation and storage of meta-information about the token. An example of NFT release using this library can be found below:
 
@@ -125,7 +125,7 @@ Note that in the example above, 100 tokens are issued, not a token with a quanti
 
 ## Token re-issue
 
-If the token at the time of creation had the value `true` for the` reissuable` field, then the creator can send transactions of the `Reissue` type, which will allow additional tokens to be issued. The example of generating a reissue transaction is very similar to the example from the issue:
+If the token at the time of creation had the value `true` for the `reissuable` field, then the creator can send transactions of the `Reissue` type, which will allow additional tokens to be issued. The example of generating a reissue transaction is very similar to the example from the issue:
 
 ```js
 
@@ -145,11 +145,11 @@ const signedReissueTx = reissue (params, seed)
 
 The main difference is that we cannot change the title or description. In our example, we add another million to the already issued one million Euro tokens.
 
-You may also notice that this transaction also has a `reissuable` flag. If you send a reissue transaction with the `reissuable` field equal to` false`, then it will no longer be possible to send such reissue transactions for this token in the future.
+You may also notice that this transaction also has a `reissuable` flag. If you send a reissue transaction with the `reissuable` field equal to `false`, then it will no longer be possible to send such reissue transactions for this token in the future.
 
-In the example above, the field for the commission (`fee`) is omitted, but the library` @ waves / waves-transactions` will automatically substitute the minimum value in 1 Waves. I often write the "minimum value" of the commission to show that this value can be increased, but the Waves network is not experiencing any bandwidth problems right now, so even transactions with the lowest commission almost instantly fall into blocks.
+In the example above, the field for the commission (`fee`) is omitted, but the library `@ waves / waves-transactions` will automatically substitute the minimum value in 1 Waves. I often write the "minimum value" of the commission to show that this value can be increased, but the Waves network is not experiencing any bandwidth problems right now, so even transactions with the lowest commission almost instantly fall into blocks.
 
-Please note that there was a bug in the history of Waves for a short time, which allowed reissuing tokens for which the `reissuable` was` false`. The bug was promptly fixed, but some tokens may be embedded in the blockchain, which were always unreleased, but were reissued. It will not be possible to remove them from there, because the blockchain is immutable. So it's only worth knowing about this if you suddenly do an explorer or some kind of analytics.
+Please note that there was a bug in the history of Waves for a short time, which allowed reissuing tokens for which the `reissuable` was `false`. The bug was promptly fixed, but some tokens may be embedded in the blockchain, which were always unreleased, but were reissued. It will not be possible to remove them from there, because the blockchain is immutable. So it's only worth knowing about this if you suddenly do an explorer or some kind of analytics.
 
 ## Burning tokens
 

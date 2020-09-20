@@ -35,9 +35,9 @@ We can say that to answer the question "Who will be the next generator of the bl
 
 Note that for convenience, the data structures in this book are presented in JSON format, but the nodes themselves work with blocks, transactions, signatures, etc. in binary format. For this, there are descriptions of binary data structures in the documentation, and more recently the binary data format is Protobuf.
 
-Generation signature is the SHA256 hash of the `generation-signature` of the previous block and the public key of the generator of this block. The first 8 bytes of the `generting-signature` hash are converted to a number and used as a kind of random, called` hit`. The base-target value is responsible for the average time between blocks and is recalculated during the generation of each block. If the network constantly had all the nodes with the entire network stake, ready to generate a block, then `base-target` would not be needed, but if this is not the case, a synthetic parameter is needed, which changes depending on the current time between blocks and automatically align the average time between blocks is 60 seconds.
+Generation signature is the SHA256 hash of the `generation-signature` of the previous block and the public key of the generator of this block. The first 8 bytes of the `generting-signature` hash are converted to a number and used as a kind of random, called `hit`. The base-target value is responsible for the average time between blocks and is recalculated during the generation of each block. If the network constantly had all the nodes with the entire network stake, ready to generate a block, then `base-target` would not be needed, but if this is not the case, a synthetic parameter is needed, which changes depending on the current time between blocks and automatically align the average time between blocks is 60 seconds.
 
-So, we have the parameters `hit`, which is a pseudo-random number, the balance of each account and the value of` base-target`, but what should the node do with all this? Each node, at the moment of receiving a new block over the network, starts the check function when it is its turn to generate a block.
+So, we have the parameters `hit`, which is a pseudo-random number, the balance of each account and the value of `base-target`, but what should the node do with all this? Each node, at the moment of receiving a new block over the network, starts the check function when it is its turn to generate a block.
 
 >    Δt = f(hit, balance, baseTarget)
 
@@ -72,7 +72,7 @@ At the moment of its mining time, the node generates the so-called * key block *
 }
 ```
 
-There are no transactions in the block, as can be seen from the `transactionCount` value, but the basic parameters such as the signature and the link to the previous block (the` reference` field) are already there. The creator of this block will be able in a few seconds to generate a microblock with all the transactions that appeared on the network during those seconds, and send it to the rest of the nodes. In this case, some fields in the block will change:
+There are no transactions in the block, as can be seen from the `transactionCount` value, but the basic parameters such as the signature and the link to the previous block (the `reference` field) are already there. The creator of this block will be able in a few seconds to generate a microblock with all the transactions that appeared on the network during those seconds, and send it to the rest of the nodes. In this case, some fields in the block will change:
 
 ```json
 {
@@ -102,9 +102,9 @@ The block leader will generate microblocks and change the liquid block until ano
 
 **Waves NG makes the load on the network more even.** In the absence of Waves NG, blocks would be generated once a minute (1 MB of data at once) and sent over the network as a whole. That is, you can imagine situations when for 50 seconds the nodes (except for the miner) do nothing and wait, and then accept the block and validate it for 10 seconds. With Waves NG, this load is more spread out over time, the nodes receive a new portion of data every 5 seconds and validate it. This generally improves throughput.
 
-Waves NG, however, can sometimes behave not very conveniently. As you remember, each block contains a reference field, which is a reference to the signature field of the previous block. `reference` is fixed at the moment of generation of the key block, and it may happen that the new miner puts in his key block a link not to the last state of the liquid block. In other words, if the new miner of block `N` did not manage to get and apply the last microblock of block` N - 1` from the previous miner, then it will refer to the "old" version of block `N - 1`, transactions from the last microblock will be deleted from the block `N - 1` for the whole network.
+Waves NG, however, can sometimes behave not very conveniently. As you remember, each block contains a reference field, which is a reference to the signature field of the previous block. `reference` is fixed at the moment of generation of the key block, and it may happen that the new miner puts in his key block a link not to the last state of the liquid block. In other words, if the new miner of block `N` did not manage to get and apply the last microblock of block `N - 1` from the previous miner, then it will refer to the "old" version of block `N - 1`, transactions from the last microblock will be deleted from the block `N - 1` for the whole network.
 
-But do not be alarmed, this will only lead to the **that the excluded transactions will fall into the `N`** block, instead of the` N - 1` block, in which we could already have time to see these transactions in our client code.
+But do not be alarmed, this will only lead to the **that the excluded transactions will fall into the `N`** block, instead of the `N - 1` block, in which we could already have time to see these transactions in our client code.
 
 Waves NG also affects the distribution of commissions in the block. The miner receives 60% of the commissions from the previous block and 40% from his block. This was done in order to exclude a possible "dirty game" of nodes, when they specifically refer to the very first version of the previous block in order to take all transactions from there and put them in their own block, and therefore receive commissions.
 

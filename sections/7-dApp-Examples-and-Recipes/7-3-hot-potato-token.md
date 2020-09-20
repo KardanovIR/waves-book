@@ -15,7 +15,7 @@ Let's implement a token with similar mechanics:
 - User can only have one hot potato at a time
 - All of the above restrictions do not apply to the account that issued the token
 
-Let's declare the main variables for our script. Unlike a smart account, which can be implemented using the `@ Verifier` function, a smart asset must have an` EXPRESSION` code:
+Let's declare the main variables for our script. Unlike a smart account, which can be implemented using the `@Verifier` function, a smart asset must have an `EXPRESSION` code:
 
 ``` scala
 
@@ -38,7 +38,7 @@ let minimalFeeToBurn = 5_00_000_000
 
 You may have noticed the underscore in the numbers `_`, which is supported in Ride to make it easier to read. Eight zeros are separated from the rest of the digits, since Waves has 8 decimal places and it is easier to see the number of whole Waves tokens this way.
 
-In the global scope, the variable `tx` is available, which stores information about the current transaction being processed. Since `tx` is` Union` from all possible transaction types, we need to use pattern matching in our code. We will have different conditions for `Tranfer`,` Burn` and all other types of transactions.
+In the global scope, the variable `tx` is available, which stores information about the current transaction being processed. Since `tx` is `Union` from all possible transaction types, we need to use pattern matching in our code. We will have different conditions for `Tranfer`, `Burn` and all other types of transactions.
 
 ``` scala
 match (tx) {
@@ -59,13 +59,13 @@ match (tx) {
   }
 ```
 
-In the code above, we have implemented a check that if the transaction performed with the token is `Burn`, then one of the conditions must be met - the sender is the account that issued this token or the commission is greater than the minimum value for burning (in our case, 5 Waves). We used the keyword `this`, which in the context of a smart asset denotes the type` Asset` and contains information about the current token.
+In the code above, we have implemented a check that if the transaction performed with the token is `Burn`, then one of the conditions must be met - the sender is the account that issued this token or the commission is greater than the minimum value for burning (in our case, 5 Waves). We used the keyword `this`, which in the context of a smart asset denotes the type `Asset` and contains information about the current token.
 
-> Please note that when verifying the sender of a transaction, we only check if the public keys match and do not verify that the correct signature from the given public key is provided, since ** the `proofs` array is not available in the smart asset script **. Signature verification is the responsibility of the account, not the asset.
+> Please note that when verifying the sender of a transaction, we only check if the public keys match and do not verify that the correct signature from the given public key is provided, since **the `proofs` array is not available in the smart asset script**. Signature verification is the responsibility of the account, not the asset.
 
 In the script above, we have prohibited all `Transfer` transactions, but the logic of the" hot potato "implies that we should allow them if the token was received less than 5000 minutes ago or the commission is higher than 1 Waves.
 
-Before we start writing the code, we need to understand how we will verify the fact that the token was received less than 5000 minutes ago. Unfortunately, there is no function in Ride that would allow us to find the moment of receiving the token. Moreover, there are practically no functions in Ride that allow you to look at the transaction history. We could require to provide the id of the transaction for receiving the potatoes in the `proofs` array, because as you remember, up to 8 arguments can be passed in` proofs`, but `proofs` is not available in the smart asset code.
+Before we start writing the code, we need to understand how we will verify the fact that the token was received less than 5000 minutes ago. Unfortunately, there is no function in Ride that would allow us to find the moment of receiving the token. Moreover, there are practically no functions in Ride that allow you to look at the transaction history. We could require to provide the id of the transaction for receiving the potatoes in the `proofs` array, because as you remember, up to 8 arguments can be passed in `proofs`, but `proofs` is not available in the smart asset code.
 
 The solution would be to require the id of the potato receipt transaction as an attachment to the Tranfer transaction.
 

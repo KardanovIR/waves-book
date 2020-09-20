@@ -13,7 +13,7 @@ Let's take a look at what tools are available for this.
 
 ## Development environment
 
-The easiest way to get started writing code, testing and working with accounts is to use the online IDE, which is available at [https://waves-ide.com](https://waves-ide.com/). It has Ride syntax highlighting, smart hints, type inference, a compiler, a console for working with the `waves-transactions` library, and even a REPL (read-eval-print loop) for Ride, which allows Ride expressions to be executed right in the browser. There are also examples of code on Ride, examples of integration tests in JavaScript, the ability to manage accounts and send transactions using the web interface. The online IDE is great for testing contracts in stagenet and testnet. Waves tokens for these networks can be obtained for free using the faucet in wavesexplorer at the addresses `https: // wavesexplorer.com / stagenet / faucet` and` https: // wavesexplorer.com / testnet / faucet`, but no more than 10 Waves every 10 minutes.
+The easiest way to get started writing code, testing and working with accounts is to use the online IDE, which is available at [https://waves-ide.com](https://waves-ide.com/). It has Ride syntax highlighting, smart hints, type inference, a compiler, a console for working with the `waves-transactions` library, and even a REPL (read-eval-print loop) for Ride, which allows Ride expressions to be executed right in the browser. There are also examples of code on Ride, examples of integration tests in JavaScript, the ability to manage accounts and send transactions using the web interface. The online IDE is great for testing contracts in stagenet and testnet. Waves tokens for these networks can be obtained for free using the faucet in wavesexplorer at the addresses `https://wavesexplorer.com/stagenet/faucet` and `https://wavesexplorer.com/testnet/faucet`, but no more than 10 Waves every 10 minutes.
 
 However, for a more professional contract development, I recommend using other tools.
 
@@ -21,7 +21,7 @@ The [Ride for Visual Studio Code](https://marketplace.visualstudio.com/items?ite
 
 ![Visual Studio Code Extention for Ride](../../assets/6-4-0-vs-code-ext-in-store.png "Visual Studio Code Extention for Ride")
 
-In addition to syntax highlighting, the extension adds an interactive console to VS Code (just like in an online IDE), which allows you to run functions from `waves-transactions`,` waves-crypto` and several other specialized ones.
+In addition to syntax highlighting, the extension adds an interactive console to VS Code (just like in an online IDE), which allows you to run functions from `waves-transactions`, `waves-crypto` and several other specialized ones.
 
 ![Visual Studio Code Extention for Ride](../../assets/6-4-1-vc-code-ext.png "Visual Studio Code Extention for Ride")
 
@@ -34,7 +34,7 @@ You can run such a blockchain if you have Docker installed. The launch is carrie
 docker run -d -p 6869: 6869 wavesplatform / waves-private-node
 ```
 
-After launching the command, the local blockchain will be launched as a Docker container, the node's API will be available at `http: // localhost: 6869 /`, and all 100 million tokens will be on the account balance with the seed phrase `waves private node seed with waves tokens `.
+After launching the command, the local blockchain will be launched as a Docker container, the node's API will be available at `http: // localhost: 6869 /`, and all 100 million tokens will be on the account balance with the seed phrase `waves private node seed with waves tokens`.
 
 ![Local node with API](../../assets/6-4-2-local-node.png "Local node with API")
 
@@ -55,13 +55,13 @@ docker run -d -e API_NODE_URL = http: // localhost: 6869 -e NODE_LIST = http: //
 
 Please note that when expanding, the API address of our node with a private blockchain is indicated.
 
-After deploying the image, the browser will be available at the address `http: // localhost: 3000`:
+After deploying the image, the browser will be available at the address `http://localhost:3000`:
 
 ![Local explorer](../../assets/6-4-3-local-explorer.png "Local explorer")
 
 ## Testing the code
 
-At the time of this writing, it is possible to write only integration tests for decentralized applications on Ride. There are no tools for Unit tests yet. Integration testing in the case of Ride means that the written code is compiled, deployed using `SetScript`,` SetAssetScript` or `Issue` transactions on an asset or account, and transactions are executed that check the correctness of the script behavior. In other words, there is direct work with the blockchain (not emulation!) And real transactions are sent.
+At the time of this writing, it is possible to write only integration tests for decentralized applications on Ride. There are no tools for Unit tests yet. Integration testing in the case of Ride means that the written code is compiled, deployed using `SetScript`, `SetAssetScript` or `Issue` transactions on an asset or account, and transactions are executed that check the correctness of the script behavior. In other words, there is direct work with the blockchain (not emulation!) And real transactions are sent.
 
 Integration tests can be written in Java using the [Paddle](https://github.com/msmolyakov/paddle) library or in [JavaScript] using the online IDE or the `surfboard` library.
 
@@ -71,20 +71,20 @@ Surfboard can be installed from npm (provided you have node.js and npm) with the
 npm install -g @ waves / surfboard
 ```
 
-After that, you will have access to the `surfboard` utility right in the console. The `surfboard init` command will initialize a new project, which will contain a configuration file and directories for tests (`. / Test`) and scripts for Ride (`. / Ride`). The configuration file allows you to configure settings for working with different types of networks, account parameters, etc.
+After that, you will have access to the `surfboard` utility right in the console. The `surfboard init` command will initialize a new project, which will contain a configuration file and directories for tests (`./test`) and scripts for Ride (`./ride`). The configuration file allows you to configure settings for working with different types of networks, account parameters, etc.
 
 ![Surfboard](../../assets/6-4-4-surfboard.png "Surfboard")
 
-In the `. / Test` directory, you can create any files with the` .js` extension and write integration tests in them using the `Mocha` test framework. In addition to the `Mocha` itself, functions from` waves-transactions` and several additional functions and variables are available in the test file:
+In the `./test` directory, you can create any files with the `.js` extension and write integration tests in them using the `Mocha` test framework. In addition to the `Mocha` itself, functions from `waves-transactions` and several additional functions and variables are available in the test file:
 
 - `setupAccounts ({[key: string]: number})` - allows you to create new accounts at the beginning of the script and transfer tokens to them from the master seed
 - `compile (file: File): String` - allows you to compile the contents of the file
 - `file (path: String): File` - allows you to get the contents of a file
-- `accounts` - an object that stores the seeds of accounts created by the` setupAccounts` function
+- `accounts` - an object that stores the seeds of accounts created by the `setupAccounts` function
 
 Descriptions of these and other functions are available [in the documentation](https://wavesplatform.github.io/js-test-env/globals.html). You can find test examples in the online IDE or in the [ride-examples](https://github.com/wavesplatform/ride-examples) repository.
 
-Running tests in the directory can be done using the command `surfboard test`, but if you want to run a specific file, and not all files in the directory`. / Test`, then you can execute `surfboard test my-scenario.js`.
+Running tests in the directory can be done using the command `surfboard test`, but if you want to run a specific file, and not all files in the directory `./test`, then you can execute `surfboard test my-scenario.js`.
 
 ## Debugging Ride Scripts
 

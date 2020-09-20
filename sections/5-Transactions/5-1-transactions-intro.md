@@ -8,7 +8,7 @@ You may already have questions: "Why do transactions have such a chaotic numberi
 
 The fact is that transactions received numbers (aka IDs) as they were added to the protocol. In this part, we will consider transactions in the same order, that is, as they appear on the blockchain.
 
-** Important: Many types of transactions have multiple versions, in this book we will look at the latest current versions on the Mainnet. **
+**Important: Many types of transactions have multiple versions, in this book we will look at the latest current versions on the Mainnet.**
 
 Working with transactions is carried out using the node's API, which allows you to both receive information about transactions and send them. For you as a developer, a transaction in most cases will look like plain JSON:
 
@@ -52,7 +52,7 @@ signature = sign (transactionBytes, privateKey)
 
 The correct byte order for each transaction is described in the documentation. Cryptography is outside the scope of this book, but you can find examples of correct byte ordering for different types of transactions in the [Marshall JS Library on Github](https://github.com/wavesplatform/marshall).
 
-Signing transactions is usually done on the side of the client application, but the node itself is also able to sign transactions sent via the API. You need to understand that a node will sign such a transaction with the private key that is specified in its configuration. ** You cannot sign a transaction from an arbitrary sender using the REST API. ** Many developers think that they need to get an API key in order to sign their transaction using a node, but this will only work if there is a private key from of the account that should perform the action.
+Signing transactions is usually done on the side of the client application, but the node itself is also able to sign transactions sent via the API. You need to understand that a node will sign such a transaction with the private key that is specified in its configuration. **You cannot sign a transaction from an arbitrary sender using the REST API.** Many developers think that they need to get an API key in order to sign their transaction using a node, but this will only work if there is a private key from of the account that should perform the action.
 
 ## Transaction lifecycle
 
@@ -69,7 +69,7 @@ const params = {
 }
 ```
 
-We'll look at the transaction fields in the next part of this chapter. Now let's focus on the sequence of actions. To get the transaction along with the signature for our parameters, we use the `waves-transactions` library. To the `transfer` function, we pass the above parameters and the seed phrase. As a result, we get a JavaScript object that will contain all the fields we specified, as well as the signature in the `proofs` array, the transaction signing time (` timestamp`) and the sender's public key (account with the seed phrase `A`) in the` senderPublicKey`.
+We'll look at the transaction fields in the next part of this chapter. Now let's focus on the sequence of actions. To get the transaction along with the signature for our parameters, we use the `waves-transactions` library. To the `transfer` function, we pass the above parameters and the seed phrase. As a result, we get a JavaScript object that will contain all the fields we specified, as well as the signature in the `proofs` array, the transaction signing time (`timestamp`) and the sender's public key (account with the seed phrase `A`) in the `senderPublicKey`.
 
 ``` js
 const signedTransferTx = transfer (params, 'A');
@@ -94,4 +94,4 @@ A transaction that got into UTX has 2 options for further development of events:
 
 The lifetime of a transaction can only expire because the network is 100% loaded. Nodes in Waves add transactions to the block one by one, starting with the most profitable for them (with the highest commission per byte). If at the time of sending our token transfer transaction, there were many transactions with a higher commission in UTX, then the miners will not add ours to the block, because the block has a size (1 MB) and number (6000 transactions) limit. Miners will produce blocks of maximum size with the most profitable transactions for them. If this continues for 90 minutes, then our transaction will become invalid. In fact, the sorting of a transaction in UTX by miners is done not only on the basis of the size of the commission, so we will consider the features of UTX operation in the future.
 
-** For many newbies, it comes as a surprise that Waves blocks may contain transactions "from the past" and "from the future", which have `timestamp` 120 minutes less or 90 minutes longer than the present time. ** In some cases, this must be taken into account when developing your applications.
+**For many newbies, it comes as a surprise that Waves blocks may contain transactions "from the past" and "from the future", which have `timestamp` 120 minutes less or 90 minutes longer than the present time.** In some cases, this must be taken into account when developing your applications.

@@ -52,7 +52,7 @@ The system is complex and must include several scripts. The first step - issuing
     await broadcast (sponsorshipTx);
 ```
 
-We use the `waitForTx` function from the` waves-transactions` library to make sure that the token issuance transaction hits the blockchain, and only then send the sponsoring transaction.
+We use the `waitForTx` function from the `waves-transactions` library to make sure that the token issuance transaction hits the blockchain, and only then send the sponsoring transaction.
 
 To some extent, the use of sponsorship limits the fulfillment of other requirements: sponsorship cannot be used in conjunction with smart assets. That is, at the token level, we cannot impose a restriction on the transfer of tokens only to other team members. In the future, with the implementation of the proposal [WEP-2 Customizable sponsorship](https://forum.wavesplatform.com/t/wep-2-customizable-sponsorship/15880) it will become possible to enable sponsorship for smart assets. Until then, we can find another solution. For example, a script can be placed on the account of each team member (making it a smart account) that will check if the recipient of tokens is in the list of colleagues and, accordingly, approve or deny the transaction.
 

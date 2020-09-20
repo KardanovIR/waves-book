@@ -60,15 +60,15 @@ The code above will form (but not send to the blockchain) a transaction:
 }
 ```
 
-The most important parameter in the transaction is `minSponsoredAssetFee`, which sets the correspondence that 100` A` tokens are equal to 0.001 Waves. Thus, to send a `Transfer` transaction, the user will have to attach 100` A` tokens as a commission.
+The most important parameter in the transaction is `minSponsoredAssetFee`, which sets the correspondence that 100 `A` tokens are equal to 0.001 Waves. Thus, to send a `Transfer` transaction, the user will have to attach 100 `A` tokens as a commission.
 
-It is important to understand some of the limitations associated with sponsoring. You can use sponsored tokens as a commission only for transactions of types `Transfer` and` Invoke`. Only the account that issued this token can sponsor a token. That is, you will not be able to sponsor tokens not issued by you. As soon as the balance of the token creator becomes less than 1.005 Waves, sponsorship will automatically turn off (and turn back on when the balance becomes more than this value again).
+It is important to understand some of the limitations associated with sponsoring. You can use sponsored tokens as a commission only for transactions of types `Transfer` and `Invoke`. Only the account that issued this token can sponsor a token. That is, you will not be able to sponsor tokens not issued by you. As soon as the balance of the token creator becomes less than 1.005 Waves, sponsorship will automatically turn off (and turn back on when the balance becomes more than this value again).
 
 ### Safety
 
 Before including sponsorship, there are several important points to understand.
 
-1. The user can use sponsored tokens for transactions not only with this token. For example, an account with `A` tokens on the balance can send` B` tokens, and apply `A` tokens as a commission.
+1. The user can use sponsored tokens for transactions not only with this token. For example, an account with `A` tokens on the balance can send `B` tokens, and apply `A` tokens as a commission.
 2. The user can pay no minimum transaction fee. For example, if a user has 100,000 of your tokens, and you set the `minSponsoredAssetFee` parameter to 100, then the user will be able to specify all his 100,000 tokens as a commission for 1 transaction. You will receive 100,000 `A` tokens, and the miner will receive 1000 Waves from your account (100,000 / 100 = 1000), if you have them on your account.
 
 The sponsorship feature has been in Waves for a long time and works great, but there is a [WEP-2 Customizable Sponsorship](https://forum.wavesplatform.com/t/wep-2-customizable-sponsorship/15880) that has ideas for it. improvement. If you have anything to add - join the discussion on the forum.

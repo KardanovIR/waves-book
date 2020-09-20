@@ -2,13 +2,13 @@
 
 To use the Waves blockchain as efficiently as possible and understand all of its capabilities, you need to understand the types of transactions and their features. In this section, we'll break down all types and discuss potential pitfalls.
 
-There are two types of transactions in Waves that are currently not used and that you will definitely not use when working on the main network - `Genesis` and` Payment` transactions.
+There are two types of transactions in Waves that are currently not used and that you will definitely not use when working on the main network - `Genesis` and `Payment` transactions.
 
 ## Genesis transaction (type = 1) [deprecated]
 
 `Genesis` transactions were only in the [very first block of the blockchain] (http://nodes.wavesplatform.com/blocks/at/1) and were responsible for the distribution of pre-issued tokens (there were 100 million of them). Let's see what the genesis block looked like.
 
-** Note: ** Many people confuse the `genesis` block and the` genesis` transaction. The `Genesis` block is the very first block in the blockchain network (in all blockchains it is customary to call it that), which differs from the rest of the blocks only by the absence of a reference to the previous block, since the previous block simply did not exist. The `Genesis` block contains the` genesis` transactions that are responsible for the initial distribution of issued Waves tokens. The very first block on the Waves network is shown below:
+**Note:** Many people confuse the `genesis` block and the `genesis` transaction. The `Genesis` block is the very first block in the blockchain network (in all blockchains it is customary to call it that), which differs from the rest of the blocks only by the absence of a reference to the previous block, since the previous block simply did not exist. The `Genesis` block contains the `genesis` transactions that are responsible for the initial distribution of issued Waves tokens. The very first block on the Waves network is shown below:
 
 ``` 'json
 {
@@ -85,15 +85,15 @@ There are two types of transactions in Waves that are currently not used and tha
 }
 ```
 
-You can see that there were 6 public keys-recipients of the newly issued Waves tokens. All transactions have the same `timestamp` and they were all free (the` fee` is zero) because there was nothing else to pay the `fee` at the time these transactions were created.
+You can see that there were 6 public keys-recipients of the newly issued Waves tokens. All transactions have the same `timestamp` and they were all free (the `fee` is zero) because there was nothing else to pay the `fee` at the time these transactions were created.
 
 These transactions are not created manually, they are generated automatically by the special utility `genesis-generator`, which is in the node repository. You may need to do this if you want to launch your private blockchain. How to do this (and why) we will look at in one of the next chapters.
 
-> Attentive readers may ask why `9999999500000000` tokens are sent in the very first transaction if only 100 million were issued? In Waves, all transactions are invoiced in minimal indivisible token units (fraction). The Waves token has 8 decimals, so the minimum unit is one hundred millionth. If the `amount` field of any transaction contains the value` 100000000` (10 ^ 8), this actually means one whole Waves token. In the case of a `genesis` transaction,` 9999999500000000` means 99,999,995 tokens or 9999999500000000 minimum units. Waves' smallest units are often referred to as WAVELET.
+> Attentive readers may ask why `9999999500000000` tokens are sent in the very first transaction if only 100 million were issued? In Waves, all transactions are invoiced in minimal indivisible token units (fraction). The Waves token has 8 decimals, so the minimum unit is one hundred millionth. If the `amount` field of any transaction contains the value `100000000` (10 ^ 8), this actually means one whole Waves token. In the case of a `genesis` transaction, `9999999500000000` means 99,999,995 tokens or 9999999500000000 minimum units. Waves' smallest units are often referred to as WAVELET.
 
 ## Payment transaction (type = 2) [deprecated]
 
-At the time of the launch of the Waves blockchain, only 2 types of transactions were implemented - the already considered type `genesis` and` payment`, which allowed transferring Waves tokens from one account to another. Examples of the `payment` transaction in JSON representation can be found in [block 2000](http://nodes.wavesplatform.com/blocks/at/2000).
+At the time of the launch of the Waves blockchain, only 2 types of transactions were implemented - the already considered type `genesis` and `payment`, which allowed transferring Waves tokens from one account to another. Examples of the `payment` transaction in JSON representation can be found in [block 2000](http://nodes.wavesplatform.com/blocks/at/2000).
 
 ``` 'json
     {
@@ -113,7 +113,7 @@ At the time of the launch of the Waves blockchain, only 2 types of transactions 
     }
 ```
 
-A `Payment` transaction can only send Waves tokens (not other ones issued on the platform) from one address to another. It became obsolete with the advent of `Transfer` transactions that can send both Waves tokens and custom tokens, so now` Payment` is no longer used anywhere.
+A `Payment` transaction can only send Waves tokens (not other ones issued on the platform) from one address to another. It became obsolete with the advent of `Transfer` transactions that can send both Waves tokens and custom tokens, so now `Payment` is no longer used anywhere.
 
 ## Issue transaction (type = 3)
 
@@ -122,7 +122,7 @@ In the section about tokens, we have already discussed in detail how to release 
 - issuance of a unique token (aka non-fungible token, NFT)
 - issue of a regular token
 
-Issuing a unique token differs in that the parameters `amount`,` reissuable`, `decimals` must have predefined values ​​-` 1`, `false` and` 0`, respectively. If this condition is met, the minimum commission will be 0.001 Waves. If these parameters differ (at least one of the parameters), then the token is considered normal and the minimum issue commission will be 1 Waves.
+Issuing a unique token differs in that the parameters `amount`, `reissuable`, `decimals` must have predefined values ​​- `1`, `false` and `0`, respectively. If this condition is met, the minimum commission will be 0.001 Waves. If these parameters differ (at least one of the parameters), then the token is considered normal and the minimum issue commission will be 1 Waves.
 
 An example JSON representation of the `Issue` transaction is shown below:
 
@@ -151,11 +151,11 @@ An example JSON representation of the `Issue` transaction is shown below:
 }
 ```
 
-> Important: if a token is issued without a script, then it cannot be added to it later, so if you want to add a script in the future, but do not have this script yet, then specify `AwZd0cYf` as a script (` true` in the compiled base64 version)
+> Important: if a token is issued without a script, then it cannot be added to it later, so if you want to add a script in the future, but do not have this script yet, then specify `AwZd0cYf` as a script (`true` in the compiled base64 version)
 
 ## Tranfer transaction (type = 4)
 
-The `Tranfser` transaction came to replace the` Payment` transaction, because `Payment` did not allow sending tokens created with the` Issue` transaction. Currently, the `Transfer` transaction is the most frequent one according to [dev.pywaves.org](http://dev.pywaves.org/txs/) and accounts for about 70% of transactions on the network. Sending a `Transfer` transaction is similar to sending most token-related transactions:
+The `Tranfser` transaction came to replace the `Payment` transaction, because `Payment` did not allow sending tokens created with the `Issue` transaction. Currently, the `Transfer` transaction is the most frequent one according to [dev.pywaves.org](http://dev.pywaves.org/txs/) and accounts for about 70% of transactions on the network. Sending a `Transfer` transaction is similar to sending most token-related transactions:
 
 ```js
 
@@ -178,16 +178,16 @@ broadcast (signedTransferTx);
 
 ```
 
-The example above will generate a transaction from the account with the seed phrase `example seed phrase`, automatically substitute additional fields (` timestamp`, `senderPublicKey`,` proofs`) into the created transaction, sign it with a private key from the specified seed phrase and add the transaction signature to the array `proofs`.
+The example above will generate a transaction from the account with the seed phrase `example seed phrase`, automatically substitute additional fields ( `timestamp`, `senderPublicKey`, `proofs`) into the created transaction, sign it with a private key from the specified seed phrase and add the transaction signature to the array `proofs`.
 
-The recipient of the transaction is the address `3P23fi1qfVw6RVDn4CH2a5nNouEtWNQ4THs`, and we send Waves tokens. To calculate how many tokens are sent, we need to remember that the transaction indicates the value of `amount` in the minimum fractions of this token. To get it in whole units, you need to divide `300000000` by` 10 ^ decimals`. `300000000 / (10 ^ 8) = 3`.
+The recipient of the transaction is the address `3P23fi1qfVw6RVDn4CH2a5nNouEtWNQ4THs`, and we send Waves tokens. To calculate how many tokens are sent, we need to remember that the transaction indicates the value of `amount` in the minimum fractions of this token. To get it in whole units, you need to divide `300000000` by `10 ^ decimals`. `300000000 / (10 ^ 8) = 3`.
 
 The `Transfer` transaction has several interesting features:
 
-- It supports sponsoring transactions, so in the field `feeAssetId` you can specify the` assetId` of some token that you have and is sponsored by the creator, then you will pay a fee in this token. In our case, `null` is specified, so the commission will be paid in Waves tokens.
-- The transaction has an `attachment` field that can contain up to 140 bytes of information. In the `waves-transactions` library, the` attachment` value must be passed in the `base58` format, so you see` TcgsE5ehTSPUftEquDt`, although in the "human" representation it can be read as `HelloWavesBook`.
+- It supports sponsoring transactions, so in the field `feeAssetId` you can specify the `assetId` of some token that you have and is sponsored by the creator, then you will pay a fee in this token. In our case, `null` is specified, so the commission will be paid in Waves tokens.
+- The transaction has an `attachment` field that can contain up to 140 bytes of information. In the `waves-transactions` library, the `attachment` value must be passed in the `base58` format, so you see `TcgsE5ehTSPUftEquDt`, although in the "human" representation it can be read as `HelloWavesBook`.
 
-The `Transfer` transaction allows you to specify 0 in the` amount` field, that is, to send 0 tokens to the recipient. Some users use this feature to send `Transfer` transactions as" messages "or events that may trigger other actions outside the blockchain.
+The `Transfer` transaction allows you to specify 0 in the `amount` field, that is, to send 0 tokens to the recipient. Some users use this feature to send `Transfer` transactions as" messages "or events that may trigger other actions outside the blockchain.
 
 An example of a `Transfer` transaction is shown below:
 
@@ -216,7 +216,7 @@ An example of a `Transfer` transaction is shown below:
 
 ## Reissue transaction (type = 5)
 
-If, when issuing a token using the `Issue` transaction, set the` reissuable` flag to `true`, then the creator of the token gets the opportunity to reissue the token. The history of `reissuable` transactions in Waves is a bit strange, as you can find tokens on the blockchain that had the` reissuable` flag equal to `false` at the time of creation, but were reissued. These tokens was only 4, so their assetId: `6SGeUizNdhLx8jEVcAtEsE7MGPHGYyvL2chdmPxDh51K`,` UUwsxTvvG7LiN7yaAKvNU48JHcSwQ3q1HvsXyAgc9fL`, `3DhpxLxUrotfXHcWKr4ivvLNVQUueJTSJL5AG4qB2E7U`,` CH1LNr9ASLVqSHDb482ZzSA5rBVLDtF5QbfECGgwE8bh`. This became possible thanks to a bug in the node's code, which allowed re-issuing non-reissued tokens. Don't be surprised if you find reissued `non-reissuable` tokens in the history of mainnet Waves.
+If, when issuing a token using the `Issue` transaction, set the `reissuable` flag to `true`, then the creator of the token gets the opportunity to reissue the token. The history of `reissuable` transactions in Waves is a bit strange, as you can find tokens on the blockchain that had the `reissuable` flag equal to `false` at the time of creation, but were reissued. These tokens was only 4, so their assetId: `6SGeUizNdhLx8jEVcAtEsE7MGPHGYyvL2chdmPxDh51K`, `UUwsxTvvG7LiN7yaAKvNU48JHcSwQ3q1HvsXyAgc9fL`, `3DhpxLxUrotfXHcWKr4ivvLNVQUueJTSJL5AG4qB2E7U`, `CH1LNr9ASLVqSHDb482ZzSA5rBVLDtF5QbfECGgwE8bh`. This became possible thanks to a bug in the node's code, which allowed re-issuing non-reissued tokens. Don't be surprised if you find reissued `non-reissuable` tokens in the history of mainnet Waves.
 
 An example of a `Reissue` transaction is shown below:
 
@@ -336,9 +336,9 @@ In the previous chapter, we talked a lot about the token exchange procedure, the
 }
 ```
 
-As you can see, the transaction contains the fields `order1` (an order of the` buy` type) and `order2` (an order of the` sell` type). There is also a signature in the `proofs` array, which is the signature of the matcher (not the order senders!), The size of the commission for the match (` sellMatcherFee`), the commission for the node that will mine the block (the `fee` field for the entire transaction and not for the order ).
+As you can see, the transaction contains the fields `order1` (an order of the `buy` type) and `order2` (an order of the `sell` type). There is also a signature in the `proofs` array, which is the signature of the matcher (not the order senders!), The size of the commission for the match ( `sellMatcherFee`), the commission for the node that will mine the block (the `fee` field for the entire transaction and not for the order ).
 
-The values ​​of the `matcherPublicKey` fields in the orders must match the` senderPublicKey` field for the `Exchange` transaction, which ensures that no other matcher can perform an exchange operation using these orders.
+The values ​​of the `matcherPublicKey` fields in the orders must match the `senderPublicKey` field for the `Exchange` transaction, which ensures that no other matcher can perform an exchange operation using these orders.
 
 Forming an `Exchange` transaction in most cases is not necessary for users and developers, therefore it is not supported in many libraries for different programming languages. Another thing is orders, the formation of which is necessary for bots and many user interfaces. Formation of an order using `waves-tranasctions` does not fundamentally differ from the formation of a transaction:
 
@@ -359,7 +359,7 @@ const params = {
 const signedOrder = order (params, seed)
 ```
 
-Please note that unlike the examples with transactions, the example does not use the `broadcast` function to send the transaction, because the` broadcast` sends the transaction to the node, and we need to send the order to the matcher. You can find information about the matcher API in the [waves.exchange documentation](https://docs.waves.exchange/en/waves-matcher/matcher-api), since Waves.exchange works on the basis of the matcher.
+Please note that unlike the examples with transactions, the example does not use the `broadcast` function to send the transaction, because the `broadcast` sends the transaction to the node, and we need to send the order to the matcher. You can find information about the matcher API in the [waves.exchange documentation](https://docs.waves.exchange/en/waves-matcher/matcher-api), since Waves.exchange works on the basis of the matcher.
 
 ## Lease and Lease Cancel transactions (types 8 and 9)
 
@@ -405,7 +405,7 @@ A lease cancellation transaction requires the transfer of the `ID` of the lease 
 
 Please also note that this transaction specifies the `chainId`, while in the lease sending transaction, this is not required. Try to guess why.
 
-> The answer is simple: in the lease sending transaction there is a `recipient` field, where the address is indicated (which already contains the chainId in itself), and in the lease cancellation transaction there is no` recipient` field, therefore, to make it impossible to send the same transactions in different networks, you have to specify the network byte. But if you use the `waves-transactions` library, then it will substitute the network byte for the Mainnet itself to simplify development and make your code cleaner and easier.
+> The answer is simple: in the lease sending transaction there is a `recipient` field, where the address is indicated (which already contains the chainId in itself), and in the lease cancellation transaction there is no `recipient` field, therefore, to make it impossible to send the same transactions in different networks, you have to specify the network byte. But if you use the `waves-transactions` library, then it will substitute the network byte for the Mainnet itself to simplify development and make your code cleaner and easier.
 
 Another difference between canceling a lease and sending it on lease is that the cancellation takes effect as soon as it enters the blockchain, without waiting for 1000 blocks.
 
@@ -442,7 +442,7 @@ The alias must be between 4 and 30 characters long. The problem with aliases on 
 
 ## Mass transfer transaction (type = 11)
 
-At the dawn of its history, Waves was known as a blockchain with very easy token issuance, and the community's natural desire was to simplify the next step of many token issuance campaigns - distributing tokens to recipients. To meet this demand, a transaction was created that allows you to send tokens from one address to many. There are only 2 restrictions - there can be no more than 100 recipients, and only 1 type of token is sent to all of them (you cannot make a `MassTransfer` and send the` A` token to the first half of the addresses, and `B` to the second).
+At the dawn of its history, Waves was known as a blockchain with very easy token issuance, and the community's natural desire was to simplify the next step of many token issuance campaigns - distributing tokens to recipients. To meet this demand, a transaction was created that allows you to send tokens from one address to many. There are only 2 restrictions - there can be no more than 100 recipients, and only 1 type of token is sent to all of them (you cannot make a `MassTransfer` and send the `A` token to the first half of the addresses, and `B` to the second).
 
 ``` js
 const {massTransfer} = require ('@ waves / waves-transactions')
@@ -469,11 +469,11 @@ const signedMassTransferTx = massTransfer (params, seed);
 broadcast (signedMassTransferTx);
 ```
 
-In addition to the convenience of working with such a transaction, compared to sending 100 transactions of the `Transfer` type, such a transaction is also cheaper. If the minimum commission for `Transfer` is 0.001 Waves (100000 Wavelet), then the minimum commission for` MassTransfer` is calculated by the formula:
+In addition to the convenience of working with such a transaction, compared to sending 100 transactions of the `Transfer` type, such a transaction is also cheaper. If the minimum commission for `Transfer` is 0.001 Waves (100000 Wavelet), then the minimum commission for `MassTransfer` is calculated by the formula:
 
 `100000 + transfers.length * 50000`
 
-That is, sending 100 `Transfer` transactions will cost us 0.1 Waves, while sending one` MassTransfer` with 100 recipients in just 0.051 Waves is almost 2 times cheaper.
+That is, sending 100 `Transfer` transactions will cost us 0.1 Waves, while sending one `MassTransfer` with 100 recipients in just 0.051 Waves is almost 2 times cheaper.
 
 ## Data transaction (type = 12)
 
@@ -539,7 +539,7 @@ console.log (wholeStorage, oneKeyValue);
 As you can see, everything is quite simple. The Waves API node has several features, some of which it would be good to know before starting work, so that at the most inopportune moment you do not get an error at the time of your code execution. These features of work, I would include the following:
 
 1. The node is designed primarily to support the operation of the blockchain, and not to work optimally with the API, therefore, requests for the entire storage for accounts with a large amount of data can lead to problems. I would never recommend anyone to request the entire state of the account, and if you do this, you are most likely doing something wrong.
-2. The node returns the results in JSON, but there is no way to transfer an array of bytes in JSON, therefore, unlike other data types (strings, numbers and boolean values), they are encoded in the `base64` representation. In fact, when writing data like an array of bytes to the blockchain using `waves-transactions`, it also converts the bytes to a` base64` string and sends it, and not an array of bytes in the form of numbers or zeros and ones. For example, this is how the generated transaction looks for sending to the API using the `POST` request:
+2. The node returns the results in JSON, but there is no way to transfer an array of bytes in JSON, therefore, unlike other data types (strings, numbers and boolean values), they are encoded in the `base64` representation. In fact, when writing data like an array of bytes to the blockchain using `waves-transactions`, it also converts the bytes to a `base64` string and sends it, and not an array of bytes in the form of numbers or zeros and ones. For example, this is how the generated transaction looks for sending to the API using the `POST` request:
 
 ``` 'json
 
@@ -583,7 +583,7 @@ As a DevRel at Waves, I received a lot of questions about the potentially uncont
 
 ## SetScript transaction (type = 13)
 
-We indirectly touched on the transactions of the SetScript type when we talked about smart accounts. We describe the logic of the behavior of a smart account and decentralized applications using the Ride language, which is compiled into a `base64` representation in one of the available ways (JS library` ride-js`, API nodes, Java package in Maven, online IDE, plugin for Visual Studio Code or console utility `Surfboard`) and sent as part of the` SetScript` transaction:
+We indirectly touched on the transactions of the SetScript type when we talked about smart accounts. We describe the logic of the behavior of a smart account and decentralized applications using the Ride language, which is compiled into a `base64` representation in one of the available ways (JS library `ride-js`, API nodes, Java package in Maven, online IDE, plugin for Visual Studio Code or console utility `Surfboard`) and sent as part of the `SetScript` transaction:
 
 ``` js
 const {setScript} = require ('@ waves / waves-transactions')
@@ -602,7 +602,7 @@ broadcast (signedSetScriptTx);
 
 The `SetScript` transaction is used only for accounts to make Smart Accounts or a decentralized application (dApp) out of them, but not for tokens. Installing a script using a `SetScript` transaction changes the behavior of an account, not only in terms of which transactions will go to the blockchain, but also in terms of fees. A smart account pays 0.004 Waves more for each type of transaction compared to a regular account.
 
-To turn a smart account into a regular account without a script, you need to send a `SetScript` transaction with the` script` parameter equal to `null`. But not every smart account can become regular accounts again. The smart account script can explicitly prohibit making a `SetScript` transaction or impose other restrictions.
+To turn a smart account into a regular account without a script, you need to send a `SetScript` transaction with the `script` parameter equal to `null`. But not every smart account can become regular accounts again. The smart account script can explicitly prohibit making a `SetScript` transaction or impose other restrictions.
 
 ## SetSponsorship transaction (type = 14)
 
@@ -649,7 +649,7 @@ The code above will form (but not send to the blockchain) a transaction:
 }
 ```
 
-To cancel sponsoring a transaction, it is enough to send a transaction with the `minSponsoredAssetFee` field equal to` null`.
+To cancel sponsoring a transaction, it is enough to send a transaction with the `minSponsoredAssetFee` field equal to `null`.
 
 ## SetAssetScript transaction (type = 15)
 
@@ -720,23 +720,23 @@ console.log (signedInvokeScriptTx)
 
 ```
 
-The example above will call the `foo` function of the decentralized application on the account with the address` 3Fb641A9hWy63K18KsBJwns64McmdEATgJd`. When calling the function, 4 arguments are passed. The arguments in `InvokeScript` are unnamed, but their order must match the order declared in the code of the decentralized application. `InvokeScript` also allows you to attach up to 2 types of tokens to the call as payment. In the example above, the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK` and Waves (with` assetId = null`) are attached as payment.
+The example above will call the `foo` function of the decentralized application on the account with the address `3Fb641A9hWy63K18KsBJwns64McmdEATgJd`. When calling the function, 4 arguments are passed. The arguments in `InvokeScript` are unnamed, but their order must match the order declared in the code of the decentralized application. `InvokeScript` also allows you to attach up to 2 types of tokens to the call as payment. In the example above, the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK` and Waves (with `assetId = null`) are attached as payment.
 
-`InvokeScript` along with` Transfer` can be sponsored, so in the example above the contract call is paid for with the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK`, which must be sponsored.
+`InvokeScript` along with `Transfer` can be sponsored, so in the example above the contract call is paid for with the token `73pu8pHFNpj9tmWuYjqnZ962tXzJvLGX86dxjZxGYhoK`, which must be sponsored.
 
-When working with some applications, there may be a desire to send transactions like `InvokeScript` with large ** and ** arguments, but this will not work, since the size limit for the entire transaction is 5Kb (including all arguments). If the functions in the decentralized application need to be passed arguments that are larger than this limit, then the following scenario is possible:
+When working with some applications, there may be a desire to send transactions like `InvokeScript` with large **and** arguments, but this will not work, since the size limit for the entire transaction is 5Kb (including all arguments). If the functions in the decentralized application need to be passed arguments that are larger than this limit, then the following scenario is possible:
 
 1. Send `Data` transaction (up to ~ 140kb of data)
-2. When calling a function using `InvokeScript`, pass as an argument the keys that were written using the` Data` transaction.
+2. When calling a function using `InvokeScript`, pass as an argument the keys that were written using the `Data` transaction.
 3. In the code of the decentralized application, read the values ​​by the passed keys and process them.
 
 ## UpdateAssetInfo transaction (type = 17) [stagenet]
 
 The new transaction `UpdateAssetInfo` (type = 17) is only available on Stagenet at the time of this writing. It allows you to update the data on the issued token. The protocol has long had a `Reissue` transaction, which allows to reissue tokens and prohibit reissue in the future, but there was no possibility to change the name or description of the token before.
 
-To avoid misunderstandings, let's capture the differences between the `Reissue` and` UpdateAssetInfo` transactions:
+To avoid misunderstandings, let's capture the differences between the `Reissue` and `UpdateAssetInfo` transactions:
 
-- `Reissue` allows you to reissue a token (the amount is set by the creator) and change the` reissuable` flag (only to `false`), if the creator set` reissuable = true` at the time the token is issued.
+- `Reissue` allows you to reissue a token (the amount is set by the creator) and change the `reissuable` flag (only to `false`), if the creator set `reissuable = true` at the time the token is issued.
 - `UpdateAssetInfo` allows you to update the name and description of the token, but not more often than once every 100,000 blocks.
 
 ``` js
@@ -765,7 +765,7 @@ When forming transactions using libraries, you often want to specify the minimum
 
 For all types of transactions there is an additional field `additionalFee`, which allows you to add an additional fee to the default values. This can be useful in 2 cases:
 
-- Specify an additional commission when working with smart assets and smart accounts. For example, the default minimum commission for a `Transfer` transaction is 0.001 Waves and this value will be indicated by the` waves-transactions` library, but in the case of working with smart assets, you need to pay an additional 0.004. The library does not know that the transaction is being sent using a smart asset, so the developer must provide an additional fee himself. Of course, you can use the `fee` field to indicate the entire fee, but using` additionalFee` is more convenient, because you don't have to remember the minimum fees for each type of transaction yourself.
+- Specify an additional commission when working with smart assets and smart accounts. For example, the default minimum commission for a `Transfer` transaction is 0.001 Waves and this value will be indicated by the `waves-transactions` library, but in the case of working with smart assets, you need to pay an additional 0.004. The library does not know that the transaction is being sent using a smart asset, so the developer must provide an additional fee himself. Of course, you can use the `fee` field to indicate the entire fee, but using `additionalFee` is more convenient, because you don't have to remember the minimum fees for each type of transaction yourself.
 - Send a transaction with an increased commission to quickly get into the block. The download of the Waves network is now much less than the bandwidth, so the need to indicate an increased commission is extremely rare, but such a possibility exists. In the next chapter we will talk about sorting transactions in UTX (waiting list for hitting a block) and you will understand how the size of the commission affects the speed of hitting a block.
 
 The table below shows the minimum fees for different types of transactions (when sending from a regular account and without interacting with smart assets):
@@ -774,9 +774,9 @@ The table below shows the minimum fees for different types of transactions (when
 
 ### chainId
 
-In the transaction examples above, you may have noticed the `chainId` field, which was most often specified as` W`. Each transaction in the `Waves` network contains a byte of the network either directly or indirectly (when the recipient's address is involved in transactions). We considered the network byte when we talked about addresses in [section 3](../../sections/3-Accounts/3-1-keys.md).
+In the transaction examples above, you may have noticed the `chainId` field, which was most often specified as `W`. Each transaction in the `Waves` network contains a byte of the network either directly or indirectly (when the recipient's address is involved in transactions). We considered the network byte when we talked about addresses in [section 3](../../sections/3-Accounts/3-1-keys.md).
 
-Network byte is a unique network identifier that allows you to distinguish addresses and transactions on different networks (mainnet, testnet, stagenet). The network bytes for the networks listed above are `W`,` T`, `S`, respectively. Thanks to the network byte, it is impossible to make a mistake and send tokens to an address that cannot exist on this network on which the transaction is sent. If there were no network byte, it would be possible to attack users who use one pair of private and public keys in several networks (stagenet and mainnet, for example). An attacker could copy the transaction from the stagenet from the user and send it to the mainnet, performing an action that the user did not want to do in the mainnet. Thanks to the network byte, this is impossible.
+Network byte is a unique network identifier that allows you to distinguish addresses and transactions on different networks (mainnet, testnet, stagenet). The network bytes for the networks listed above are `W`,`T`, `S`, respectively. Thanks to the network byte, it is impossible to make a mistake and send tokens to an address that cannot exist on this network on which the transaction is sent. If there were no network byte, it would be possible to attack users who use one pair of private and public keys in several networks (stagenet and mainnet, for example). An attacker could copy the transaction from the stagenet from the user and send it to the mainnet, performing an action that the user did not want to do in the mainnet. Thanks to the network byte, this is impossible.
 
 ### timestamp
 
@@ -798,11 +798,11 @@ Every transaction on the network has a unique ID, which is a hash based on the f
 
 ### version
 
-Not only are there many different types of transactions on the Waves network, but there may be several different versions for each type. For example, there are 3 versions for types like `Transfer` or` Issue`. It is important to keep in mind that the JSON representation of transactions when working with an API may differ for different versions of the same type.
+Not only are there many different types of transactions on the Waves network, but there may be several different versions for each type. For example, there are 3 versions for types like `Transfer` or `Issue`. It is important to keep in mind that the JSON representation of transactions when working with an API may differ for different versions of the same type.
 
 ## Signature of transactions
 
-Each transaction of the latest versions may have not one signature, but up to 8. In the examples above, we always used a seed phrase, from which the `waves-transactions` library itself received the public key` senderPublicKey` and the signature in the `proofs` array. There are situations when you need to send a transaction from one account, and sign with the key of another. In this case, you need to form a transaction with an explicit indication of the senderPublicKey of the sender as follows:
+Each transaction of the latest versions may have not one signature, but up to 8. In the examples above, we always used a seed phrase, from which the `waves-transactions` library itself received the public key `senderPublicKey` and the signature in the `proofs` array. There are situations when you need to send a transaction from one account, and sign with the key of another. In this case, you need to form a transaction with an explicit indication of the senderPublicKey of the sender as follows:
 
 ``` js
 const {setScript} = require ('@ waves / waves-transactions')
@@ -831,7 +831,7 @@ const params = {
 const signedSetScriptTx = setScript (params, seeds)
 ```
 
-In this case, the created transaction will contain 3 signatures in the `proofs` array under indexes 0, 1 and 3, and under index 2 there will be` null`:
+In this case, the created transaction will contain 3 signatures in the `proofs` array under indexes 0, 1 and 3, and under index 2 there will be `null`:
 
 ``` 'json
 {

@@ -18,7 +18,7 @@ The REST API node is divided into 2 large parts - the public part, which is acce
 
 > Note that the API Key hash is specified in the config file (how to get the hash correctly is described [in the documentation](https://docs.wavesprotocol.org/en/waves-node/node-configuration#how-to-generate-hash-of-the-api-key)), and when calling methods, the API Key itself is passed in cleartext.
 
-Many libraries for Waves in different programming languages ​​(we will talk about them below) support methods for communicating with the API of the node. All of them support the `broadcast` method, which sends the signed transaction to the network via the REST API. But some libraries have other useful functions, for example, in `waves-transactions` there are functions for requesting the state of the storage of any account as a whole or for a specific key (` accountData` and `accountDataByKey`), a function for requesting balance or information about the script of a specific account by its address (`balance`,` assetBalance` and `scriptInfo`), functions of waiting for some blockchain height and waiting for the transaction to enter the block (` waitForHeight`, `waitForTx`,` waitForTxWithNConfirmations`), etc.
+Many libraries for Waves in different programming languages ​​(we will talk about them below) support methods for communicating with the API of the node. All of them support the `broadcast` method, which sends the signed transaction to the network via the REST API. But some libraries have other useful functions, for example, in `waves-transactions` there are functions for requesting the state of the storage of any account as a whole or for a specific key (`accountData` and `accountDataByKey`), a function for requesting balance or information about the script of a specific account by its address (`balance`, `assetBalance` and `scriptInfo`), functions of waiting for some blockchain height and waiting for the transaction to enter the block (`waitForHeight`, `waitForTx`, `waitForTxWithNConfirmations`), etc.
 
 The REST API of a node is quite limited in terms of filters and searching for transactions by fields, but for such operations it is better to use data services.
 
@@ -26,13 +26,13 @@ The REST API of a node is quite limited in terms of filters and searching for tr
 
 Data services are available at `https://api.wavesplatform.com/ v0/docs/` for use in mainnet or `https://api-test.wavesplatform.com/v0/docs/` for testnet, but also you can use it on your servers by deploying from the project repository on Github - `https://github.com/wavesplatform/data-service`.
 
-Data services constantly download information about transactions and blocks on the blockchain and store it in a relational database (Postgresql) to provide a ** o ** greater search flexibility (thanks to indexing). If you still want to use data services on your servers, keep in mind that the Waves blockchain relational database is over 250 gigabytes.
+Data services constantly download information about transactions and blocks on the blockchain and store it in a relational database (Postgresql) to provide greater search flexibility (thanks to indexing). If you still want to use data services on your servers, keep in mind that the Waves blockchain relational database is over 250 gigabytes.
 
 Date services can also save information on trading on the DEX, for example, information about the history of transactions in various pairs, exchange candles, etc.
 
 ## Libraries for programming languages
 
-Within the framework of this book, all examples were using JavaScript and the `waves-transactions` and` waves-crypto` libraries, but besides them there are libraries for other programming languages:
+Within the framework of this book, all examples were using JavaScript and the `waves-transactions` and `waves-crypto` libraries, but besides them there are libraries for other programming languages:
 
 - JavaScript / TypeScript - [waves-transactions](https://github.com/wavesplatform/waves-transactions)
 - Python - [PyWaves](https://github.com/PyWaves/PyWaves/)
@@ -55,7 +55,7 @@ Another example of an extension for a node is [Waves Node Tools Extension](https
 
 Installing an extension for a node usually consists of 2 steps:
 
-- installing a `.deb` package or downloading a` .jar` file with extension logic
+- installing a `.deb` package or downloading a `.jar` file with extension logic
 - updating the node configuration with the name of the extension package
 
 In the configuration file of the node, extension parameters can also be set. For example, installing the Waves Node Tools Extension means installing the `.deb` package and adding the following lines to the configuration file:

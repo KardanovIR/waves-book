@@ -8,7 +8,7 @@ The first versions of Ride were designed for such simple smart accounts as multi
 
 The main idea of ​​multisignature 2 of 3 is that on one account we accumulate funds that are managed by 3 other accounts. The decision to transfer funds from an account with funds can be made subject to the consent of at least 2 manager accounts. Consent in terms of blockchain and cryptography means the presence of a signature from the given public keys. Let's say Alice, Bob and Cooper manage a multi-signature account and only if at least 2 of them are signed, funds from the account can be transferred.
 
-The first thing we need to do is to define in advance 3 public keys that can sign transactions from an account with funds. Public keys are byte arrays that can be represented in Ride by three types of primitives `base16 '',` base58 '' and `base64 ''. The default representation for keys is `base58 ''.
+The first thing we need to do is to define in advance 3 public keys that can sign transactions from an account with funds. Public keys are byte arrays that can be represented in Ride by three types of primitives `base16 ''`, `base58''` and `base64''`. The default representation for keys is `base58''`.
 
 ``` scala
 {- # STDLIB_VERSION 4 # -}
@@ -25,7 +25,7 @@ func verify () = {
 }
 ```
 
-Note that the function will return the value `true`, which will allow all transactions from this account, without any signature checks. But don't be alarmed, this is an intermediate state of our script, and `true` (or` false`) as a return value is necessary so that the online IDE does not show us a script compilation error. Let's continue with the implementation of our multisignature script.
+Note that the function will return the value `true`, which will allow all transactions from this account, without any signature checks. But don't be alarmed, this is an intermediate state of our script, and `true` (or `false`) as a return value is necessary so that the online IDE does not show us a script compilation error. Let's continue with the implementation of our multisignature script.
 
 The Ride standard library has a `sigVerify` function that verifies the signature of a message. It takes 3 arguments:
 
@@ -33,9 +33,9 @@ The Ride standard library has a `sigVerify` function that verifies the signature
 - signature
 - public key
 
-And it returns a boolean value (`true` if the signature matches the public key and message,` false` otherwise).
+And it returns a boolean value (`true` if the signature matches the public key and message,`false` otherwise).
 
-The public keys in our example have already been declared, it remains to find 2 more arguments - the message and transaction signatures. The object of the current outgoing transaction `tx` has a field` bodyBytes` that contains the message to be signed. Also, the `tx` object has a` proofs` field that contains the transaction signatures in a list. The simplest verification of the message signature looks like this:
+The public keys in our example have already been declared, it remains to find 2 more arguments - the message and transaction signatures. The object of the current outgoing transaction `tx` has a field `bodyBytes` that contains the message to be signed. Also, the `tx` object has a `proofs` field that contains the transaction signatures in a list. The simplest verification of the message signature looks like this:
 
 ``` scala
     sigVerify (tx.bodyBytes, tx.proofs [0], base58'5AzfA9UfpWVYiwFwvdr77k6LWupSTGLb14b24oVdEpMM ')
@@ -80,7 +80,7 @@ The proofs array is always 8, however, values ​​may not be present anywhere 
 
 > Important: the list of `proofs` in transaction fields always has a dimension of 8, regardless of how many elements it actually contains.
 
-In addition to the `sigVerify` signature verification function, there is a` RSA` verification function - `rsaVerify`. `sigVerify`, which works with the signature for the Curve25519 curve (ED25519 with X25519 keys, hereinafter for simplicity we will call" Waves signature ") is not deterministic, that is, there can be an unlimited number of signatures for the same key-message pair. The RSA signature is deterministic, in other words, there can be only one valid RSA signature for the same message and private key.
+In addition to the `sigVerify` signature verification function, there is a `RSA` verification function - `rsaVerify`. `sigVerify`, which works with the signature for the Curve25519 curve (ED25519 with X25519 keys, hereinafter for simplicity we will call" Waves signature ") is not deterministic, that is, there can be an unlimited number of signatures for the same key-message pair. The RSA signature is deterministic, in other words, there can be only one valid RSA signature for the same message and private key.
 
 ## zk-SNARKs
 
@@ -99,7 +99,7 @@ There are 4 main primitive data types in Ride:
 - strings
 - arrays of bytes (byte vector)
 
-For the last 2 types (string and byte vector) there are functions that make it easier to work with them. For example, the function `drop (data: ByteVector | String, n: Integer)` can remove the first N bytes or characters from a byte array or string. The `take (data: ByteVector | String, n: Integer)` function can, on the contrary, leave only the first N bytes. If you need to take bytes or characters not from the beginning, but from the end, then there are the functions `dropRight` and` takeRight`. And for even more convenience there is a `size ()` function.
+For the last 2 types (string and byte vector) there are functions that make it easier to work with them. For example, the function `drop (data: ByteVector | String, n: Integer)` can remove the first N bytes or characters from a byte array or string. The `take (data: ByteVector | String, n: Integer)` function can, on the contrary, leave only the first N bytes. If you need to take bytes or characters not from the beginning, but from the end, then there are the functions `dropRight` and `takeRight`. And for even more convenience there is a `size ()` function.
 
 Working with strings in Ride has become more convenient with the release of the standard library version 3, which introduced the following features:
 
@@ -111,9 +111,9 @@ Working with strings in Ride has become more convenient with the release of the 
 
 ## Type conversions
 
-A common need for programming in strongly typed languages ​​is type conversions. To do this, Ride has a huge number of functions that allow you to do `toBytes`,` toInt`, `toString`,` toUtf8String` (for an arbitrary byte array). There are also more specific functions like `toBase16String`,` toBase58String`, `toBase64String`, which convert an array of bytes to a string in one of the representations -` HEX`, `base58` or` base64`.
+A common need for programming in strongly typed languages ​​is type conversions. To do this, Ride has a huge number of functions that allow you to do `toBytes`, `toInt`, `toString`, `toUtf8String` (for an arbitrary byte array). There are also more specific functions like `toBase16String`, `toBase58String`, `toBase64String`, which convert an array of bytes to a string in one of the representations - `HEX`, `base58` or `base64`.
 
-One of the most commonly used types in Ride code is `Address`, and there is a function` addressFromString` for convenience of working with it.
+One of the most commonly used types in Ride code is `Address`, and there is a function `addressFromString` for convenience of working with it.
 
 ## Getting data from the blockchain
 
@@ -124,23 +124,23 @@ In Ride scripts, it is quite often necessary to work not only with the parameter
 
 The most commonly used functions from the first category are `assetInfo (assetId: ByteVector)` and `blockInfoByHeight (N: Integer)`. The first returns information about the token with the specified `assetId`. This includes parameters such as the public key of the asset creator or the title and description. The second function returns information about the block with the specified number. To get information about the current (last) block, you can use the global variable `lastBlock`, which also contains a structure with information about the block. The most useful block parameter can definitely be called `timestamp`, which contains the block generation time and is the best field to orient to the time in the code of your decentralized application (not the transaction timestamp).
 
-The second category of functions allows you to read data from the storage of any account (not only the current one on which the script is running). As you might have guessed, there are 4 functions for reading different data types - `getInteger`,` getBinary`, `getBoolean`,` getString`. Each function takes an address and a key as an argument - `address: Address, key: String`. To read from the account on which the script is executed, it is enough to pass `this` as the first argument. All functions return `Union (T | Unit)` since the specified key may not exist. If you are sure that the function will exist, then you can use the functions `getIntegerValue`,` getBinaryValue`, `getBooleanValue` and` getStringValue`. The difference between the latter is that in the absence of a key, they will return an exception and the function will terminate.
+The second category of functions allows you to read data from the storage of any account (not only the current one on which the script is running). As you might have guessed, there are 4 functions for reading different data types - `getInteger`, `getBinary`, `getBoolean`, `getString`. Each function takes an address and a key as an argument - `address: Address, key: String`. To read from the account on which the script is executed, it is enough to pass `this` as the first argument. All functions return `Union (T | Unit)` since the specified key may not exist. If you are sure that the function will exist, then you can use the functions `getIntegerValue`, `getBinaryValue`, `getBooleanValue` and `getStringValue`. The difference between the latter is that in the absence of a key, they will return an exception and the function will terminate.
 
-If you do use `getInteger`,` getBinary`, `getBoolean` or` getString`, then Ride has functions that allow you to extract data from `Union` or return a default value or an error:
+If you do use `getInteger`, `getBinary`, `getBoolean` or `getString`, then Ride has functions that allow you to extract data from `Union` or return a default value or an error:
 
 - `value ()` and `extract ()` - get data from a variable or return an error without a description
 - `valueOrElse (a: T | Unit, b: T)` - return data from a variable, if there is not `Unit`, otherwise return the second argument
-- `valueOrErrorMessage (a: T | Unit, b: String)` - return data from a variable, if there is not `Unit`, otherwise throw an error with the message` b`
+- `valueOrErrorMessage (a: T | Unit, b: String)` - return data from a variable, if there is not `Unit`, otherwise throw an error with the message `b`
 
-The `isDefined ()` function may also be useful, which checks that its argument is not `Unit` (remember that` Unit` can be considered an analogue of `null`).
+The `isDefined ()` function may also be useful, which checks that its argument is not `Unit` (remember that `Unit` can be considered an analogue of `null`).
 
 ## Working with lists
 
 Ride lists can be declared with square brackets `[]` and contain any data type. Some functions in the standard library (for example, `split` for strings) return lists as the result of execution. For the convenience of working with them, the standard library has functions:
 
 - `containsElement (list: List [T], element: T): Boolean` - checks if there is an element in the list
-- `indexOf (list: List [T], element: T): Int | Unit` - returns the first index of the element or` Unit` if the element is not found
-- `lastIndexOf (list: List [T], element: T): Int | Unit` - - returns the last index of the element or` Unit` if the element is not found
+- `indexOf (list: List [T], element: T): Int | Unit` - returns the first index of the element or `Unit` if the element is not found
+- `lastIndexOf (list: List [T], element: T): Int | Unit` - - returns the last index of the element or `Unit` if the element is not found
 - `min` - returns the minimum value in the list
 - `max (List [Int]): Int` - returns the maximum value in the list
 - `median (List [Int]): Int` - returns the median value in the list
@@ -156,12 +156,12 @@ In addition to the functions of the standard library, Ride also has operators fo
 
 ## Other features
 
-In this book, we will not consider all the available functions, but I consider it necessary to mention 2 more categories of functions. Much of the blockchain is related to hashing functions, and Ride also has such functions - `keccak256`,` blake2b256` and `sha256`.
+In this book, we will not consider all the available functions, but I consider it necessary to mention 2 more categories of functions. Much of the blockchain is related to hashing functions, and Ride also has such functions - `keccak256`,`blake2b256` and `sha256`.
 
-The second category of functions that are very often useful are the mathematical functions `pow` for exponentiation,` log` for calculating the logarithm and `fraction (value: Int, numerator: Int, denominator: Int)`, which multiplies the first 2 arguments and divides to the third, avoiding integer variable overflow.
+The second category of functions that are very often useful are the mathematical functions `pow` for exponentiation,`log` for calculating the logarithm and `fraction (value: Int, numerator: Int, denominator: Int)`, which multiplies the first 2 arguments and divides to the third, avoiding integer variable overflow.
 
 ## Function families
 
-Remember, every feature in Ride has a `complexity` that determines its complexity. For some functions in Ride there are analogues that have less `complexity` due to the fact that they have a limit on the size of the argument. For example, the `sigVerify` function has a complexity of 200 and the maximum size of the first argument is 150 kb, but the standard library contains the functions` sigVerify_16kb`, `sigVerify_32kb`,` sigVerify_32kb`, `sigVerify_128kb`, with the values` complexity` 100, 110, 125 and 150, respectively. If you are sure that your argument cannot be larger than the values ​​specified in the function name, then you can use them and your script will have less complexity.
+Remember, every feature in Ride has a `complexity` that determines its complexity. For some functions in Ride there are analogues that have less `complexity` due to the fact that they have a limit on the size of the argument. For example, the `sigVerify` function has a complexity of 200 and the maximum size of the first argument is 150 kb, but the standard library contains the functions `sigVerify_16kb`, `sigVerify_32kb`, `sigVerify_32kb`, `sigVerify_128kb`, with the values `complexity` 100, 110, 125 and 150, respectively. If you are sure that your argument cannot be larger than the values ​​specified in the function name, then you can use them and your script will have less complexity.
 
 Not only is sigVeriry a family of functions, but also hashing functions, rsaVerify and groth16Verify, for example. You can always find a complete list of function families in the documentation.

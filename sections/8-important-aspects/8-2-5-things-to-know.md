@@ -6,7 +6,7 @@
 
 Many of the developers have heard about the problems of blockchain scaling, about the fact that this is not about highload even once, but when I just started to get involved in blockchain, I did not fully realize what awaited me. Sasha Ivanov once wrote in his article ["You can't calculate on the blockchain"](https://medium.com/wavesprotocol/you-cant-calculate-on-the-blockchain-906f9b110829) that the blockchain is now it's like the Sinclair ZX Spectrum 8-bit computers in the past. These computers played a very important role in the evolution of technology, but compared to modern personal computers and telephones, they were like a programmable calculator. Blockchain is now very similar to the ZX Spectrum in terms of computing power for each individual application. And this is correct, because the blockchain is not for the speed of calculations, but for the removal of intermediaries.
 
-All blockchain restrictions affect not only the complexity of programs (for example, very few decentralized applications with hundreds of thousands of lines of code), but also how ** we think as developers. The picture below explains the difference a lot, because decentralized app developers were like game developers in 1996.
+All blockchain restrictions affect not only the complexity of programs (for example, very few decentralized applications with hundreds of thousands of lines of code), but also **how we think as developers**. The picture below explains the difference a lot, because decentralized app developers were like game developers in 1996.
 
 ![img](https://media.discordapp.net/attachments/694073260509233212/714476772615520336/d391f9ea-2091-8043-a54c-a844862373a0.png)
 

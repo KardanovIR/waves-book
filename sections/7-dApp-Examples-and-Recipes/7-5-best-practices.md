@@ -11,7 +11,7 @@ Let's see what mistakes developers make most often and what needs to be done to 
 
 ## Always check the signature
 
-One of the most common mistakes developers make is to use the `case _ => true` check construct in smart account scripts or the` @ Verifier` functions of decentralized applications. For example, you might think that the following script only forbids `Transfer` transactions and allows all others:
+One of the most common mistakes developers make is to use the `case _ => true` check construct in smart account scripts or the `@Verifier` functions of decentralized applications. For example, you might think that the following script only forbids `Transfer` transactions and allows all others:
 
 ``` scala
 {- # STDLIB_VERSION 3 # -}
@@ -24,7 +24,7 @@ match (tx) {
 }
 ```
 
-But the devil is in the details. Such a script completely prohibits making transactions from the `Transfer` account and allows all other types of transactions ** to any user **. Any person or even just a script can make a transaction from this account by specifying the public account key in the `senderPublicKey` field of the transaction and ** without specifying a single signature. **
+But the devil is in the details. Such a script completely prohibits making transactions from the `Transfer` account and allows all other types of transactions **to any user**. Any person or even just a script can make a transaction from this account by specifying the public account key in the `senderPublicKey` field of the transaction and **without specifying a single signature.**
 
 **Always check** for signature and correctness:
 
@@ -43,7 +43,7 @@ You need to be careful not only in mainnet, but also in testnet, because both th
 
 ## Understand the difference between @Verifier and @Callable
 
-Some decentralized application developers make a mistake when designing their dApp by mistakenly saying that `@ Verifier` checks **incoming** transactions against the dApp's address. For example, there are such scripts:
+Some decentralized application developers make a mistake when designing their dApp by mistakenly saying that `@Verifier` checks **incoming** transactions against the dApp's address. For example, there are such scripts:
 
 ``` scala
 @Callable (i)
@@ -60,7 +60,7 @@ func verify = {
 }
 ```
 
-But such a script is not engaged in the fact that it allows you to call the methods of this dApp, but **allows you to call other dApps from the account of this decentralized application even without providing a signature.** That is, any user can call another account and transfer all tokens from the account of this application. Do not forget that the account of the decentralized application remains an account that can also do some actions and send transactions, and these actions are controlled by the `@ Verifier` function.
+But such a script is not engaged in the fact that it allows you to call the methods of this dApp, but **allows you to call other dApps from the account of this decentralized application even without providing a signature.** That is, any user can call another account and transfer all tokens from the account of this application. Do not forget that the account of the decentralized application remains an account that can also do some actions and send transactions, and these actions are controlled by the `@Verifier` function.
 
 ## Verify transactions before submitting
 
@@ -74,7 +74,7 @@ Use this method for pre-validation before sending the transaction using the `bro
 
 ## Be careful with keys
 
-In the development of decentralized applications, many operations are performed with the account's key-value storage. Keys in the vault are often composite, for example, `voting_12_vote_3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa`, which can store the vote of the account` 3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa 'in voting with id. Formation of a key for such a record in the storage can be implemented in Ride as follows:
+In the development of decentralized applications, many operations are performed with the account's key-value storage. Keys in the vault are often composite, for example, `voting_12_vote_3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa`, which can store the vote of the account `3MEEsWQtsS5WV2SczdEvipY3Ch5LuSHuLWa` in voting with id. Formation of a key for such a record in the storage can be implemented in Ride as follows:
 
 ``` scala
 func keyVoteByAddress (votingId: Int, address: String) = "voting_" + votingId + "_vote_" + address
@@ -118,4 +118,4 @@ In the work of real decentralized applications, there are relatively often cases
 
 In the Waves blockchain, there may be rare situations when a fork occurs in the blockchain and the last block or microblock is rolled back, which can lead to disruption of the sequence of dependent transactions. For example, if you send a transaction for the commit phase, wait until it gets into the last (liquid) block and immediately send the disclosure transaction, then there may be a situation when the last block or microblock rolls back, the commit transaction "falls out" of the blockchain. This will make the transaction invalid for the disclosure phase.
 
-If you use the `waitForTx` function from the` waves-transactions` library, then it waits only to hit the last fluid block, which can lead to problems. If you have dependent transactions, it is safer to use the `waitForTxWithNConfirmations` function, waiting for 1-2 confirmations after the first transaction hits the block.
+If you use the `waitForTx` function from the `waves-transactions` library, then it waits only to hit the last fluid block, which can lead to problems. If you have dependent transactions, it is safer to use the `waitForTxWithNConfirmations` function, waiting for 1-2 confirmations after the first transaction hits the block.

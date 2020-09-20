@@ -29,7 +29,7 @@ The matcher accepts applications for exchanging tokens from users; in the Waves 
 }
 ```
 
-In addition to information about the sender, service fields and signature, each order contains information about which pair of tokens should be exchanged, the type of order (`buy` or` sell`), the expiration date of the order, the number of tokens to be exchanged and the price the user wants to exchange. Looking at the example above, you can understand that the user wants to exchange `Waves`, because` assetPair.priceAsset` is `null` and the order type is` buy`, for a token with assetId equal to `BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQca` and [] with the name https://wavesexplorer.com/tx/BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQa) which can be found in the explorer.
+In addition to information about the sender, service fields and signature, each order contains information about which pair of tokens should be exchanged, the type of order (`buy` or `sell`), the expiration date of the order, the number of tokens to be exchanged and the price the user wants to exchange. Looking at the example above, you can understand that the user wants to exchange `Waves`, because `assetPair.priceAsset` is `null` and the order type is `buy`, for a token with assetId equal to `BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQca` and [] with the name https://wavesexplorer.com/tx/BrjUWjndUanm5VsJkbUip8VRYy6LWJePtxya3FNv4TQa) which can be found in the explorer.
 
 The number of tokens for exchange is indicated as 150,000,000 (we always remember that Waves has 8 decimal places, so he actually wants to exchange 1.5 Waves) for Zcash at a price of 17.99925005 per unit (Zcash also has 8 decimal places). In other words, if there is a person willing to sell 1 Zchah token in exchange for 17.99925005 Waves no later than the specified expiration date (1551252872383 or 02/27/2019 @ 7:34 am UTC), then the exchange will be made.
 
@@ -58,9 +58,9 @@ Let's imagine that another user sent a counter order for the same pair with the 
 }
 ```
 
-The sender of this order wants to make a reverse exchange operation (`Zcash` ->` Waves`) at the same price, but wants to exchange 30 Zcash.
+The sender of this order wants to make a reverse exchange operation (`Zcash` -> `Waves`) at the same price, but wants to exchange 30 Zcash.
 
-Both orders are sent to one matcher with the public key `7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy`, which, after seeing the match of parameters (pair, price) and the validity of the signature and expiration date, will form an exchange transaction -` Exchange`. At the same time, the first order will be fully executed (all 1.5 Waves will be exchanged for Zcash), and the second will only partially wait for a suitable order for the exchange. An approximate scheme of work is shown in the figure:
+Both orders are sent to one matcher with the public key `7kPFrHDiGw1rCm7LPszuECwWYL3dMf6iMifLRDJQZMzy`, which, after seeing the match of parameters (pair, price) and the validity of the signature and expiration date, will form an exchange transaction - `Exchange`. At the same time, the first order will be fully executed (all 1.5 Waves will be exchanged for Zcash), and the second will only partially wait for a suitable order for the exchange. An approximate scheme of work is shown in the figure:
 
 ![How matching works](../../assets/4-4-1-how-dex-works.png "How matching workks")
 

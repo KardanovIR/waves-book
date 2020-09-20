@@ -56,9 +56,9 @@ Every Ride script must start with a compiler directive. There are 3 possible typ
 
 `STDLIB_VERSION` specifies the version of the standard library. The latest version in mainnet is 3, in stagenet it is 4.
 
-CONTENT_TYPE specifies the type of file you are working on. Currently there are types `DAPP` and` EXPRESSION`. The `DAPP` type allows you to declare functions, terminate the execution of the script with some transactions (changes in the blockchain) and use annotations, while` EXPRESSION` ends with a boolean expression (`true` or` false`).
+CONTENT_TYPE specifies the type of file you are working on. Currently there are types `DAPP` and `EXPRESSION`. The `DAPP` type allows you to declare functions, terminate the execution of the script with some transactions (changes in the blockchain) and use annotations, while `EXPRESSION` ends with a boolean expression (`true` or `false`).
 
-SCRIPT_TYPE specifies the type of entity to which we want to add the script and change the default behavior. Ride scripts can be attached to `ACCOUNT` or` ASSET`.
+SCRIPT_TYPE specifies the type of entity to which we want to add the script and change the default behavior. Ride scripts can be attached to `ACCOUNT` or `ASSET`.
 
 ``` scala
 {- # STDLIB_VERSION 4 # -}
@@ -112,7 +112,7 @@ func lazyIsGood () = {
 }
 ```
 
-The above function will compile and return `true` as a result, but the` a` variable will not be initialized because Ride is lazy, which means that all unused variables are not evaluated.
+The above function will compile and return `true` as a result, but the `a` variable will not be initialized because Ride is lazy, which means that all unused variables are not evaluated.
 
 ``` scala
 func callable () = {
@@ -125,7 +125,7 @@ func caller () = {
 }
 ```
 
-The `callable` function will also not be called, since the` a` variable is not used.
+The `callable` function will also not be called, since the `a` variable is not used.
 
 Unlike most languages, variable reuse is not allowed. Declaring a variable with a name that is already in use in the parent scope will result in a compilation error.
 
@@ -153,14 +153,14 @@ In Ride, a string is a read-only byte array. String data is encoded using UTF-8.
 
 Only double quotes can be used to denote strings. Strings are immutable like all other types. This means that the function of finding a substring in a string is very efficient: no copying is done, no additional selections are required.
 
-All operators in Ride must have values ​​of the same type on both sides. The code below will not compile because `age` is of type Int and` "Bob is" `is a string:
+All operators in Ride must have values ​​of the same type on both sides. The code below will not compile because `age` is of type Int and `"Bob is"` is a string:
 
 ``` scala
 let age = 21
 "Bob is" + age # won't compile
 ```
 
-To make the code work, we have to convert `age` to` String`:
+To make the code work, we have to convert `age` to `String`:
 
 ``` scala
 let age = 21
@@ -175,9 +175,9 @@ Nothing #
 Unit # unit
 ```
 
-Ride has several types that "** look ** like ~~ ducks ~~ in Scala, swim like ~~ ducks ~~ in Scala, and quack like ~~ ducks ~~ in Scala". For example, the types `Nothing` and` Unit`.
+Ride has several types that "**look** like ~~ ducks ~~ in Scala, swim like ~~ ducks ~~ in Scala, and quack like ~~ ducks ~~ in Scala". For example, the types `Nothing` and `Unit`.
 
-Ride does not have a null type like many other languages. Usually, built-in functions return type `Unit` instead of` null`.
+Ride does not have a null type like many other languages. Usually, built-in functions return type `Unit` instead of `null`.
 
 ``` scala
 "String" .indexOf ("substring") == unit # true
@@ -216,8 +216,8 @@ You can add a new element to an existing list using the `cons` function. The ori
 The Ride standard library has functions that make it easier to work with lists, for example:
 
 - `containsElement (list: List [T], element: T): Boolean` - checks if there is an element in the list
-- `indexOf (list: List [T], element: T): Int | Unit` - returns the first index of the element or` Unit` if the element is not found
-- `lastIndexOf (list: List [T], element: T): Int | Unit` - - returns the last index of the element or` Unit` if the element is not found
+- `indexOf (list: List [T], element: T): Int | Unit` - returns the first index of the element or `Unit` if the element is not found
+- `lastIndexOf (list: List [T], element: T): Int | Unit` - - returns the last index of the element or `Unit` if the element is not found
 - `min` - returns the minimum value in the list
 - `max (List [Int]): Int` - returns the maximum value in the list
 - `median (List [Int]): Int` - returns the median value in the list
@@ -266,7 +266,7 @@ let realStringValue = valueFromBlockchain.extract ()
 let realStringValue2 = getStringValue (this, "someKey")
 ```
 
-To get the real type and value from `Union`, you can use not only pattern matching, but also the` extract` function, which will interrupt the script if the value is `Unit`. Another option is to use specialized functions such as `getStringValue`,` getIntegerValue`, etc., whose behavior will be identical (an exception will be thrown if the value is not in the storage or a different data type is stored for the specified key).
+To get the real type and value from `Union`, you can use not only pattern matching, but also the `extract` function, which will interrupt the script if the value is `Unit`. Another option is to use specialized functions such as `getStringValue`, `getIntegerValue`, etc., whose behavior will be identical (an exception will be thrown if the value is not in the storage or a different data type is stored for the specified key).
 
 ``` scala
 
@@ -295,7 +295,7 @@ if (amount> 42) then "I claim that amount is bigger than 42"
   else "I claim something else"
 ```
 
-The `if` statements are quite simple and similar to most other languages, except for two differences:` if` can be used as an expression (the result is assigned to a variable) and the `else` clause is always required.
+The `if` statements are quite simple and similar to most other languages, except for two differences: `if` can be used as an expression (the result is assigned to a variable) and the `else` clause is always required.
 
 ``` scala
 let a = 16
@@ -313,7 +313,7 @@ let readOrInit = match getInteger (this, "someKey") {
 
 Pattern matching is a pattern matching mechanism. Ride allows pattern matching only for predefined types.
 
-Pattern matching in Ride looks the same as in Scala, but the only use case for now is to get the real type from a variable of type Union. Pattern matching can be useful when, as a result of calling a variable, we can get a value with the type `Union`, for example,` Union (Int | Unit) `or it even happens like` Union (Order | ReissueTransaction | BurnTransaction | MassTransferTransaction | ExchangeTransaction | TransferTransaction | SetAssetScriptTransaction | InvokeScriptTransaction | IssueTransaction | LeaseTransaction | LeaseCancelTransaction | CreateAliasTransaction | SetScriptTransaction | SponsorFeeTransaction | DataTransaction) `.
+Pattern matching in Ride looks the same as in Scala, but the only use case for now is to get the real type from a variable of type Union. Pattern matching can be useful when, as a result of calling a variable, we can get a value with the type `Union`, for example, `Union (Int | Unit)` or it even happens like` Union (Order | ReissueTransaction | BurnTransaction | MassTransferTransaction | ExchangeTransaction | TransferTransaction | SetAssetScriptTransaction | InvokeScriptTransaction | IssueTransaction | LeaseTransaction | LeaseCancelTransaction | CreateAliasTransaction | SetScriptTransaction | SponsorFeeTransaction | DataTransaction) `.
 
 ``` scala
 let amount = match tx {# tx - current outgoing transaction object in global scope for smart account
@@ -324,11 +324,11 @@ let amount = match tx {# tx - current outgoing transaction object in global scop
 }
 ```
 
-The above code shows an example of using pattern matching when we want to get the number of tokens transferred in the current transaction from a given account. Depending on the type of transaction, the actual amount of transferred tokens can be stored in different fields. If the transaction is of type `Transfer`,` MassTransfer` or `InvokeScript`, we will take the correct field, otherwise we will get 0.
+The above code shows an example of using pattern matching when we want to get the number of tokens transferred in the current transaction from a given account. Depending on the type of transaction, the actual amount of transferred tokens can be stored in different fields. If the transaction is of type `Transfer`, `MassTransfer` or `InvokeScript`, we will take the correct field, otherwise we will get 0.
 
 ## pure functions
 
-Ride functions are pure by default, which means that their return values ​​are determined only by their arguments, and their execution has no side effects. In all fairness, there has been a lot of controversy among the Ride developers about the "purity" of the Ride features. The fact is that in Ride there are two variables in the global scope - `height`, which stores the current blockchain height (the number of the current block into which this transaction falls) and` lastBlock`, which stores information about the current block. In theory, the result of a function depends not only on its parameters, but also on the environment (those variables `height` and` lastBlock`), so some will say that functions are "not completely clean" or even "not clean at all".
+Ride functions are pure by default, which means that their return values ​​are determined only by their arguments, and their execution has no side effects. In all fairness, there has been a lot of controversy among the Ride developers about the "purity" of the Ride features. The fact is that in Ride there are two variables in the global scope - `height`, which stores the current blockchain height (the number of the current block into which this transaction falls) and `lastBlock`, which stores information about the current block. In theory, the result of a function depends not only on its parameters, but also on the environment (those variables `height` and `lastBlock`), so some will say that functions are "not completely clean" or even "not clean at all".
 
 In any case, Ride is not a pure functional language, since there is also a `throw ()` function that terminates the script at any time. That is, the function may not complete at all, and not just complete with an error, therefore, it will still not work to call the language fully functional.
 
@@ -345,7 +345,7 @@ In the above example, the script terminates on line 2 with the message `I will t
 
 ## Annotations / Access Modifiers
 
-Functions can only be defined in a script of type `DAPP` -` {- # CONTENT_TYPE DAPP # -} `. Functions can be without annotations, or with `@ Callable` or` @ Verifier` annotations.
+Functions can only be defined in a script of type `DAPP` -` {- # CONTENT_TYPE DAPP # -} `. Functions can be without annotations, or with `@Callable` or`@Verifier` annotations.
 
 ``` scala
 func getPayment (i: Invocation) = {
@@ -365,9 +365,9 @@ func pay () = {
 
 Functions with the @Callable annotation can be called from outside the blockchain. To call such functions, you need to send an `InvokeScript` transaction.
 
-Annotations can "bind" some values ​​to a function. In the above example, the `i` variable was bound to the` pay` function and stored all information about the fact of the call (public key, address, payment attached to the transaction, commission, transaction id, etc.).
+Annotations can "bind" some values ​​to a function. In the above example, the `i` variable was bound to the `pay` function and stored all information about the fact of the call (public key, address, payment attached to the transaction, commission, transaction id, etc.).
 
-Functions without annotations ** cannot ** be called "from outside", only the script itself can call them. That is, a `Callable` or a` Verifier` function starts execution, during which the function can be called without annotation.
+Functions without annotations **cannot** be called "from outside", only the script itself can call them. That is, a `Callable` or a `Verifier` function starts execution, during which the function can be called without annotation.
 
 ``` scala
 @Verifier (tx)
@@ -399,11 +399,11 @@ func getRandomValue () = {
 }
 ```
 
-This code will not compile because functions ** without ** annotations must be defined ** before ** functions with annotations.
+This code will not compile because functions **without** annotations must be defined **before** functions with annotations.
 
 ### Predefined data structures
 
-Ride has many predefined specific data structures for the Waves blockchain, such as: `Address`,` Alias`, `IntegerEngry`,` StringEntry`, `Invocation`,` ScriptTransfer`, `AssetInfo`,` BlockInfo`, etc.
+Ride has many predefined specific data structures for the Waves blockchain, such as: `Address`, `Alias`, `IntegerEngry`, `StringEntry`, `Invocation`, `ScriptTransfer`, `AssetInfo`, `BlockInfo`, etc.
 
 ``` scala
 let keyValuePair = StringEntry ("someKey", "someStringValue")
@@ -426,9 +426,9 @@ func verifier () = {
 }
 ```
 
-Expression scripts (with the `{- # CONTENT_TYPE EXPRESSION # -}` directive) must always return a boolean expression along with the `@ Verifier` functions. Depending on this value, the transaction will be accepted (in the case of `true`) or rejected (in the case of` false`) by the blockchain.
+Expression scripts (with the `{- # CONTENT_TYPE EXPRESSION # -}` directive) must always return a boolean expression along with the `@Verifier` functions. Depending on this value, the transaction will be accepted (in the case of `true`) or rejected (in the case of `false`) by the blockchain.
 
-`@ Callable` functions can end with 5 types of blockchain changes:
+`@Callable` functions can end with 5 types of blockchain changes:
 
 1. Changing the state of the key-value storage, including adding and removing pairs
 2. Issue of tokens
@@ -464,7 +464,7 @@ func giveAway (age: Int) = {
 }
 ```
 
-Everyone who calls the `giveAway` function will receive as many Waves as he is (the user passes the number of years as an argument), and the dApp will store information about the transfer in its storage, besides this, the script will write several key pairs in the storage of this decentralized application -values ​​(boolean, byte array, string) and will delete the entire pair with the `deleteKey` key. The script will also issue a new token called `MyCoolToken`, send 100 such tokens to the calling account, add 100 tokens with` assetId` equal to `81hNyHLFU7Z7PRUeKAfGVPca5CMmFWTxLByHcNAS8i9W` and burn` 100 tokens with the same assetId`.
+Everyone who calls the `giveAway` function will receive as many Waves as he is (the user passes the number of years as an argument), and the dApp will store information about the transfer in its storage, besides this, the script will write several key pairs in the storage of this decentralized application -values ​​(boolean, byte array, string) and will delete the entire pair with the `deleteKey` key. The script will also issue a new token called `MyCoolToken`, send 100 such tokens to the calling account, add 100 tokens with `assetId` equal to `81hNyHLFU7Z7PRUeKAfGVPca5CMmFWTxLByHcNAS8i9W` and burn `100 tokens with the same assetId`.
 
 Each resulting `Issue` increases the commission for calling such a function by 1 Waves (if a non-NFT token is issued).
 
@@ -499,9 +499,9 @@ let a = this # Current account address
 a == Address (base58'3P9DEDP5VbyXQyKtXDUt2crRPn5B7gs6ujc ') # true if the script is executed on an account with a specific address
 ```
 
-Ride scripts in the waves blockchain can be linked to accounts and tokens (using the directive `{- # SCRIPT_TYPE ACCOUNT | ASSET # -}`), and depending on the `SCRIPT_TYPE` keyword` this` can refer to different entities. For script type `ACCOUNT` -` this` is `Address`
+Ride scripts in the waves blockchain can be linked to accounts and tokens (using the directive `{- # SCRIPT_TYPE ACCOUNT | ASSET # -}`), and depending on the `SCRIPT_TYPE` keyword `this` can refer to different entities. For script type `ACCOUNT` - `this` is `Address`
 
-For type `ASSET` -` this` is type `AssetInfo`
+For type `ASSET` -`this` is type `AssetInfo`
 
 ``` scala
 {- # STDLIB_VERSION 4 # -}
@@ -537,7 +537,7 @@ sum (6, 4) # 10
 sum (10, 5) # 15
 ```
 
-`FOLD <N>` is a macro, that is, syntactic sugar. The Ride interpreter does not know anything about `FOLD`, because at the time of compilation,` FOLD` turns into the following code:
+`FOLD <N>` is a macro, that is, syntactic sugar. The Ride interpreter does not know anything about `FOLD`, because at the time of compilation, `FOLD` turns into the following code:
 
 ``` scala
 let result = {
@@ -569,9 +569,9 @@ Not all operations possible with other loops can be done with `FOLD`.
 
 The development of any application starts with an idea, and decentralized applications are no exception here, however, when it comes to code, it would be good to have a clear sequence of steps, how to launch the idea implemented in the code and make it public. In the case of decentralized apps on Ride, the full lifecycle looks like this:
 
-1. The written code on Ride is compiled into base64 representation. The compiled version of the script can contain meta information about the script (for example, the argument types of `@ Callable` functions are erased at compile time, but can be saved as meta information). There are 2 compilers for Ride - JavaScript and Scala. You can compile the code using different tools - online IDE, REST API nodes, `surfboard` or` ride-js` libraries, an extension for Visual Studio Code. We'll talk about these tools a little later in this section.
-2. The compiled script is sent to the blockchain as part of a transaction - SetAssetScript or Issue for smart assets, SetScript for smart accounts and decentralized applications. All these transactions have a `script` field that accepts the compiled code in` base64` representation.
+1. The written code on Ride is compiled into base64 representation. The compiled version of the script can contain meta information about the script (for example, the argument types of `@Callable` functions are erased at compile time, but can be saved as meta information). There are 2 compilers for Ride - JavaScript and Scala. You can compile the code using different tools - online IDE, REST API nodes, `surfboard` or `ride-js` libraries, an extension for Visual Studio Code. We'll talk about these tools a little later in this section.
+2. The compiled script is sent to the blockchain as part of a transaction - SetAssetScript or Issue for smart assets, SetScript for smart accounts and decentralized applications. All these transactions have a `script` field that accepts the compiled code in `base64` representation.
 3. After a transaction with a script enters the block, the behavior of the account or asset changes in accordance with what is written in the code.
-4. In the case of smart assets, smart accounts and `@ Verifier` functions, the contract code will be executed every time a script account sends a transaction or a transaction with a scripted token is made.
-5. In the case of `@ Callable` functions, their execution starts at the moment when any user calls the function using the` InvokeScript` transaction.
+4. In the case of smart assets, smart accounts and `@Verifier` functions, the contract code will be executed every time a script account sends a transaction or a transaction with a scripted token is made.
+5. In the case of `@Callable` functions, their execution starts at the moment when any user calls the function using the `InvokeScript` transaction.
 6. Updating the script to a new one is possible for both tokens and accounts, if it is not prohibited by the code of the installed script.

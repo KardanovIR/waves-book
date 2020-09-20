@@ -18,9 +18,9 @@ The logic of the Web3 application is different:
 2. The web server sends HTML, CSS, JavaScript and data as a response
 3. JavaScript code requests additional data from the blockchain node
 4. The user sees the rendered page with data
-5. The user takes any read actions (clicks on buttons, submitting forms), after which the application logic (JavaScript) makes XHR (AJAX) requests to the server ** and / or to the blockchain node **
+5. The user takes any read actions (clicks on buttons, submitting forms), after which the application logic (JavaScript) makes XHR (AJAX) requests to the server **and / or to the blockchain node**
 6. The web server responds with a new batch of HTML, CSS, JavaScript and data
-7. For cases ** recording and updating data **, before sending a request to a blockchain node, the client code in JavaScript ** requests a user signature **
+7. For cases **recording and updating data**, before sending a request to a blockchain node, the client code in JavaScript **requests a user signature**
 
 ![Web3 app](../../assets/8-1-0-web3-app.png "Web3 app")
 
@@ -177,7 +177,7 @@ Waves Signer is a wrapper over various providers that directly store keys and si
 
 ![Waves Signer scheme](../../assets/8-1-1-signer.png "Waves Signer scheme")
 
-The existing provider from Waves.Exchange offers a completely new user experience. Unlike Waves Keeper, where the keys are stored in an extension, the Waves.Exchange provider stores encrypted keys in the `localStorage` of the site` https: // waves.exchange` and provides the user with an interface in the form of an `ifаme` window where he can agree to sign the transaction or reject it.
+The existing provider from Waves.Exchange offers a completely new user experience. Unlike Waves Keeper, where the keys are stored in an extension, the Waves.Exchange provider stores encrypted keys in the `localStorage` of the site `https: // waves.exchange` and provides the user with an interface in the form of an `ifаme` window where he can agree to sign the transaction or reject it.
 
 ![Waves Signer example](../../assets/8-1-2-signer-example.png "Waves Signer example")
 
